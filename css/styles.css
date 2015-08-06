@@ -1,0 +1,58 @@
+body {
+  background-color: green;
+}
+
+#playerSpace {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 27.25vh;
+  margin-left: 6.25vw;
+  display: inline-block;
+}
+
+#dealerSpace {
+  position: absolute;
+  right: 0;
+  margin: 2vh 6.25vw 2vh 0;
+  display: inline-block;
+}
+
+#bottom {
+  position: absolute;
+  background-color: gray;
+  height: 25vh;
+  left: 10px;
+  right: 10px;
+  bottom: 0;
+  border: 10px solid black;
+  opacity: 0.8;
+}
+
+#menu {
+  float: right;
+  width: 50%;
+  height: 25vh;
+  border-left: 10px solid black;
+  opacity: 1;
+}
+
+.action {
+  font-family: helvetica;
+  font-size: 6.25vw;
+  width: 20vw;
+  height: 12vh;
+  background-color: red;
+  padding: 0 2.5vw;
+}
+
+.action:hover {
+  background-color: blue;
+}
+
+
+.card {
+  margin: 0 -6.25vh;
+  width: 25vh;
+  height: 33vh;
+  bottom: 20vh;
+}
