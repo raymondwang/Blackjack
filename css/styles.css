@@ -1,54 +1,212 @@
-body {
-  background-color: green;
+#navbar {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-#playerSpace {
+.nav {
+  color: white;
+  margin: 0;
+  line-height: 2;
+  font-size: 1.5vw;
+  width: 24.75%;
+  border-right: 0.25vw solid rgba(139, 205, 115, 0.3);
+  display: inline-block;
+  text-align: center;
+}
+
+#title {
+  width: 15.75%;
+}
+
+#bankroll {
+  width: 33.75%;
+}
+
+@font-face {
+    font-family: "pokemon";
+    src: url('../fonts/PokemonGB.ttf');
+  }
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #8bcd73;
+  font-family: 'pokemon';
+}
+
+#PlayerSpace {
   position: absolute;
   bottom: 0;
-  margin-bottom: 27.25vh;
+  margin-bottom: 26vh;
   margin-left: 6.25vw;
   display: inline-block;
 }
 
-#dealerSpace {
+#DealerSpace {
   position: absolute;
   right: 0;
-  margin: 2vh 6.25vw 2vh 0;
+  margin: 12vh 6.25vw 2vh 0;
   display: inline-block;
+}
+
+#PlayerStats {
+  position: absolute;
+  bottom: 0;
+  right: 7.5vw;
+  margin-bottom: 28vh;
+  display: inline-block;
+  border-right: 1vh solid black;
+  border-bottom: 1vh solid black;
+  width: 30vw;
+  height: 10vh;
+}
+
+#DealerStats {
+  position: absolute;
+  top: 24vh;
+  margin: 2vh 7.5vw;
+  display: inline-block;
+  border-bottom: 1vh solid black;
+  border-left: 1vh solid black;
+  width: 30vw;
+  height: 10vh;
+}
+
+#PlayerName { /* will prob move this all into js */
+  position: absolute;
+  bottom: 35vh;
+  left: 62vw;
+  }
+
+#DealerName {
+  position: absolute;
+  top: 16vh;
+  left: 7.5vw;
+}
+
+.name {
+  font-size: 32px;
+  letter-spacing: 8px;
+}
+
+.spade {
+  font-size: 32px;
+  list-style-type: none;
+  margin-left: 20px;
+  color: blue;
+  margin-top: 5px;
+}
+
+.colon {
+  position: relative;
+  font-size: 20px;
+  bottom: 3px;
+
+}
+
+.hpBar {
+  position: absolute;
+  left: 70px;
+  bottom: 43px;
+  width: 18.5vw;
+  height: 0.5vh;
+  border: 0.6vw solid black;
+  display: inline-block;
+}
+
+#PlayerTotal {
+  position: absolute;
+  left: 70px;
+  bottom: 10px;
+  width: 19.6vw;
+}
+
+#DealerTotal {
+  position: absolute;
+  left: 70px;
+  bottom: 10px;
+  width: 19.6vw;
+}
+
+.handValue {
+  text-align: center;
+  list-style-type: none;
+  font-size: 20px;
 }
 
 #bottom {
   position: absolute;
   background-color: gray;
-  height: 25vh;
+  height: 21vh;
   left: 10px;
   right: 10px;
-  bottom: 0;
+  bottom: 6px;
   border: 10px solid black;
-  opacity: 0.8;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+#prompt {
+  position: absolute;
+  font-size: 40px;
+  left: 24px;
+  top: 24px;
+  line-height: 1.5;
+  margin: 0;
 }
 
 #menu {
   float: right;
   width: 50%;
-  height: 25vh;
+  height: 21vh;
   border-left: 10px solid black;
-  opacity: 1;
 }
 
-.action {
-  font-family: helvetica;
-  font-size: 6.25vw;
-  width: 20vw;
-  height: 12vh;
-  background-color: red;
+#reset {
+  font-size: 60px;
+  width: 43%;
+  margin: .75%;
+  height: 19vh;
   padding: 0 2.5vw;
+  position: absolute;
+  z-index: 2;
+  text-align: center;
+  line-height: 150px;
+  display: block;
 }
 
-.action:hover {
+#reset:hover {
   background-color: blue;
 }
 
+#actions {
+  z-index: 1;
+  position: absolute;
+  top: 2vh;
+  display: none;
+}
+
+.action {
+  position: relative;
+  top: 5px;
+  font-size: 30px;
+  width: 20vw;
+  height: 8vh;
+  padding: 0 0 0 24px;
+  margin: 5px;
+}
+
+td.cursor {
+  position: relative;
+  font-size: 40px;
+  bottom: 5px;
+  width: 40px;
+  transform: rotate(90deg);
+  text-align: right;
+  color: rgba(0, 0, 0, 0);
+}
+
+#lineSpace {
+  height: 1vh;
+}
 
 .card {
   margin: 0 -6.25vh;

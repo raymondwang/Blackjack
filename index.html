@@ -7,19 +7,29 @@
     <script type="text/javascript" src="javascripts/scripts.js"></script>
     <title>Blackjack</title>
   </head>
+  <header id="navbar">
+    <!-- <h1 id="heading">Blackjack</h1> -->
+  </header>
   <body>
-    <div id="playerSpace"></div>
-    <div id="dealerSpace"></div>
+    <div id="PlayerSpace"></div>
+    <div id="DealerSpace"></div>
     <div id="bottom">
+      <p id="prompt"></p>
       <div id="menu">
-        <table>
+        <div id="reset">Deal</div>
+        <table id="actions">
           <tr>
+            <td class="cursor">&spades;</td> <!-- might need id's to select -->
             <td id="hit" class="action">Hit</td>
+            <td class="cursor">&spades;</td>
             <td id="stand" class="action">Stand</td>
           </tr>
+          <!-- <tr id="lineSpace"></tr> -->
           <tr>
-            <td id="split" class="action">Split</td>
-            <td id="double" class="action">Double</td>
+            <td class="cursor">&spades;</td>
+            <td id="double" class="action">Down</td>
+            <td class="cursor">&spades;</td>
+            <td id="surrender" class="action">Fold</td>
           </tr>
         </table>
       </div>
