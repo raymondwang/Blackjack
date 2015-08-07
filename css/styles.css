@@ -36,15 +36,15 @@ body {
 #PlayerSpace {
   position: absolute;
   bottom: 0;
-  margin-bottom: 26vh;
-  margin-left: 6.25vw;
+  margin-bottom: 30vh;
+  margin-left: 12vw;
   display: inline-block;
 }
 
 #DealerSpace {
   position: absolute;
   right: 0;
-  margin: 12vh 6.25vw 2vh 0;
+  margin: 7vh 12vw 2vh 0;
   display: inline-block;
 }
 
@@ -52,7 +52,7 @@ body {
   position: absolute;
   bottom: 0;
   right: 7.5vw;
-  margin-bottom: 28vh;
+  margin-bottom: 30vh;
   display: inline-block;
   border-right: 1vh solid black;
   border-bottom: 1vh solid black;
@@ -62,7 +62,7 @@ body {
 
 #DealerStats {
   position: absolute;
-  top: 24vh;
+  top: 14vh;
   margin: 2vh 7.5vw;
   display: inline-block;
   border-bottom: 1vh solid black;
@@ -73,13 +73,15 @@ body {
 
 #PlayerName { /* will prob move this all into js */
   position: absolute;
-  bottom: 35vh;
-  left: 62vw;
+  bottom: 37vh;
+  /*left: 62vw;*/
+  right: 6.5vw;
+  text-align: right;
   }
 
 #DealerName {
   position: absolute;
-  top: 16vh;
+  top: 7vh;
   left: 7.5vw;
 }
 
@@ -160,7 +162,6 @@ body {
 
 .selectBet {
   display: inline-block;
-  border: 1px solid black;
   margin: 10px 20px;
   padding: 10px;
 }

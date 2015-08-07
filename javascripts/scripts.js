@@ -140,7 +140,7 @@ $(document).ready(function() {
     var displayBankroll = $('#bankroll');
     displayBankroll.text('Bankroll: $' + bankroll);
     var displayBet = $('#bet');
-    // bet stuff
+    displayBet.text('Bet: $' + bet)
     var kda = $('#kda');
     updateScore();
     kda.text('W' + wins + ' L' + losses + ' T' + ties);
@@ -151,6 +151,7 @@ $(document).ready(function() {
   };
 
   function deal() {
+    changeBackgroundColor();
     placeBet();
     updateHeader();
     player.space.empty();
@@ -164,6 +165,7 @@ $(document).ready(function() {
     if (winner === null) {
       hideReset();
     }
+    surrender();
   }
 
   function showReset() {
@@ -199,6 +201,7 @@ $(document).ready(function() {
             }
           }
         }
+        deactivateSurrender();
       },
       'mouseover': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
@@ -217,6 +220,7 @@ $(document).ready(function() {
             }
           }
         }
+        deactivateSurrender();
       },
       'mouseover': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
@@ -270,6 +274,18 @@ $(document).ready(function() {
     var buttonCursor = $('.cursor').eq(2);
 
     button.on({
+      'click': function() {
+        placeBet();
+        updateHeader();
+        $('#bet').text('Bet: $' + (bet * 2));
+        player.drawCard();
+        player.hand.stand = true;
+        if (dealer.hand.total >= 17) {
+          checkWin();
+        } else while (dealer.hand.total < 17) {
+            dealer.drawCard();
+        }
+      },
       'mouseover': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
       },
@@ -278,6 +294,18 @@ $(document).ready(function() {
       }
     });
     buttonCursor.on({
+      'click': function() {
+        placeBet();
+        updateHeader();
+        $('#bet').text('Bet: $' + (bet * 2));
+        player.drawCard();
+        player.hand.stand = true;
+        if (dealer.hand.total >= 17) {
+          checkWin();
+        } else while (dealer.hand.total < 17) {
+            dealer.drawCard();
+        }
+      },
       'mouseover': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
       },
@@ -288,10 +316,34 @@ $(document).ready(function() {
   };
 
   function surrender() {
+
+    // ONLY ACTIVE AFTER DEAL
+
     var button = $('#surrender');
     var buttonCursor = $('.cursor').eq(3);
 
-    $.merge(button, buttonCursor).on({
+    button.off('click').on({
+      'click': function() {
+        bankroll += (bet / 2);
+        console.log('You have surrendered.');
+        losses++;
+        showReset();
+      },
+      'mouseover': function() {
+        buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
+      },
+      'mouseout': function() {
+        buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
+      }
+    });
+
+    buttonCursor.off('click').on({
+      'click': function() {
+        bankroll += (bet / 2);
+        console.log('You have surrendered.');
+        losses++;
+        showReset();
+      },
       'mouseover': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
       },
@@ -300,6 +352,23 @@ $(document).ready(function() {
       }
     });
   };
+
+  function deactivateSurrender() {
+    var button = $('#surrender');
+    var buttonCursor = $('.cursor').eq(3);
+
+    button.off('click').on({
+      'click': function() {
+        console.log('Can\'t surrender!');
+      }
+    });
+
+    buttonCursor.off('click').on({
+      'click': function() {
+        console.log('Can\'t surrender!');
+      }
+    });
+  }
 
   function checkWin() {
     if (player.hand.total === 21) { // if player blackjack, automate rest of game
@@ -353,8 +422,15 @@ $(document).ready(function() {
     }
   }
 
+  // for kicks
+  function changeBackgroundColor() {
+    var colors = ['#8bcd73', '#6a94b4', '#a4624a', '#c55252', '#73205a'];
+    var color = Math.floor(Math.random() * colors.length);
+    $('body').css({backgroundColor: colors[color]});
+  };
+
   var deck = createDeck();
-  var player = new Player('Player', 'Raymond'); // nickname should be decided thru prompt of some sort
+  var player = new Player('Player', 'Player'); // nickname should be decided thru prompt of some sort
   var dealer = new Player('Dealer', 'Dealer');
   var wins = 0, losses = 0, ties = 0, winner;
   var bankroll = 300;
@@ -370,6 +446,4 @@ $(document).ready(function() {
   hit();
   stand();
   double();
-  surrender();
-
 });

@@ -31,8 +31,8 @@ A fully functional Blackjack simulation that adheres to standard casino rules.
 - ~~Bust logic~~
 - ~~Dealer logic~~
 - Initial menu: Bankroll, Name, Amount of Decks
-- Surrender/Game Over/Fold
-- Double down
+- ~~Surrender/Game Over/Fold~~
+- ~~Double down~~
 - "Insurance", dealer blackjack
 - ~~Arrow selectors when hovering over menu~~
 - Card hover logic
