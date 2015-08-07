@@ -61,14 +61,7 @@ $(document).ready(function() {
     card.addClass('card');
     this.space.append(card);
     this.blackjackMeter();
-  };
-
-  Player.prototype.blackjackOrBust = function blackjackOrBust() {
-    if (this.hand.total === 21) {
-      this.hand.blackjack = true;
-    } else if (this.hand.total > 21) {
-      this.hand.bust = true;
-    }
+    checkWin();
   };
 
   // Player.prototype.getBankroll = function getBankroll() {
@@ -130,8 +123,17 @@ $(document).ready(function() {
     var title = $('<h1>').attr('id', 'title').addClass('nav').text('Blackjack');
     var displayBankroll = $('<h1>').attr('id', 'bankroll').addClass('nav').text('Bankroll: $' + bankroll);
     var displayBet = $('<h1>').attr('id', 'bet').addClass('nav').text('Bet: $' + bet);
-    var kda = $('<h1>').attr('id', 'kda').addClass('nav').text('W0 L0 T0');
+    var kda = $('<h1>').attr('id', 'kda').addClass('nav').text('W' + wins + ' L' + losses + ' T' + ties);
     navbar.append(title, displayBankroll, displayBet, kda);
+
+    var chooseBet = $('#betList');
+    chooseBet.append($('<h3>').addClass('betText').text('BET '));
+    chooseBet.append($('<li>').addClass('selectBet').text('$5'));
+    chooseBet.append($('<li>').addClass('selectBet').text('$10'));
+    chooseBet.append($('<li>').addClass('selectBet').text('$25'));
+    var prompt = $('<p>').attr('id', 'prompt').html('What will<br>' + player.nickname + ' do?');
+    $('#bottom').prepend(prompt);
+    $('#bottom').prepend(chooseBet);
   }
 
   function updateHeader() {
@@ -149,7 +151,8 @@ $(document).ready(function() {
   };
 
   function deal() {
-    $('#reset').text('Deal');
+    placeBet();
+    updateHeader();
     player.space.empty();
     dealer.space.empty();
     player.hand = {cards: [], total: 0, stand: false};
@@ -158,33 +161,28 @@ $(document).ready(function() {
     player.drawCard();
     dealer.drawCard();
     dealer.drawCard();
-    checkForBlackjack();
-    $('#prompt').html('What will<br>' + player.nickname + ' do?');
+    if (winner === null) {
+      hideReset();
+    }
   }
 
   function showReset() {
     $('#reset').css({display: 'block'});
     $('#actions').css({display: 'none'});
+    $('#prompt').css({display: 'none'});
+    $('#betList').css({display: 'block'});
   }
 
   function hideReset() {
     $('#reset').css({display: 'none'});
     $('#actions').css({display: 'block'});
-
-    hit();
-    stand();
-    double();
-    surrender();
+    $('#prompt').css({display: 'block'});
+    $('#betList').css({display: 'none'});
   }
 
   function newGame() {
     $('#reset').on('click', function() {
       deal();
-      if (!checkForBlackjack()) {
-          hideReset();
-      }
-      placeBet();
-      updateHeader();
     });
   }
 
@@ -195,11 +193,10 @@ $(document).ready(function() {
       'click': function() {
         if (player.hand.total < 21) {
           player.drawCard();
-          if (!checkWin()) {
+          if (winner === null) {
             if (dealer.hand.total < 17) {
               dealer.drawCard();
             }
-            checkWin();
           }
         }
       },
@@ -214,11 +211,10 @@ $(document).ready(function() {
       'click': function() {
         if (player.hand.total < 21) {
           player.drawCard();
-          if (!checkWin()) {
+          if (winner === null) {
             if (dealer.hand.total < 17) {
               dealer.drawCard();
             }
-            checkWin();
           }
         }
       },
@@ -229,7 +225,6 @@ $(document).ready(function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
       }
     });
-
   };
 
   function stand() {
@@ -239,7 +234,9 @@ $(document).ready(function() {
     button.on(
       {'click': function() {
       player.hand.stand = true;
-      while (!checkWin()) {
+      if (dealer.hand.total >= 17) {
+        checkWin();
+      } else while (dealer.hand.total < 17) {
           dealer.drawCard();
         }
       },
@@ -250,13 +247,13 @@ $(document).ready(function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
       }
     });
-
     buttonCursor.on(
       {'click': function() {
       player.hand.stand = true;
-      while (!checkWin()) {
+      if (dealer.hand.total >= 17) {
+        checkWin();
+      } else while (dealer.hand.total < 17) {
           dealer.drawCard();
-          //checkWin();
         }
       },
       'mouseover': function() {
@@ -266,7 +263,6 @@ $(document).ready(function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
       }
     });
-
   };
 
   function double() {
@@ -281,7 +277,6 @@ $(document).ready(function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
       }
     });
-
     buttonCursor.on({
       'mouseover': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
@@ -296,16 +291,7 @@ $(document).ready(function() {
     var button = $('#surrender');
     var buttonCursor = $('.cursor').eq(3);
 
-    button.on({
-      'mouseover': function() {
-        buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
-      },
-      'mouseout': function() {
-        buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
-      }
-    });
-
-    buttonCursor.on({
+    $.merge(button, buttonCursor).on({
       'mouseover': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
       },
@@ -315,61 +301,46 @@ $(document).ready(function() {
     });
   };
 
-  function checkForBlackjack() {
-    var playerBlackjack = false;
-    var dealerBlackjack = false;
-    winner = null;
-    if (player.hand.total === 21) {
-      playerBlackjack = true;
-    }
-    if (dealer.hand.total === 21) {
-      dealerBlackjack = true;
-    }
-    if (playerBlackjack) {
-      if (dealerBlackjack) {
-        console.log("Push!");
+  function checkWin() {
+    if (player.hand.total === 21) { // if player blackjack, automate rest of game
+      if (dealer.hand.total === 21) {
+        console.log("Double blackjack! Push!");
         winner = 'tie';
       } else {
-        console.log("Blackjack! You win!");
-        winner = 'player';
-      }
-    } else if (dealerBlackjack) {
-      console.log("Dealer blackjack! You lose!");
-      winner = 'dealer';
-    }
-    if (playerBlackjack || dealerBlackjack) {
-      showReset();
-    }
-    return winner;
-  }
-
-  function checkWin() {
-    winner = null;
-    if (player.hand.total > 21) { // if player busts
-      winner = 'dealer';
-      console.log("Bust!");
-    } else if (dealer.hand.total > 21) { // if dealer busts
-      winner = 'player';
-      console.log("Dealer bust! You win!");
-    } else { // if neither busts
-      // SOME LOGIC ABOUT GETTING BLACKJACK AND AUTOMATICALLY STANDING
-      if (player.hand.stand && (dealer.hand.total > 16)) { // check if game is over
-        if (player.hand.total === dealer.hand.total) { //if tie
-          winner = 'tie';
-          console.log("Tie game!");
-        } else if (player.hand.total > dealer.hand.total) {
+        player.hand.stand = true;
+        while (dealer.hand.total < 17) { // throw in more dealer logic later
+          dealer.drawCard();
+        } if (dealer.hand.total !== 21) {
+          console.log("Blackjack! You win!");
           winner = 'player';
-          console.log("You win!");
-        } else if (player.hand.total < dealer.hand.total) {
-          winner = 'dealer';
-          console.log("You lose!");
+        } else {
+          console.log("Dealer also got blackjack! Push!");
+          winner = 'tie';
         }
       }
+    } else if (player.hand.total > 21) { // if player busts
+      console.log("Bust!");
+      winner = 'dealer';
+    } else if (dealer.hand.total > 21) { // if dealer busts
+      console.log("Dealer bust! You win!");
+      winner = 'player';
+    } else if (player.hand.stand && (dealer.hand.total > 16)) { // check if game is over
+        if (player.hand.total === dealer.hand.total) { //if tie
+          console.log("Push!");
+          winner = 'tie';
+        } else if (player.hand.total > dealer.hand.total) {
+          console.log("You win!");
+          winner = 'player';
+        } else if (player.hand.total < dealer.hand.total) {
+          console.log("You lose!");
+          winner = 'dealer';
+        }
+    } else { // game ongoing
+      winner = null;
     }
-    if (winner) {
+    if (winner != null) {
       showReset();
     }
-    return winner;
   };
 
   function updateScore() {
@@ -395,5 +366,10 @@ $(document).ready(function() {
   dealer.blackjackMeter();
   // Will almost definitely store these calls in an init function
   newGame();
+
+  hit();
+  stand();
+  double();
+  surrender();
 
 });

@@ -144,13 +144,36 @@ body {
   background-color: rgba(255, 255, 255, 0.4);
 }
 
+#betList {
+  position: absolute;
+  font-size: 32px;
+  list-style-type: none;
+  margin: 0;
+  width: 44.5%;
+  text-align: center;
+}
+
+.betText {
+  margin-top: 30px;
+  margin-bottom: 5px;
+}
+
+.selectBet {
+  display: inline-block;
+  border: 1px solid black;
+  margin: 10px 20px;
+  padding: 10px;
+}
+
 #prompt {
   position: absolute;
   font-size: 40px;
-  left: 24px;
-  top: 24px;
   line-height: 1.5;
+  list-style-type: none;
   margin: 0;
+  display: none;
+  top: 24px;
+  left: 24px;
 }
 
 #menu {
