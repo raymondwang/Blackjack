@@ -218,6 +218,7 @@ body {
   bottom: -1.25vh;
   display: none;
   cursor: pointer;
+  transform: rotate(180deg);
 }
 
 #dealBlock {

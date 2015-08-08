@@ -269,7 +269,8 @@ $(document).ready(function() {
     var result = $('#result');
     result.html(str).css({display: 'block'});
     $('#nextCursor').css({display: 'block'});
-    var nextCursor = setInterval(function() {
+    blink($('#nextCursor'));
+    cursor = setInterval(function() {
       blink($('#nextCursor'))
     }, 1000);
     result.off('click').on('click', function() {
@@ -280,10 +281,10 @@ $(document).ready(function() {
     });
   }
 
-  function showDeal(nextCursor) {
+  function showDeal() {
     updateBankrollHeader();
     $('#result').css({display: 'none'});
-    clearInterval(nextCursor);
+    clearInterval(cursor);
     $('#nextCursor').css({display: 'none'});
     $('#dealBlock').css({display: 'block'});
     $('#betList').css({display: 'block'});
@@ -299,10 +300,12 @@ $(document).ready(function() {
   function hit() {
     var button = $('#hit');
     var buttonCursor = $('.cursor').eq(0);
+
     button.on({
       'click': function() {
         if (player.hand.total < 21) {
           player.drawCard();
+          clearInterval(actionCursor);
           if (winner === null) {
             if (dealer.hand.total < 17) {
               dealer.drawCard();
@@ -313,9 +316,14 @@ $(document).ready(function() {
       },
       'mouseover': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
+        blink(buttonCursor);
+        actionCursor = setInterval(function() {
+          blink(buttonCursor);
+        }, 1000);
       },
       'mouseout': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
+        clearInterval(actionCursor);
       }
     });
   };
@@ -326,6 +334,7 @@ $(document).ready(function() {
 
     button.on(
       {'click': function() {
+      clearInterval(actionCursor);
       player.hand.stand = true;
       if (dealer.hand.total >= 17) {
         checkWin();
@@ -335,9 +344,14 @@ $(document).ready(function() {
       },
       'mouseover': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
+        blink(buttonCursor);
+        actionCursor = setInterval(function() {
+          blink(buttonCursor);
+        }, 1000);
       },
       'mouseout': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
+        clearInterval(actionCursor);
       }
     });
   };
@@ -348,6 +362,7 @@ $(document).ready(function() {
 
     button.on({
       'click': function() {
+        clearInterval(actionCursor);
         bet *= 2;
         updateHeader();
         player.drawCard();
@@ -360,9 +375,14 @@ $(document).ready(function() {
       },
       'mouseover': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
+        blink(buttonCursor);
+        actionCursor = setInterval(function() {
+          blink(buttonCursor);
+        }, 1000);
       },
       'mouseout': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
+        clearInterval(actionCursor);
       }
     });
   };
@@ -373,6 +393,7 @@ $(document).ready(function() {
 
     button.off('click').on({
       'click': function() {
+        clearInterval(actionCursor);
         bankroll += (bet / 2);
         losses++;
         updateBankrollHeader();
@@ -380,9 +401,14 @@ $(document).ready(function() {
       },
       'mouseover': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
+        blink(buttonCursor);
+        actionCursor = setInterval(function() {
+          blink(buttonCursor);
+        }, 1000);
       },
       'mouseout': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
+        clearInterval(actionCursor);
       }
     });
   };
@@ -392,12 +418,17 @@ $(document).ready(function() {
     var buttonCursor = $('.cursor').eq(3);
     button.off('click').on({
       'click': function() {
+        clearInterval(actionCursor);
         console.log('Can\'t surrender!');
-      }
-    });
-    buttonCursor.off('click').on({
-      'click': function() {
-        console.log('Can\'t surrender!');
+      },
+      'mouseover': function() {
+        blink(buttonCursor);
+        actionCursor = setInterval(function() {
+          blink(buttonCursor);
+        }, 1000);
+      },
+      'mouseout': function() {
+        clearInterval(actionCursor);
       }
     });
   }
@@ -502,9 +533,9 @@ $(document).ready(function() {
   };
 
   function blink(element) {
-      element.css({visibility: 'hidden'});
+    element.css({visibility: 'visible'});
     setTimeout(function() {
-      element.css({visibility: 'visible'});
+      element.css({visibility: 'hidden'});
     }, 500);
   };
 
@@ -538,6 +569,8 @@ $(document).ready(function() {
   dealer.blackjackMeter();
   newGame();
   changeBet();
+  var cursor;
+  var actionCursor;
   hit();
   stand();
   double();
