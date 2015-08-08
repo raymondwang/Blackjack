@@ -8,28 +8,29 @@
     <title>Blackjack</title>
   </head>
   <header id="navbar">
-    <!-- <h1 id="heading">Blackjack</h1> -->
   </header>
   <body>
-    <div id="PlayerSpace"></div>
-    <div id="DealerSpace"></div>
     <div id="bottom">
       <ul id="betList">
       </ul>
       <div id="menu">
-        <div id="deal">Deal</div>
+        <table id="dealBlock">
+          <td id="leftCursor" class="dealCursor">&spades;</td>
+          <td id="deal">Deal</td>
+          <td id="rightCursor" class="dealCursor">&spades;</td>
+        </table>
         <table id="actions">
           <tr>
             <td class="cursor">&spades;</td> <!-- might need id's to select -->
             <td id="hit" class="action">Hit</td>
-            <td class="cursor">&spades;</td>
+            <td class="cursor col2">&spades;</td>
             <td id="stand" class="action">Stand</td>
           </tr>
           <!-- <tr id="lineSpace"></tr> -->
           <tr>
             <td class="cursor">&spades;</td>
             <td id="double" class="action">Down</td>
-            <td class="cursor">&spades;</td>
+            <td class="cursor col2">&spades;</td>
             <td id="surrender" class="action">Fold</td>
           </tr>
         </table>

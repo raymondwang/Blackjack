@@ -17,7 +17,7 @@ $(document).ready(function() {
     this.meter = $('<div>').attr('id', this.name + 'Meter');
     this.hpBar.append(this.meter);
     this.handVal = $('<li>').attr('id', this.name + 'Value').addClass('handValue');
-    this.handTotal = $('<div>').attr('id', this.name + 'Total');
+    this.handTotal = $('<div>').attr('id', this.name + 'Total').addClass('pointTotals');
     this.stats.append(this.spade, this.hpBar, this.handTotal);
     this.handTotal.append(this.handVal);
     $('body').append(this.stats);
@@ -27,11 +27,11 @@ $(document).ready(function() {
 
   Player.prototype.blackjackMeter = function blackjackMeter() {
     var color;
-    this.handVal = $('#' + this.name + "Value");
+    var handPoints = this.handVal;
     if (this.hand.total >= 0 && this.hand.total < 21) {
       value = ((0.88095238095) * this.hand.total) + 'vw';
       color = 'blue';
-      this.handVal.text(this.hand.total + ' / 21');
+      handPoints.text(this.hand.total + ' / 21');
       if (this.hand.total < 10) {
         this.spade.html('&diams;<span class="colon">:</span>').css({color: 'red'});
       } else {
@@ -40,12 +40,15 @@ $(document).ready(function() {
     } else if (this.hand.total === 21) {
       value = '18.5vw';
       color = 'yellow';
-      this.handVal.text('BLACKJACK!');
-      this.spade.html('&spades;<span class="colon">:</span>').css({color: 'yellow'});
+      handPoints.text('BLACKJACK!');
+      blackjackBlinker = setInterval(function() {
+        blink(handPoints);
+      }, 1000);
+      this.spade.html('&spades;<span class="colon">:</span>').css({color: 'black'});
     } else {
       value = '18.5vw';
       color = 'red';
-      this.handVal.text('BUST!');
+      handPoints.text('BUST!');
       this.spade.html('&hearts;<span class="colon">:</span>').css({color: 'red'});
     }
     this.meter.css({backgroundColor: color, height: '0.5vh', 'width': value});
@@ -60,8 +63,31 @@ $(document).ready(function() {
     this.hand.cards.push(draw.name);
     this.hand.total += draw.value; // evaluate A value
     var image = 'images/' + draw.name.replace(/\s+/g, '') + '.png';
-    var card = $('<img>').attr('src', image);
-    card.addClass('card');
+    var card = $('<img>').attr('src', image).addClass('card');
+
+    if (this.name == 'Player') {
+      card.on({
+        'mouseover': function() {
+          $('#PlayerSpace .card').css({opacity: '0.5'});
+          card.css({zIndex: '2', opacity: '1'}).animate({marginBottom: '2.5vh'}, 50);
+        },
+        'mouseout': function() {
+          $('#PlayerSpace .card').css({opacity: '1'});
+          card.css({zIndex: '1'}).animate({marginBottom: '0'}, 50);
+        }
+      });
+    } else if (this.name == 'Dealer') {
+        card.on({
+          'mouseover': function() {
+            $('#DealerSpace .card').css({opacity: '0.5'});
+            card.css({zIndex: '2', opacity: '1'}).animate({marginBottom: '2.5vh'}, 50);
+          },
+          'mouseout': function() {
+            $('#DealerSpace .card').css({opacity: '1'});
+            card.css({zIndex: '1'}).animate({marginBottom: '0'}, 50);
+          }
+        });
+    };
     this.space.append(card);
     this.blackjackMeter();
     checkWin();
@@ -213,7 +239,9 @@ $(document).ready(function() {
   }
 
   function deal() {
-    changeBackgroundColor();
+    if (blackjackBlinker) {
+      clearInterval(blackjackBlinker);
+    }
     placeBet();
     updateHeader();
     player.space.empty();
@@ -232,14 +260,14 @@ $(document).ready(function() {
 
   function showDeal() {
     updateBankrollHeader();
-    $('#deal').css({display: 'block'});
+    $('#dealBlock').css({display: 'block'});
     $('#actions').css({display: 'none'});
     $('#prompt').css({display: 'none'});
     $('#betList').css({display: 'block'});
   }
 
   function hideDeal() {
-    $('#deal').css({display: 'none'});
+    $('#dealBlock').css({display: 'none'});
     $('#actions').css({display: 'block'});
     $('#prompt').css({display: 'block'});
     $('#betList').css({display: 'none'});
@@ -249,25 +277,6 @@ $(document).ready(function() {
     var button = $('#hit');
     var buttonCursor = $('.cursor').eq(0);
     button.on({
-      'click': function() {
-        if (player.hand.total < 21) {
-          player.drawCard();
-          if (winner === null) {
-            if (dealer.hand.total < 17) {
-              dealer.drawCard();
-            }
-          }
-        }
-        deactivateSurrender();
-      },
-      'mouseover': function() {
-        buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
-      },
-      'mouseout': function() {
-        buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
-      }
-    });
-    buttonCursor.on({
       'click': function() {
         if (player.hand.total < 21) {
           player.drawCard();
@@ -308,22 +317,6 @@ $(document).ready(function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
       }
     });
-    buttonCursor.on(
-      {'click': function() {
-      player.hand.stand = true;
-      if (dealer.hand.total >= 17) {
-        checkWin();
-      } else while (dealer.hand.total < 17) {
-          dealer.drawCard();
-        }
-      },
-      'mouseover': function() {
-        buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
-      },
-      'mouseout': function() {
-        buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
-      }
-    });
   };
 
   function double() {
@@ -349,26 +342,6 @@ $(document).ready(function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
       }
     });
-    buttonCursor.on({
-      'click': function() {
-        placeBet();
-        updateHeader();
-        $('#bet').text('Bet: $' + (bet * 2));
-        player.drawCard();
-        player.hand.stand = true;
-        if (dealer.hand.total >= 17) {
-          checkWin();
-        } else while (dealer.hand.total < 17) {
-            dealer.drawCard();
-        }
-      },
-      'mouseover': function() {
-        buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
-      },
-      'mouseout': function() {
-        buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
-      }
-    });
   };
 
   function surrender() {
@@ -376,22 +349,6 @@ $(document).ready(function() {
     var buttonCursor = $('.cursor').eq(3);
 
     button.off('click').on({
-      'click': function() {
-        bankroll += (bet / 2);
-        console.log('You have surrendered.');
-        losses++;
-        updateBankrollHeader();
-        showDeal();
-      },
-      'mouseover': function() {
-        buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
-      },
-      'mouseout': function() {
-        buttonCursor.css({color: 'rgba(0, 0, 0, 0)'});
-      }
-    });
-
-    buttonCursor.off('click').on({
       'click': function() {
         bankroll += (bet / 2);
         console.log('You have surrendered.');
@@ -506,13 +463,38 @@ $(document).ready(function() {
   // for kicks
   function changeBackgroundColor() {
     var colors = ['#8bcd73', '#6a94b4', '#a4624a', '#c55252', '#73205a'];
-    var color = Math.floor(Math.random() * colors.length);
-    $('body').css({backgroundColor: colors[color]});
+    var color = 0;
+
+    $('#title').on('click', function() {
+      if (color == (colors.length - 1)) {
+        color = 0;
+      } else {
+        color++;
+      }
+      $('body').css({backgroundColor: colors[color]});
+    });
+  };
+
+  function blink(element) { // maybe reusable if i pass something in
+    element.css({visibility: 'hidden'});
+    setTimeout(function() {
+      element.css({visibility: 'visible'});
+    }, 500);
   };
 
   function newGame() {
-    $('#deal').on('click', function() {
-      deal();
+    $('#deal').on({
+      'click': function() {
+        deal();
+      },
+      'mouseover': function() {
+        $('#leftCursor').css({left: '2vw'});
+        $('#rightCursor').css({right: '2vw'});
+      },
+      'mouseout': function() {
+        $('#leftCursor').css({left: '-2vw'});
+        $('#rightCursor').css({right: '-2vw'});
+      }
     });
   }
 
@@ -527,10 +509,12 @@ $(document).ready(function() {
   dealer.makeTable();
   player.blackjackMeter();
   dealer.blackjackMeter();
+  var blackjackBlinker = null;
   // Will almost definitely store these calls in an init function
   newGame();
   changeBet();
   hit();
   stand();
   double();
+  changeBackgroundColor();
 });
