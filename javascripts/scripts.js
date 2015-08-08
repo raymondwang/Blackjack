@@ -70,13 +70,13 @@ $(document).ready(function() {
           $('#PlayerSpace .card').css({opacity: '0.25'});
           card.css({zIndex: '2', opacity: '1'}).animate({marginBottom: '2.5vh'}, 50);
           cardName.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '2.5vh'}, 50);
-          cardValue.css({zIndex: '2'}).animate({opacity: '1'}, 50);
+          cardValue.css({zIndex: '2', visibility: 'visible'}, 50);
         },
         'mouseout': function() {
           $('#PlayerSpace .card').css({opacity: '1'});
           card.css({zIndex: '1'}).animate({marginBottom: '0'}, 50);
           cardName.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0'}, 50);
-          cardValue.css({zIndex: '1'}).animate({opacity: '0'}, 50);
+          cardValue.css({zIndex: '1', visibility: 'hidden'}, 50);
         }
       });
     } else if (this.name == 'Dealer') {
@@ -86,13 +86,13 @@ $(document).ready(function() {
             $('#DealerSpace .card').css({opacity: '0.25'});
             card.css({zIndex: '2', opacity: '1'}).animate({marginBottom: '2.5vh'}, 50);
             cardName.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '2.5vh'}, 50);
-            cardValue.css({zIndex: '2'}).animate({opacity: '1'}, 50);
+            cardValue.css({zIndex: '2', visibility: 'visible'}, 50);
           },
           'mouseout': function() {
             $('#DealerSpace .card').css({opacity: '1'});
             card.css({zIndex: '1'}).animate({marginBottom: '0'}, 50);
             cardName.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0'}, 50);
-            cardValue.css({zIndex: '1'}).animate({opacity: '0'}, 50);
+            cardValue.css({zIndex: '1', visibility: 'hidden'}, 50);
           }
         });
     };
@@ -169,6 +169,8 @@ $(document).ready(function() {
     var chooseBet = $('#betList');
     chooseBet.append($('<h3>').addClass('betText').text('BET'));
     chooseBet.append($('<li>').addClass('betCursor').html('&spades;'));
+    chooseBet.append($('<li>').addClass('selectBet').text('$1'));
+    chooseBet.append($('<li>').addClass('betCursor').html('&spades;'));
     chooseBet.append($('<li>').addClass('selectBet').text('$5'));
     chooseBet.append($('<li>').addClass('betCursor').html('&spades;'));
     chooseBet.append($('<li>').addClass('selectBet').text('$10'));
@@ -182,58 +184,115 @@ $(document).ready(function() {
   function updateHeader() {
     updateBankrollHeader();
     updateBetHeader();
-    var displayBet = $('#bet');
-    displayBet.text('Bet: $' + bet);
   }
 
   function placeBet() {
     bankroll -= bet;
   };
 
+  function resetBet() {
+    var betText = $('.betText');
+    betText.css({cursor: 'pointer'}).on('click', function() {
+      bet = 0;
+      updateBetHeader();
+      betText.css({cursor: 'auto'}).html('BET').off('click');
+    });
+  }
+
+  // This function could be cleaned up a lot
   function changeBet() {
-    var bet5 = $('.selectBet').eq(0);
-    var bet5Cursor = $('.betCursor').eq(0);
-    var bet10 = $('.selectBet').eq(1);
-    var bet10Cursor = $('.betCursor').eq(1);
-    var bet25 = $('.selectBet').eq(2);
-    var bet25Cursor = $('.betCursor').eq(2);
+    var betText = $('.betText');
+    var bet1 = $('.selectBet').eq(0);
+    var bet1Cursor = $('.betCursor').eq(0);
+    var bet5 = $('.selectBet').eq(1);
+    var bet5Cursor = $('.betCursor').eq(1);
+    var bet10 = $('.selectBet').eq(2);
+    var bet10Cursor = $('.betCursor').eq(2);
+    var bet25 = $('.selectBet').eq(3);
+    var bet25Cursor = $('.betCursor').eq(3);
+    var betCursor;
+
+    bet1.on({
+      'click': function() {
+        bet += 1;
+        updateBetHeader();
+        clearInterval(betCursor);
+        betText.html('RESET');
+        resetBet();
+      },
+      'mouseover': function() {
+        bet1Cursor.css({color: 'rgba(0, 0, 0, 1)'});
+        blink(bet1Cursor);
+        betCursor = setInterval(function() {
+          blink(bet1Cursor);
+        }, 1000);
+      },
+      'mouseout': function() {
+        bet1Cursor.css({color: 'rgba(0, 0, 0, 0)'});
+        clearInterval(betCursor);
+      }
+    });
 
     bet5.on({
       'click': function() {
-        bet = 5;
+        bet += 5;
         updateBetHeader();
+        clearInterval(betCursor);
+        betText.html('RESET');
+        resetBet();
       },
       'mouseover': function() {
         bet5Cursor.css({color: 'rgba(0, 0, 0, 1)'});
+        blink(bet5Cursor);
+        betCursor = setInterval(function() {
+          blink(bet5Cursor);
+        }, 1000);
       },
       'mouseout': function() {
         bet5Cursor.css({color: 'rgba(0, 0, 0, 0)'});
+        clearInterval(betCursor);
       }
     });
 
     bet10.on({
       'click': function() {
-        bet = 10;
+        bet += 10;
         updateBetHeader();
+        clearInterval(betCursor);
+        betText.html('RESET');
+        resetBet();
       },
       'mouseover': function() {
         bet10Cursor.css({color: 'rgba(0, 0, 0, 1)'});
+        blink(bet10Cursor);
+        betCursor = setInterval(function() {
+          blink(bet10Cursor);
+        }, 1000);
       },
       'mouseout': function() {
         bet10Cursor.css({color: 'rgba(0, 0, 0, 0)'});
+        clearInterval(betCursor);
       }
     });
 
     bet25.on({
       'click': function() {
-        bet = 25;
+        bet += 25;
         updateBetHeader();
+        clearInterval(betCursor);
+        betText.html('RESET');
+        resetBet();
       },
       'mouseover': function() {
         bet25Cursor.css({color: 'rgba(0, 0, 0, 1)'});
+        blink(bet25Cursor);
+        betCursor = setInterval(function() {
+          blink(bet25Cursor);
+        }, 1000);
       },
       'mouseout': function() {
         bet25Cursor.css({color: 'rgba(0, 0, 0, 0)'});
+        clearInterval(betCursor);
       }
     });
   }
@@ -277,6 +336,8 @@ $(document).ready(function() {
       var kda = $('#kda');
       updateScore();
       kda.text('W' + wins + ' L' + losses + ' T' + ties);
+      bet = 0;
+      updateBetHeader();
       showDeal(nextCursor);
     });
   }
@@ -286,12 +347,12 @@ $(document).ready(function() {
     $('#result').css({display: 'none'});
     clearInterval(cursor);
     $('#nextCursor').css({display: 'none'});
-    $('#dealBlock').css({display: 'block'});
+    $('#deal').css({display: 'block'});
     $('#betList').css({display: 'block'});
   }
 
   function hideDeal() {
-    $('#dealBlock').css({display: 'none'});
+    $('#deal').css({display: 'none'});
     $('#actions').css({display: 'block'});
     $('#prompt').css({display: 'block'});
     $('#betList').css({display: 'none'});
@@ -518,10 +579,9 @@ $(document).ready(function() {
 
   // got tired of staring at green so here's something fun
   function changeBackgroundColor() {
-    var colors = ['#8bcd73', '#ffe69c', '#5a8362', '#e65a29', '#8bc5cd', '#a4624a', '#f6bd20', '#ff7300', '#c57be6', '#b4b4b4'];
+    var colors = ['#8bcd73', '#ffe69c', '#5a8362', '#e65a29', '#8bc5cd', '#a4624a', '#ff8bac', '#f6bd20', '#c57be6', '#b4b4b4'];
     var color = Math.floor(Math.random() * colors.length);
     $('body').css({backgroundColor: colors[color]});
-
     $('#title').on('click', function() {
       if (color == (colors.length - 1)) {
         color = 0;
@@ -529,8 +589,14 @@ $(document).ready(function() {
         color++;
       }
       $('body').css({backgroundColor: colors[color]});
+      navBorderColor();
     });
-  };
+  }
+
+  function navBorderColor() {
+    $('.nav').css({borderRightColor: document.body.style.backgroundColor});
+    $('#kda').css({borderRight: 'none'});
+  }
 
   function blink(element) {
     element.css({visibility: 'visible'});
@@ -542,15 +608,18 @@ $(document).ready(function() {
   function newGame() {
     $('#deal').off('click').on({
       'click': function() {
-        deal();
+        if (bet >= 5) {
+          $('.betText').html('BET').off('click');
+          deal();
+        } else {
+          console.log('Minimum bet to enter this table is $5.');
+        }
       },
       'mouseover': function() {
-        $('#leftCursor').css({visibility: 'visible'});
-        $('#rightCursor').css({visibility: 'visible'});
+        // hmm
       },
       'mouseout': function() {
-        $('#leftCursor').css({visibility: 'hidden'});
-        $('#rightCursor').css({visibility: 'hidden'});
+
       }
     });
   }
@@ -561,7 +630,7 @@ $(document).ready(function() {
   var dealer = new Player('Dealer', 'Dealer');
   var wins = 0, losses = 0, ties = 0, winner;
   var bankroll = 300;
-  var bet = 5;
+  var bet = 0;
   makeHeader();
   player.makeTable();
   dealer.makeTable();
@@ -576,4 +645,5 @@ $(document).ready(function() {
   double();
   // surrender() called in as necessary
   changeBackgroundColor();
+  navBorderColor();
 });
