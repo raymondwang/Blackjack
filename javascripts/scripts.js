@@ -160,7 +160,7 @@ $(document).ready(function() {
 
   function makeHeader() {
     var navbar = $('#navbar');
-    var title = $('<h1>').attr('id', 'title').addClass('nav').text('Blackjack');
+    var title = $('<h1>').attr('id', 'title').addClass('nav').text('Blackjack!');
     var displayBankroll = $('<h1>').attr('id', 'bankroll').addClass('nav').text('Bankroll: $' + bankroll);
     var displayBet = $('<h1>').attr('id', 'bet').addClass('nav').text('Bet: $' + bet);
     var kda = $('<h1>').attr('id', 'kda').addClass('nav').text('W' + wins + ' L' + losses + ' T' + ties);

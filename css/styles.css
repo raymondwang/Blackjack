@@ -1,3 +1,13 @@
+@font-face {
+  font-family: "pokemon";
+  src: url('../fonts/PokemonGB.ttf');
+}
+
+@font-face {
+  font-family: "logo";
+  src: url('../fonts/PokemonLogo.ttf');
+}
+
 #navbar {
   background-color: rgba(0, 0, 0, 0.5);
 }
@@ -15,7 +25,11 @@
 
 #title {
   width: 15.75%;
+  font-family: logo;
+  letter-spacing: .1vw;
   cursor: pointer;
+  text-shadow: -.2vw 0 darkblue, 0 .2vw darkblue, .2vw 0 darkblue, 0 -.2vw darkblue;
+  color: yellow;
 }
 
 #bankroll {
@@ -25,11 +39,6 @@
 #kda {
   border-right: none;
 }
-
-@font-face {
-    font-family: "pokemon";
-    src: url('../fonts/PokemonGB.ttf');
-  }
 
 body {
   margin: 0;

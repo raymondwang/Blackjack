@@ -13,5 +13,4 @@ A fully functional Blackjack simulation that adheres to standard casino rules.
 - Change betting logic: each button increments; can add to bet amount or just type in desired amount; can lower bet; reset bet to last amount after doubled down
 - Improve dealing animation
 - WAY more responsiveness! -- especially awful text
-- Can't surrender prompt
-- Improve logo!
+- "Can't surrender" prompt
