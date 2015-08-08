@@ -40,10 +40,7 @@ $(document).ready(function() {
     } else if (this.hand.total === 21) {
       value = '18.5vw';
       color = 'yellow';
-      handPoints.text('BLACKJACK!');
-      // blackjackBlinker = setInterval(function() {
-      //   blink(handPoints);
-      // }, 1000);
+      handPoints.text('BLACKJACK!')
       this.spade.html('&spades;<span class="colon">:</span>').css({color: 'black'});
     } else {
       value = '18.5vw';
@@ -101,7 +98,10 @@ $(document).ready(function() {
     };
     this.space.append(cardName, card, cardValue);
     this.blackjackMeter();
-    checkWin();
+
+    if (player.hand.cards.length >= 2 && dealer.hand.cards.length >= 2) {
+      checkWin();
+    }
   };
 
   // Player.prototype.getBankroll = function getBankroll() {
@@ -184,9 +184,6 @@ $(document).ready(function() {
     updateBetHeader();
     var displayBet = $('#bet');
     displayBet.text('Bet: $' + bet);
-    var kda = $('#kda');
-    updateScore();
-    kda.text('W' + wins + ' L' + losses + ' T' + ties);
   }
 
   function placeBet() {
@@ -250,9 +247,6 @@ $(document).ready(function() {
   }
 
   function deal() {
-    // if (blackjackBlinker) {
-    //   clearInterval(blackjackBlinker);
-    // }
     placeBet();
     updateHeader();
     player.space.empty();
@@ -260,8 +254,8 @@ $(document).ready(function() {
     player.hand = {cards: [], total: 0, stand: false, aces: 0};
     dealer.hand = {cards: [], total: 0, stand: false, aces: 0};
     player.drawCard();
-    player.drawCard();
     dealer.drawCard();
+    player.drawCard();
     dealer.drawCard();
     if (winner === null) {
       hideDeal();
@@ -279,6 +273,9 @@ $(document).ready(function() {
       blink($('#nextCursor'))
     }, 1000);
     result.off('click').on('click', function() {
+      var kda = $('#kda');
+      updateScore();
+      kda.text('W' + wins + ' L' + losses + ' T' + ties);
       showDeal(nextCursor);
     });
   }
@@ -410,9 +407,8 @@ $(document).ready(function() {
       busta.hand.aces--;
       busta.hand.total -= 10;
       busta.blackjackMeter();
+      // Updates Ace card value display
       var cardsByValue = $('#' + busta.name + 'Space .cardValue');
-      // var cardsByValue = document.getElementById(busta.name + 'Space').getElementsByClassName('cardValue');
-
       for (var i = 0; i < cardsByValue.length; i++) {
         if (cardsByValue.eq(i).html().indexOf('11') > -1) {
           cardsByValue.eq(i).html('Points: 1');
@@ -449,11 +445,15 @@ $(document).ready(function() {
         resultMessage = "Blackjack push!";
         winner = 'tie';
         bankroll += bet;
-      } else { // had trouble with recursion getting dealer to draw to completion within here, so for now player blackjack is automatic win
+      } else { // if (dealer.hand.total > 17) {
         resultMessage = "Blackjack! You win!";
         winner = 'player';
         bankroll += (bet + (bet * 1.5));
       }
+      // still having trouble getting blackjack logic to work fluidly
+      // else {
+      //   dealer.drawCard();
+      // }
     } else if (player.hand.stand && (dealer.hand.total > 16)) { // check if game is over
         if (player.hand.total === dealer.hand.total) { //if tie
           resultMessage = "Push!";
@@ -485,10 +485,11 @@ $(document).ready(function() {
     }
   }
 
-  // for kicks
+  // got tired of staring at green so here's something fun
   function changeBackgroundColor() {
-    var colors = ['#8bcd73', '#6a94b4', '#a4624a', '#c55252', '#73205a'];
-    var color = 0;
+    var colors = ['#8bcd73', '#ffe69c', '#5a8362', '#e65a29', '#8bc5cd', '#a4624a', '#f6bd20', '#ff7300', '#c57be6', '#b4b4b4'];
+    var color = Math.floor(Math.random() * colors.length);
+    $('body').css({backgroundColor: colors[color]});
 
     $('#title').on('click', function() {
       if (color == (colors.length - 1)) {
@@ -500,7 +501,7 @@ $(document).ready(function() {
     });
   };
 
-  function blink(element) { // maybe reusable if i pass something in
+  function blink(element) {
       element.css({visibility: 'hidden'});
     setTimeout(function() {
       element.css({visibility: 'visible'});
@@ -523,8 +524,9 @@ $(document).ready(function() {
     });
   }
 
+// INITIALIZATIONS
   var deck = createDeck();
-  var player = new Player('Player', 'Player'); // nickname should be decided thru prompt of some sort
+  var player = new Player('Player', 'Player'); // nickname rewrite in form
   var dealer = new Player('Dealer', 'Dealer');
   var wins = 0, losses = 0, ties = 0, winner;
   var bankroll = 300;
@@ -534,12 +536,11 @@ $(document).ready(function() {
   dealer.makeTable();
   player.blackjackMeter();
   dealer.blackjackMeter();
-  // var blackjackBlinker = null;
-  // Will almost definitely store these calls in an init function
   newGame();
   changeBet();
   hit();
   stand();
   double();
+  // surrender() called in as necessary
   changeBackgroundColor();
 });
