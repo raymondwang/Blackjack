@@ -185,6 +185,28 @@ body {
   border-left: 10px solid black;
 }
 
+#result {
+  font-size: 5vh;
+  line-height: 1.5;
+  width: 50%;
+  margin-left: 3%;
+  margin-top: 3%;
+  text-align: left;
+  height: 21vh;
+  position: absolute;
+  display: none;
+  cursor: pointer;
+}
+
+#nextCursor {
+  font-size: 5vh;
+  position: absolute;
+  right: 0;
+  bottom: -1.25vh;
+  display: none;
+  cursor: pointer;
+}
+
 #dealBlock {
   font-size: 7.5vw;
   width: 50%;
@@ -202,7 +224,7 @@ body {
 }
 
 #deal {
-  left: 1vw;
+  left: 2vw;
   cursor: pointer;
 }
 
@@ -212,12 +234,14 @@ body {
 
 #leftCursor {
   transform: rotate(90deg);
-  left: -2vw;
+  left: 1vw;
+  visibility: hidden;
 }
 
 #rightCursor {
   transform: rotate(270deg);
-  right: -2vw;
+  right: 1vw;
+  visibility: hidden;
 }
 
 #actions {
@@ -266,4 +290,5 @@ body {
   width: 25vh;
   height: 33vh;
   z-index: 1;
+  cursor: zoom-in;
 }
