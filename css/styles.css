@@ -22,6 +22,10 @@
   width: 33.75%;
 }
 
+#kda {
+  border-right: none;
+}
+
 @font-face {
     font-family: "pokemon";
     src: url('../fonts/PokemonGB.ttf');
@@ -291,4 +295,29 @@ body {
   height: 33vh;
   z-index: 1;
   cursor: zoom-in;
+}
+
+.cardName {
+  font-size: 1.25vw;
+  text-align: center;
+  position: absolute;
+  margin: 0 -10.1vh;
+  width: 25vh;
+  bottom: 34vh;
+  right: auto;
+  z-index: 1;
+  display: inline-block;
+  visibility: hidden;
+}
+
+.cardValue {
+  font-size: 1.25vw;
+  position: absolute;
+  margin: 0 -10.1vh;
+  width: 25vh;
+  bottom: 0.5vh;
+  right: auto;
+  z-index: 1;
+  display: inline-block;
+  opacity: 0;
 }

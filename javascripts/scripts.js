@@ -62,33 +62,44 @@ $(document).ready(function() {
     }
     this.hand.cards.push(draw.name);
     this.hand.total += draw.value; // evaluate A value
-    var image = 'images/' + draw.name.replace(/\s+/g, '') + '.png';
+    var image = 'images/' + draw.name + '.png';
     var card = $('<img>').attr('src', image).addClass('card');
+    var cardName = $('<p>').addClass('cardName').html(draw.name.replace(/_/g, '&nbsp;'));
+    var cardValue = $('<p>').addClass('cardValue').html('Points: ' + draw.value);
 
     if (this.name == 'Player') {
       card.on({
         'mouseover': function() {
-          $('#PlayerSpace .card').css({opacity: '0.5'});
+          $('#PlayerSpace .card').css({opacity: '0.25'});
           card.css({zIndex: '2', opacity: '1'}).animate({marginBottom: '2.5vh'}, 50);
+          cardName.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '2.5vh'}, 50);
+          cardValue.css({zIndex: '2'}).animate({opacity: '1'}, 50);
         },
         'mouseout': function() {
           $('#PlayerSpace .card').css({opacity: '1'});
           card.css({zIndex: '1'}).animate({marginBottom: '0'}, 50);
+          cardName.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0'}, 50);
+          cardValue.css({zIndex: '1'}).animate({opacity: '0'}, 50);
         }
       });
     } else if (this.name == 'Dealer') {
+      // cardInfo.css({textAlign: 'right'});
         card.on({
           'mouseover': function() {
-            $('#DealerSpace .card').css({opacity: '0.5'});
+            $('#DealerSpace .card').css({opacity: '0.25'});
             card.css({zIndex: '2', opacity: '1'}).animate({marginBottom: '2.5vh'}, 50);
+            cardName.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '2.5vh'}, 50);
+            cardValue.css({zIndex: '2'}).animate({opacity: '1'}, 50);
           },
           'mouseout': function() {
             $('#DealerSpace .card').css({opacity: '1'});
             card.css({zIndex: '1'}).animate({marginBottom: '0'}, 50);
+            cardName.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0'}, 50);
+            cardValue.css({zIndex: '1'}).animate({opacity: '0'}, 50);
           }
         });
     };
-    this.space.append(card);
+    this.space.append(cardName, card, cardValue);
     this.blackjackMeter();
     checkWin();
   };
@@ -101,9 +112,9 @@ $(document).ready(function() {
   function createDeck() {
     var numberOfDecks = 3; // can do as input
     var deck = [];
-    var ace = 'ace';
-    var face = ['jack', 'queen', 'king'];
-    var suits = ['diamonds', 'clubs', 'hearts', 'spades'];
+    var ace = 'Ace';
+    var face = ['Jack', 'Queen', 'King'];
+    var suits = ['Diamonds', 'Clubs', 'Hearts', 'Spades'];
 
     for (var x = 0; x < numberOfDecks; x++) {
       for (var i = 0; i < suits.length; i++) {
@@ -259,15 +270,15 @@ $(document).ready(function() {
   }
 
   function showResult(str) {
+    $('#actions').css({display: 'none'});
+    $('#prompt').css({display: 'none'});
     var result = $('#result');
     result.html(str).css({display: 'block'});
     $('#nextCursor').css({display: 'block'});
     var nextCursor = setInterval(function() {
       blink($('#nextCursor'))
     }, 1000);
-    $('#actions').css({display: 'none'});
-    $('#prompt').css({display: 'none'});
-    result.on('click', function() {
+    result.off('click').on('click', function() {
       showDeal(nextCursor);
     });
   }
@@ -399,6 +410,15 @@ $(document).ready(function() {
       busta.hand.aces--;
       busta.hand.total -= 10;
       busta.blackjackMeter();
+      var cardsByValue = $('#' + busta.name + 'Space .cardValue');
+      // var cardsByValue = document.getElementById(busta.name + 'Space').getElementsByClassName('cardValue');
+
+      for (var i = 0; i < cardsByValue.length; i++) {
+        if (cardsByValue.eq(i).html().indexOf('11') > -1) {
+          cardsByValue.eq(i).html('Points: 1');
+          break;
+        }
+      }
       return true; // return true that there were aces
     } else {
     return false;
@@ -426,22 +446,13 @@ $(document).ready(function() {
 
     if (player.hand.total === 21) { // if player blackjack, automate rest of game
       if (dealer.hand.total === 21) {
-        resultMessage = "Double blackjack! Push!";
+        resultMessage = "Blackjack push!";
         winner = 'tie';
         bankroll += bet;
-      } else {
-        player.hand.stand = true;
-        while (dealer.hand.total < 17) { // throw in more dealer logic later
-          dealer.drawCard();
-        } if (dealer.hand.total !== 21) {
-          resultMessage = "Blackjack! You win!";
-          winner = 'player';
-          bankroll += (bet + (bet * 1.5));
-        } else {
-          resultMessage = "Dealer also got blackjack! Push!";
-          winner = 'tie';
-          bankroll += bet;
-        }
+      } else { // had trouble with recursion getting dealer to draw to completion within here, so for now player blackjack is automatic win
+        resultMessage = "Blackjack! You win!";
+        winner = 'player';
+        bankroll += (bet + (bet * 1.5));
       }
     } else if (player.hand.stand && (dealer.hand.total > 16)) { // check if game is over
         if (player.hand.total === dealer.hand.total) { //if tie
@@ -497,7 +508,7 @@ $(document).ready(function() {
   };
 
   function newGame() {
-    $('#deal').on({
+    $('#deal').off('click').on({
       'click': function() {
         deal();
       },
