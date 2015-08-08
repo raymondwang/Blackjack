@@ -8,7 +8,7 @@
   line-height: 2;
   font-size: 1.5vw;
   width: 24.75%;
-  border-right: 0.25vw solid rgba(139, 205, 115, 0.3);
+  border-right: 0.25vw solid rgba(255, 255, 255, 0.3);
   display: inline-block;
   text-align: center;
 }
@@ -160,10 +160,18 @@ body {
   margin-bottom: 5px;
 }
 
+.betCursor {
+  display: inline-block;
+  margin-right: -10px;
+  transform: rotate(90deg);
+  color: rgba(0, 0, 0, 0);
+}
+
 .selectBet {
   display: inline-block;
-  margin: 10px 20px;
+  margin: 10px;
   padding: 10px;
+  cursor: pointer;
 }
 
 #prompt {
@@ -184,7 +192,7 @@ body {
   border-left: 10px solid black;
 }
 
-#reset {
+#deal {
   font-size: 60px;
   width: 43%;
   margin: .75%;
@@ -195,9 +203,10 @@ body {
   text-align: center;
   line-height: 150px;
   display: block;
+  cursor: pointer;
 }
 
-#reset:hover {
+#deal:hover {
   background-color: blue;
 }
 
@@ -206,6 +215,7 @@ body {
   position: absolute;
   top: 2vh;
   display: none;
+  cursor: pointer;
 }
 
 .action {
@@ -218,7 +228,7 @@ body {
   margin: 5px;
 }
 
-td.cursor {
+.cursor {
   position: relative;
   font-size: 40px;
   bottom: 5px;
@@ -233,7 +243,7 @@ td.cursor {
 }
 
 .card {
-  margin: 0 -6.25vh;
+  margin: 0 -6.25vw;
   width: 25vh;
   height: 33vh;
   bottom: 20vh;

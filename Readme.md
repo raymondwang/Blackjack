@@ -14,27 +14,10 @@ A fully functional Blackjack simulation that adheres to standard casino rules.
 
 ---
 ### TODO:
-- ~~Player constructor~~
-- ~~Create deck(s)~~
-- ~~Draw card~~
-- ~~Deal table, show cards on page~~
-- ~~Make menu (Hit, Stand, Split, Double)~~
-- ~~Win logic~~
 - Ace logic
-- ~~Hit~~
-- ~~Stand~~
   - eventually throw in an animate/cascade/reveal pattern
-- ~~new game~~
-- ~~Bankroll~~
-- Placing bets
-- ~~Update interface: Deck (visual; amount displayed), Bankroll, bet (with + or -; probably on left side), card points total~~
-- ~~Bust logic~~
-- ~~Dealer logic~~
-- Initial menu: Bankroll, Name, Amount of Decks
-- ~~Surrender/Game Over/Fold~~
-- ~~Double down~~
+- Initial menu prompt/forms: Bankroll, Name, Amount of Decks
 - "Insurance", dealer blackjack
-- ~~Arrow selectors when hovering over menu~~
 - Card hover logic
   - Cards facedown when not hovered;
   - Card name and value shows when hovering over
