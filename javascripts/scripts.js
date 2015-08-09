@@ -58,7 +58,7 @@ $(document).ready(function() {
     }
     this.hand.cards.push(draw.name);
     this.hand.total += draw.value;
-    var image = 'images/' + draw.name + '.png';
+    var image = 'images/' + draw.name.toLowerCase() + '.png';
     var card = $('<img>').attr('src', image).addClass('card ' + this.name + 'Cards');
     var cardName = $('<p>').addClass('cardName ' + this.name + 'CardNames' ).html(draw.name.replace(/_/g, '&nbsp;'));
     var cardValue = $('<p>').addClass('cardValue ' + this.name +'Points').html('Points: ' + draw.value);
@@ -222,7 +222,7 @@ $(document).ready(function() {
     this.hand.hole = deck.pop();
     this.hand.cards.push(this.hand.hole.name);
 
-    var image = 'images/' + this.hand.hole.name + '.png';
+    var image = 'images/' + this.hand.hole.name.toLowerCase() + '.png';
 
     // var flipContainer = $('<div>').addClass('flip-container card');
     // var flipper = $('<div>').addClass('flipper');
@@ -293,7 +293,7 @@ $(document).ready(function() {
 
   Player.prototype.revealHole = function revealHole() {
     card = this.hand.hole;
-    var image = 'images/' + card.name + '.png';
+    var image = 'images/' + card.name.toLowerCase() + '.png';
 
     // document.querySelector(".flip-container").classList.toggle("flip");
     // card.css({top: '40%', left: '55%'});
