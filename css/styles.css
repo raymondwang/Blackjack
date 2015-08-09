@@ -285,11 +285,6 @@ body {
   margin-top: -8.4vh;
 }
 
-.regCards {
-  max-width: 15%;
-  max-width: 29%;
-}
-
 .cardName {
   font-size: 1.25vw;
   text-align: center;
@@ -401,7 +396,7 @@ body {
   }
   #prompt {
     left: 40px;
-    font-size: 36px;
+    font-size: 32px;
   }
   #result {
     font-size: 29px;
@@ -520,10 +515,11 @@ body {
   }
 }
 
-@media screen and (max-width: 580px) and (min-width: 320px) {
-  body {
+@media screen and (max-width: 580px) {
+/* (min-width: 320px) {*/
+  /*body {
     background-color: orange;
-  }
+  }*/
   /*#navbar {
     height: 3vh;
   } */

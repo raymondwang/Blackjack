@@ -64,20 +64,123 @@ $(document).ready(function() {
     $('body').append(cardName, card, cardValue);
     var scope = this.name;
 
-    if (scope == 'Player') {
-      var addMargin = (6.25 * this.hand.cards.length) + 'vh';
-      var destinationX = '3%';
-      var destinationY = '38%';
-      card.animate({width: '19vh', height: '29vh', left: destinationX, bottom: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
-      cardName.css({bottom: '60.5%', left: destinationX, marginLeft: addMargin});
-      cardValue.css({bottom: '33%', left: destinationX, marginLeft: addMargin});
+    var cardWidth;
+    var cardHeight;
+    var playerCardTop;
+    var playerCardLeft;
+    var playerCardBottom;
+    var playerValueBottom;
+    var playerNameBottom;
+    var playerNameMargin;
+    var playerValueMargin;
+    var dealerCardMargin;
+    var dealerCardTop;
+    var dealerCardLeft;
+    var dealerNameTop;
+    var dealerNameMargin;
+    var dealerValueMargin;
+    var dealerValueTop;
+
+    if (window.matchMedia('(min-width: 1250px)').matches) {
+      playerCardMargin = (6.25 * this.hand.cards.length) + 'vh';
+      playerCardLeft = '3%';
+      playerCardBottom = '38%';
+      cardWidth = '19vh';
+      cardHeight = '29vh';
+      playerCardTop = '40%';
+      playerNameBottom = '60.5%';
+      playerValueBottom = '33%';
+      playerNameMargin = (2.75 * this.hand.cards.length) + '%';
+      playerValueMargin = (3 * this.hand.cards.length) + '%';
+      dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
+      dealerCardLeft = '85%';
+      dealerCardTop = '13%';
+      dealerNameTop = '10.5%';
+      dealerNameMargin = (-6.25 * this.hand.cards.length) + 'vh';
+      dealerValueTop = '38%';
+      dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
+    } else if (window.matchMedia('(min-width: 992px)').matches) {
+      playerCardMargin = (6.25 * this.hand.cards.length) + 'vh';
+      playerCardLeft = '3%';
+      playerCardBottom = '38%';
+      cardWidth = '18vh';
+      cardHeight = '27vh';
+      playerCardTop = '40%';
+      playerNameBottom = '60.5%';
+      playerValueBottom = '35.5%';
+      playerNameMargin = 1.5 + (3 * this.hand.cards.length) + '%';
+      playerValueMargin = 3 + (4.5 * (this.hand.cards.length - 1)) + '%';
+      dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
+      dealerCardLeft = '85%';
+      dealerCardTop = '13%';
+      dealerNameTop = '10.5%';
+      dealerNameMargin = -4 + (3.5 * this.hand.cards.length) + '%';
+      dealerValueTop = '36.5%';
+      dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
+    } else if (window.matchMedia('(min-width: 720px)').matches) {
+      playerCardMargin = (6.25 * this.hand.cards.length) + 'vh';
+      playerCardLeft = '3%';
+      playerCardBottom = '38%';
+      cardWidth = '16vh';
+      cardHeight = '24vh';
+      playerCardTop = '45%';
+      playerNameBottom = '56%';
+      playerValueBottom = '34%';
+      playerNameMargin = -0.75 + (5.75 * this.hand.cards.length - 1) + '%';
+      playerValueMargin = -1.5 + (6 * this.hand.cards.length - 1) + '%';
+      dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
+      dealerCardLeft = '85%';
+      dealerCardTop = '13%';
+      dealerNameTop = '10.5%';
+      dealerNameMargin = -4 + (3.5 * this.hand.cards.length) + '%';
+      dealerValueTop = '33%';
+      dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
+    } else if (window.matchMedia('(min-width: 580px)').matches) {
+      playerCardMargin = (6.25 * this.hand.cards.length) + 'vh';
+      playerCardLeft = '3%';
+      playerCardBottom = '38%';
+      playerCardTop = '48%';
+      cardWidth = '14vh';
+      cardHeight = '21vh';
+      playerNameBottom = '52.5%';
+      playerValueBottom = '34%';
+      playerNameMargin = -3 + (6.25 * this.hand.cards.length) + '%';
+      playerValueMargin = -3 + (6.25 * this.hand.cards.length) + '%';
+      dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
+      dealerCardLeft = '85%';
+      dealerCardTop = '13%';
+      dealerNameTop = '10.5%';
+      dealerNameMargin = (-6.25 * this.hand.cards.length) + 'vh';
+      dealerValueTop = '29.75%';
+      dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
     } else {
-      var addMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      var destinationX = '85%';
-      var destinationY = '13%';
-      card.animate({width: '19vh', height: '29vh', left: destinationX, top: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
-      cardName.css({top: '10.5%', left: destinationX, marginLeft: addMargin});
-      cardValue.css({top: '38%', left: destinationX, marginLeft: addMargin});
+      playerCardMargin = (6.25 * this.hand.cards.length) + 'vh';
+      playerCardLeft = '1%';
+      playerCardBottom = '38%';
+      playerCardTop = '59.5%';
+      cardWidth = '12vh';
+      cardHeight = '18vh';
+      playerNameBottom = '41%';
+      playerNameMargin = -6 + (7.8 * this.hand.cards.length) + '%';
+      playerValueBottom = '26%';
+      playerValueMargin = -6 + (7.8 * this.hand.cards.length) + '%';
+      dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
+      dealerCardLeft = '85%';
+      dealerCardTop = '13%';
+      dealerNameTop = '11.75%';
+      dealerNameMargin = (-6.25 * this.hand.cards.length) + 'vh';
+      dealerValueTop = '26.5%';
+      dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
+    }
+
+    if (scope == 'Player') {
+      card.animate({width: cardWidth, height: cardHeight, left: playerCardLeft, bottom: playerCardBottom, top: playerCardTop, marginTop: 0, marginLeft: playerCardMargin}, 500);
+      cardName.css({bottom: playerNameBottom, left: playerCardLeft, marginLeft: playerNameMargin});
+      cardValue.css({bottom: playerValueBottom, left: playerCardLeft, marginLeft: playerValueMargin});
+    } else {
+      card.animate({width: cardWidth, height: cardHeight, left: dealerCardLeft, top: dealerCardTop, marginTop: 0, marginLeft: dealerCardMargin}, 500);
+      cardName.css({top: dealerNameTop, left: dealerCardLeft, marginLeft: dealerCardMargin});
+      cardValue.css({top: dealerValueTop, left: dealerCardLeft, marginLeft: dealerCardMargin});
     }
 
     card.on({
@@ -121,10 +224,29 @@ $(document).ready(function() {
     // flipContainer.append(flipper);
     // $('body').append(flipContainer);
 
+    var cardWidth;
+    var cardHeight;
+    if (window.matchMedia('(min-width: 1250px)').matches) {
+      cardWidth = '19vh';
+      cardHeight = '29vh';
+    } else if (window.matchMedia('(min-width: 992px)').matches) {
+      cardWidth = '18vh';
+      cardHeight = '27vh';
+    } else if (window.matchMedia('(min-width: 720px)').matches) {
+      cardWidth = '16vh';
+      cardHeight = '24vh';
+    } else if (window.matchMedia('(min-width: 580px)').matches) {
+      cardWidth = '14vh';
+      cardHeight = '21vh';
+    } else {
+      cardWidth = '12vh';
+      cardHeight = '18vh';
+    }
+
     var addMargin = (-6.25 * this.hand.cards.length) + 'vh';
     var destinationX = '85%';
     var destinationY = '13%';
-    card.animate({width: '19vh', height: '29vh', left: destinationX, top: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
+    card.animate({width: cardWidth, height: cardHeight, left: destinationX, top: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
     // flipContainer.css({marginTop: '0'});
     // flipContainer.animate({left: '71.5%', top: '-13.4%', marginLeft: addMargin}, 500);
     // cardBack.css({width: '19vh', height: '29vh', left: '71.5%', top: '-13.4%', marginTop: '0', marginLeft: addMargin});
@@ -145,7 +267,6 @@ $(document).ready(function() {
     var image = 'images/' + card.name + '.png';
 
     // document.querySelector(".flip-container").classList.toggle("flip");
-    // var card = $('.holeBack');
     // card.css({top: '40%', left: '55%'});
     this.hand.total += card.value;
     this.blackjackMeter();
@@ -157,7 +278,7 @@ $(document).ready(function() {
     var cardValue = $('<p>').addClass('cardValue ' + this.name +'Points').html('Points: ' + card.value);
     $('body').append(cardName, cardValue);
 
-    $('.hole').attr('src', image);
+    card.attr('src', image);
 
     // card.animate({width: '19vh', height: '29vh', left: destinationX, top: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
     cardName.css({top: '10.5%', left: destinationX, marginLeft: addMargin});
@@ -180,6 +301,30 @@ $(document).ready(function() {
     this.hand.hole = 'revealed';
     checkWin();
   }
+
+  function resizeCards() {
+    $(window).resize(function() {
+      if (window.matchMedia('(min-width: 1250px)').matches) {
+        $('.card').css({width: '19vh', height: '29vh'});
+        $('.PlayerCards').css({top: '40%'});
+        console.log('max');
+      } else if (window.matchMedia('(min-width: 992px)').matches) {
+        $('.card').css({width: '18vh', height: '27vh'});
+        $('.PlayerCards').css({top: '40%'});
+        console.log('992+');
+      } else if (window.matchMedia('(min-width: 720px)').matches) {
+        $('.card').css({width: '16vh', height: '24vh'});
+        $('.PlayerCards').css({top: '45%'});
+        console.log('720+');
+      } else if (window.matchMedia('(min-width: 580px)').matches) {
+        $('.card').css({width: '14vh', height: '21vh'});
+        console.log('580+');
+      } else {
+        $('.card').css({width: '12vh', height: '18vh'});
+        console.log('iPhone');
+      }
+    })
+  };
 
   function newGame() {
     $('#deal').on({
@@ -789,6 +934,7 @@ $(document).ready(function() {
   hit();
   stand();
   double();
+  resizeCards();
   // surrender() called in as necessary
 
   changeBackgroundColor();
