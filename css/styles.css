@@ -8,6 +8,17 @@
   src: url('../fonts/PokemonLogo.ttf');
 }
 
+.disableOverlay { /* to pause events */
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  background-color: transparent;
+  display: none;
+}
+
 #navbar {
   background-color: rgba(0, 0, 0, 0.5);
 }
