@@ -9,8 +9,6 @@ $(document).ready(function() {
   };
 
   Player.prototype.makeTable = function makeTable() {
-    this.space = $('<div>').attr('id', this.name + 'Space');
-    $('body').append(this.space);
     this.stats = $('<div>').attr('id', this.name + 'Stats');
     this.spade = $('<li>').addClass("spade").html('&spades;<span class="colon">:</span>');
     this.hpBar = $('<div>').attr('id', this.name + 'HP').addClass('hpBar');
@@ -60,43 +58,42 @@ $(document).ready(function() {
     this.hand.cards.push(draw.name);
     this.hand.total += draw.value; // evaluate A value
     var image = 'images/' + draw.name + '.png';
-    var card = $('<img>').attr('src', image).addClass('card');
+    var card = $('<img>').attr('src', image).addClass('card ' + this.name + 'Cards');
     var cardName = $('<p>').addClass('cardName').html(draw.name.replace(/_/g, '&nbsp;'));
-    var cardValue = $('<p>').addClass('cardValue').html('Points: ' + draw.value);
+    var cardValue = $('<p>').addClass('cardValue ' + this.name +'Points').html('Points: ' + draw.value);
+    $('body').append(cardName, card, cardValue);
+    var scope = this.name;
+    if (scope == 'Player') {
+      var addMargin = (6.25 * this.hand.cards.length) + 'vh';
+      var destinationX = '3%';
+      var destinationY = '38%';
+      card.animate({width: '22vh', height: '29vh', left: destinationX, bottom: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
+      cardName.css({bottom: '60.5%', left: destinationX, marginLeft: addMargin});
+      cardValue.css({bottom: '33%', left: destinationX, marginLeft: addMargin});
+    } else {
+      var addMargin = (-6.25 * this.hand.cards.length) + 'vh';
+      var destinationX = '85%';
+      var destinationY = '13%';
+      card.animate({width: '22vh', height: '29vh', left: destinationX, top: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
+      cardName.css({top: '10.5%', left: destinationX, marginLeft: addMargin});
+      cardValue.css({top: '38%', left: destinationX, marginLeft: addMargin});
+    }
 
-    if (this.name == 'Player') {
-      card.on({
-        'mouseover': function() {
-          $('#PlayerSpace .card').css({opacity: '0.25'});
-          card.css({zIndex: '2', opacity: '1'}).animate({marginBottom: '2.5vh'}, 50);
-          cardName.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '2.5vh'}, 50);
-          cardValue.css({zIndex: '2', visibility: 'visible'}, 50);
-        },
-        'mouseout': function() {
-          $('#PlayerSpace .card').css({opacity: '1'});
-          card.css({zIndex: '1'}).animate({marginBottom: '0'}, 50);
-          cardName.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0'}, 50);
-          cardValue.css({zIndex: '1', visibility: 'hidden'}, 50);
-        }
-      });
-    } else if (this.name == 'Dealer') {
-      // cardInfo.css({textAlign: 'right'});
-        card.on({
-          'mouseover': function() {
-            $('#DealerSpace .card').css({opacity: '0.25'});
-            card.css({zIndex: '2', opacity: '1'}).animate({marginBottom: '2.5vh'}, 50);
-            cardName.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '2.5vh'}, 50);
-            cardValue.css({zIndex: '2', visibility: 'visible'}, 50);
-          },
-          'mouseout': function() {
-            $('#DealerSpace .card').css({opacity: '1'});
-            card.css({zIndex: '1'}).animate({marginBottom: '0'}, 50);
-            cardName.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0'}, 50);
-            cardValue.css({zIndex: '1', visibility: 'hidden'}, 50);
-          }
-        });
-    };
-    this.space.append(cardName, card, cardValue);
+    card.on({
+      'mouseover': function() {
+        $('.' + scope + 'Cards').css({opacity: '0.25'});
+        card.css({zIndex: '2', opacity: '1'}).animate({marginTop: '-2.5vh'}, 50);
+        cardName.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '2.5vh', marginTop: '-2.5vh'}, 50);
+        cardValue.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '-2.5vh', marginTop: '2.5vh'}, 50);
+      },
+      'mouseout': function() {
+        $('.' + scope + 'Cards').css({opacity: '1'});
+        card.css({zIndex: '1'}).animate({marginTop: '0'}, 50);
+        cardName.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0', marginTop: '0'}, 50);
+        cardValue.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0', marginTop: '0'}, 50);
+      }
+    });
+
     this.blackjackMeter();
 
     if (player.hand.cards.length >= 2 && dealer.hand.cards.length >= 2) {
@@ -104,19 +101,41 @@ $(document).ready(function() {
     }
   };
 
-  // Player.prototype.getBankroll = function getBankroll() {
-  //   might make this a button in the menu actually
-  // }
+  function newGame() {
+    $('#deal').on({
+      'click': function() {
+        if ((bet >= 5) && (bet <= 100) && (bankroll >= bet)) {
+          gameRun = true;
+          $('.betText').html('BET').off('click');
+          deal();
+        } else if (bankroll < bet) {
+          gameRun = false;
+          showResult('You don\'t have enough money!');
+        } else if (bet < 5) {
+          gameRun = false;
+          showResult('Minimum bet is $5.');
+        } else if (bet > 100) {
+          gameRun = false;
+          showResult('Maximum bet is $100.');
+        }
+      },
+      'mouseover': function() {
+        // hmm
+      },
+      'mouseout': function() {
+
+      }
+    });
+  }
 
   // Creates deck
   function createDeck() {
-    var numberOfDecks = 3; // can do as input
     var deck = [];
     var ace = 'Ace';
     var face = ['Jack', 'Queen', 'King'];
     var suits = ['Diamonds', 'Clubs', 'Hearts', 'Spades'];
 
-    for (var x = 0; x < numberOfDecks; x++) {
+    for (var x = 0; x < deckAmount; x++) {
       for (var i = 0; i < suits.length; i++) {
         deck.push({
           name: ace + '_of_' + suits[i],
@@ -308,21 +327,29 @@ $(document).ready(function() {
   function deal() {
     placeBet();
     updateHeader();
-    player.space.empty();
-    dealer.space.empty();
+    $('.card, .cardName, .cardValue').remove();
     player.hand = {cards: [], total: 0, stand: false, aces: 0};
     dealer.hand = {cards: [], total: 0, stand: false, aces: 0};
     player.drawCard();
-    dealer.drawCard();
-    player.drawCard();
-    dealer.drawCard();
-    if (winner === null) {
-      hideDeal();
-    }
+    setTimeout(function() {
+      dealer.drawCard();
+    }, 500); // HOLE CARD
+    setTimeout(function() {
+      player.drawCard();
+    }, 1000);
+    setTimeout(function() {
+      dealer.drawCard();
+    }, 1500);
+    setTimeout(function() {
+      if (winner === null) {
+        hideDeal();
+      }
+    }, 2000);
     surrender();
   }
 
   function showResult(str) {
+    $('#deal').css({display: 'none'});
     $('#actions').css({display: 'none'});
     $('#prompt').css({display: 'none'});
     var result = $('#result');
@@ -333,12 +360,14 @@ $(document).ready(function() {
       blink($('#nextCursor'))
     }, 1000);
     result.off('click').on('click', function() {
-      var kda = $('#kda');
-      updateScore();
-      kda.text('W' + wins + ' L' + losses + ' T' + ties);
-      bet = 0;
-      updateBetHeader();
-      showDeal(nextCursor);
+      if (gameRun) { // check to see if deal actually ran
+        var kda = $('#kda');
+        updateScore();
+        kda.text('W' + wins + ' L' + losses + ' T' + ties);
+        bet = 5;
+        updateBetHeader();
+      }
+      showDeal();
     });
   }
 
@@ -424,14 +453,19 @@ $(document).ready(function() {
     button.on({
       'click': function() {
         clearInterval(actionCursor);
-        bet *= 2;
-        updateHeader();
-        player.drawCard();
-        player.hand.stand = true;
-        if (dealer.hand.total >= 17) {
-          checkWin();
-        } else while (dealer.hand.total < 17) {
-            dealer.drawCard();
+        if ((bankroll - bet) >= 0) {
+          placeBet();
+          bet *= 2;
+          updateHeader();
+          player.drawCard();
+          player.hand.stand = true;
+          if (dealer.hand.total >= 17) {
+            checkWin();
+          } else while (dealer.hand.total < 17) {
+              dealer.drawCard();
+          }
+        } else {
+          trainerBattle('Can\'t double down!');
         }
       },
       'mouseover': function() {
@@ -480,7 +514,7 @@ $(document).ready(function() {
     button.off('click').on({
       'click': function() {
         clearInterval(actionCursor);
-        console.log('Can\'t surrender!');
+        trainerBattle('Can\'t surrender!');
       },
       'mouseover': function() {
         blink(buttonCursor);
@@ -494,13 +528,28 @@ $(document).ready(function() {
     });
   }
 
+  function trainerBattle(str) {
+    $('#actions').css({display: 'none'});
+    var result = $('#result');
+    result.html(str).css({display: 'block'});
+    $('#nextCursor').css({display: 'block'});
+    blink($('#nextCursor'));
+    cursor = setInterval(function() {
+      blink($('#nextCursor'))
+    }, 1000);
+    result.off('click').on('click', function() {
+      result.css({display: 'none'});
+      $('#actions').css({display: 'block'});
+    });
+  }
+
   function aceLogic(busta) { // pass in the ONE who BUSTS
     if (busta.hand.aces > 0) { // check if they have aces
       busta.hand.aces--;
       busta.hand.total -= 10;
       busta.blackjackMeter();
       // Updates Ace card value display
-      var cardsByValue = $('#' + busta.name + 'Space .cardValue');
+      var cardsByValue = $('.' + busta.name + 'Points'); // player/dealer cards class
       for (var i = 0; i < cardsByValue.length; i++) {
         if (cardsByValue.eq(i).html().indexOf('11') > -1) {
           cardsByValue.eq(i).html('Points: 1');
@@ -577,6 +626,13 @@ $(document).ready(function() {
     }
   }
 
+// Hover over decks to get deck amount--not sure if this should be added
+  // function inspectDeck() {
+  //   var cardsLeft = $('<p>').attr('id', 'cardsLeft').html('Cards left: ' + deck.length);
+  //   var numberOfDecks = $('<p>').attr('id', 'numberOfDecks').html(deckAmount + ' Decks');
+  //   $('#cardHolder').append(cardsLeft, numberOfDecks);
+  // }
+
   // got tired of staring at green so here's something fun
   function changeBackgroundColor() {
     var colors = ['#8bcd73', '#ffe69c', '#5a8362', '#e65a29', '#8bc5cd', '#a4624a', '#ff8bac', '#f6bd20', '#c57be6', '#b4b4b4'];
@@ -605,38 +661,22 @@ $(document).ready(function() {
     }, 500);
   };
 
-  function newGame() {
-    $('#deal').off('click').on({
-      'click': function() {
-        if (bet >= 5) {
-          $('.betText').html('BET').off('click');
-          deal();
-        } else {
-          console.log('Minimum bet to enter this table is $5.');
-        }
-      },
-      'mouseover': function() {
-        // hmm
-      },
-      'mouseout': function() {
-
-      }
-    });
-  }
-
 // INITIALIZATIONS
+  var deckAmount = 3; // can I prompt for this?
   var deck = createDeck();
   var player = new Player('Player', 'Player'); // nickname rewrite in form
   var dealer = new Player('Dealer', 'Dealer');
-  var wins = 0, losses = 0, ties = 0, winner;
+  var wins = 0, losses = 0, ties = 0, winner = null;
   var bankroll = 300;
-  var bet = 0;
+  var bet = 5;
+  var runGame = true;
   makeHeader();
   player.makeTable();
   dealer.makeTable();
   player.blackjackMeter();
   dealer.blackjackMeter();
   newGame();
+  // inspectDeck();
   changeBet();
   var cursor;
   var actionCursor;
