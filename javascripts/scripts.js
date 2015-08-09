@@ -63,18 +63,33 @@ $(document).ready(function() {
     var cardValue = $('<p>').addClass('cardValue ' + this.name +'Points').html('Points: ' + draw.value);
     $('body').append(cardName, card, cardValue);
     var scope = this.name;
+
+    if ($(window).width() >= 1250) {
+      var cardWidth = '19vh';
+      var cardHeight = '29vh';
+    } else if (($(window).width() < 1250) && ($(window).width() >= 950)) {
+      var cardWidth = '17.5vh';
+      var cardHeight = '26vh';
+    } else if (($(window).width() < 950) && ($(window).width() >= 720)) {
+      var cardWidth = '14vh';
+      var cardHeight = '21vh';
+    } else if ($(window).width() < 720) {
+      var cardWidth = '11vh';
+      var cardHeight = '17vh';
+    }
+
     if (scope == 'Player') {
       var addMargin = (6.25 * this.hand.cards.length) + 'vh';
       var destinationX = '3%';
       var destinationY = '38%';
-      card.animate({width: '22vh', height: '29vh', left: destinationX, bottom: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
+      card.animate({width: cardWidth, height: cardHeight, left: destinationX, bottom: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
       cardName.css({bottom: '60.5%', left: destinationX, marginLeft: addMargin});
       cardValue.css({bottom: '33%', left: destinationX, marginLeft: addMargin});
     } else {
       var addMargin = (-6.25 * this.hand.cards.length) + 'vh';
       var destinationX = '85%';
       var destinationY = '13%';
-      card.animate({width: '22vh', height: '29vh', left: destinationX, top: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
+      card.animate({width: cardWidth, height: cardHeight, left: destinationX, top: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
       cardName.css({top: '10.5%', left: destinationX, marginLeft: addMargin});
       cardValue.css({top: '38%', left: destinationX, marginLeft: addMargin});
     }
@@ -106,7 +121,6 @@ $(document).ready(function() {
       'click': function() {
         if ((bet >= 5) && (bet <= 100) && (bankroll >= bet)) {
           gameRun = true;
-          $('.betText').html('BET').off('click');
           deal();
         } else if (bankroll < bet) {
           gameRun = false;
@@ -188,13 +202,13 @@ $(document).ready(function() {
     var chooseBet = $('#betList');
     chooseBet.append($('<h3>').addClass('betText').text('BET'));
     chooseBet.append($('<li>').addClass('betCursor').html('&spades;'));
-    chooseBet.append($('<li>').addClass('selectBet').text('$1'));
+    chooseBet.append($('<li>').addClass('selectBet bet1').text('$1'));
     chooseBet.append($('<li>').addClass('betCursor').html('&spades;'));
-    chooseBet.append($('<li>').addClass('selectBet').text('$5'));
+    chooseBet.append($('<li>').addClass('selectBet bet5').text('$5'));
     chooseBet.append($('<li>').addClass('betCursor').html('&spades;'));
-    chooseBet.append($('<li>').addClass('selectBet').text('$10'));
+    chooseBet.append($('<li>').addClass('selectBet bet10').text('$10'));
     chooseBet.append($('<li>').addClass('betCursor').html('&spades;'));
-    chooseBet.append($('<li>').addClass('selectBet').text('$25'));
+    chooseBet.append($('<li>').addClass('selectBet bet25').text('$25'));
     var prompt = $('<p>').attr('id', 'prompt').html('What will<br>' + player.nickname + ' do?');
     $('#bottom').prepend(prompt);
     $('#bottom').prepend(chooseBet);
@@ -340,10 +354,19 @@ $(document).ready(function() {
     setTimeout(function() {
       dealer.drawCard();
     }, 1500);
+    $('#deal').off('click');
+    $('.betText').off('click');
+    $('.selectBet').eq(0).off('click');
+    $('.selectBet').eq(1).off('click');
+    $('.selectBet').eq(2).off('click');
+    $('.selectBet').eq(3).off('click');
     setTimeout(function() {
       if (winner === null) {
         hideDeal();
       }
+      $('.betText').html('BET');
+      changeBet();
+      newGame();
     }, 2000);
     surrender();
   }
@@ -684,6 +707,8 @@ $(document).ready(function() {
   stand();
   double();
   // surrender() called in as necessary
-  changeBackgroundColor();
-  navBorderColor();
+
+  // commented out for testing
+  // changeBackgroundColor();
+  // navBorderColor();
 });

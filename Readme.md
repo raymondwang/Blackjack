@@ -16,7 +16,9 @@ A fully functional Blackjack simulation that adheres to standard casino rules.
     - function revealHole flips hole--image is still hand.hole, checks win
   - can add in way more dealer functionality that way
   - will update all dealer draws after this
-- WAY more responsiveness! -- especially awful text
+- Could add some more responsiveness for screen height maybe; I don't know what to do about very small widths
+- still have to update responsiveness for card positioning
+  - mobile sizing bet cursors disabled for now
 
 for fun:
 - have blackjack bars fill up at intervals ? ? ?

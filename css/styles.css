@@ -74,7 +74,7 @@ body {
   position: absolute;
   bottom: 37vh;
   /*left: 62vw;*/
-  right: 6.5vw;
+  right: 6.25vw;
   text-align: right;
   }
 
@@ -144,6 +144,7 @@ body {
   margin: 0;
   width: 43%;
   text-align: center;
+  left: -10px;
 }
 
 .betText {
@@ -260,7 +261,7 @@ body {
 }
 
 #cardHolder {
-  position: fixed;
+  position: absolute;
   top: 40%;
   left: 50%;
   margin-left: -5vh;
@@ -305,8 +306,270 @@ body {
   text-shadow: -1.25px 0 white, 0 1.25px white, 1.25px 0 white, 0 -1.25px white;
 }
 
-@media screen and (min-width: 1260px) {
+/*Max width*/
+@media screen and (min-width: 1250px) {
   .cardName, .cardValue {
     font-size: 1vw;
+  }
+  .action {
+    padding: 0 50px;
+  }
+  #prompt {
+    left: 100px;
+  }
+}
+
+/*Smaller laptop screen*/
+@media screen and (max-width: 1250px) and (min-width: 992px) {
+  body {
+    background-color: purple;
+  }
+  #bottom, #menu, #result {
+    height: 19vh;
+  }
+  #prompt {
+    left: 40px;
+    font-size: 36px;
+  }
+  #result {
+    font-size: 29px;
+  }
+  .selectBet, .betText {
+    margin: 10px 5px;
+    padding: 10px 5px;
+    font-size: 28px;
+  }
+  .betCursor {
+    margin-right: -5px;
+  }
+}
+
+@media screen and (max-width: 992px) and (min-width: 720px) {
+  /*body {
+    background-color: blue;
+  }*/
+  #bottom, #menu, #result {
+    height: 17vh;
+  }
+  #prompt {
+    font-size: 30px;
+  }
+  #deal {
+    line-height: 130px;
+  }
+  #result {
+    font-size: 26px;
+  }
+  .selectBet, .betText {
+    margin: 8px 3px;
+    padding: 8px 3px;
+    font-size: 20px;
+  }
+  .betText {
+    margin-top: 15px;
+  }
+
+  .betCursor {
+    font-size: 24px;
+    margin-right: -5px;
+  }
+
+  .action {
+    font-size: 26px;
+    padding: 0 20px;
+    top: -10px;
+  }
+  .cursor {
+    bottom: 15px;
+  }
+  .spade {
+    margin-left: 12px;
+  }
+  .name {
+    font-size: 28px;
+  }
+  .handValue {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 720px) and (min-width: 580px) {
+  /*body {
+    background-color: orange;
+  }*/
+  #bottom, #menu, #result {
+    height: 15vh;
+  }
+  #prompt {
+    font-size: 20px;
+  }
+  #deal {
+    font-size: 52px;
+    line-height: 120px;
+  }
+  #result {
+    font-size: 20px;
+  }
+  #betList {
+    left: -25px;
+  }
+  .selectBet, .betText {
+    margin: 8px 3px;
+    padding: 8px 3px;
+    font-size: 16px;
+  }
+  .betText {
+    margin-top: 15px;
+  }
+
+  .betCursor {
+    font-size: 20px;
+    margin-right: -5px;
+  }
+
+  .action {
+    font-size: 16px;
+    padding: 0 10px;
+    margin: 0;
+    top: -10px;
+  }
+  .cursor {
+    bottom: 24px;
+    font-size: 16px;
+  }
+  .spade {
+    margin-left: 3px;
+  }
+  .name {
+    font-size: 24px;
+  }
+  .handValue {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 580px) and (min-width: 320px) {
+  body {
+    background-color: orange;
+  }
+  /*#navbar {
+    height: 3vh;
+  } */
+  /*IN JQUERY, REMOVE 'Bankroll: ' and KDA spaces from Nav!*/
+  /*.nav {
+    font-size: 1.5vh;
+  }*/
+  #bottom, #menu, #result {
+    height: 12vh;
+    bottom: 3px;
+  }
+  #prompt {
+    font-size: 12px;
+    left: 5px;
+  }
+  #deal {
+    font-size: 24px;
+    line-height: 90px;
+  }
+  #result {
+    font-size: 14px;
+    margin-bottom: -30px;
+  }
+  #betList {
+    left: -60px;
+  }
+  .lineBreaker {
+    display: block;
+  }
+
+  .betText {
+    left: 64%;
+    top: -10px;
+    position: absolute;
+    font-size: 14px;
+    margin-top: 20px;
+  }
+
+  .selectBet {
+    position: absolute;
+    font-size: 14px;
+  }
+
+  .bet1 {
+    left: 30%;
+    bottom: -70px;
+  }
+
+  .bet5 {
+    left: 70%;
+    bottom: -70px;
+  }
+
+  .bet10 {
+    left: 30%;
+    bottom: -100px;
+  }
+
+  .bet25 {
+    left: 70%;
+    bottom: -100px;
+  }
+
+  .betCursor {
+    /*font-size: 20px;
+    margin-right: -5px;*/
+    display: none;
+  }
+
+  .action {
+    font-size: 10px;
+    padding: 0 10px;
+    margin: 0;
+    top: 0;
+    left: 0;
+    height: 12px;
+    line-height: 3;
+  }
+  .cursor {
+    display: none;
+  }
+  .spade {
+    margin-left: 8px;
+    font-size: 20px;
+    width: 20px;
+  }
+  #PlayerStats {
+    height: 6vh;
+    border-right: 0.5vh solid black;
+    border-bottom: 0.5vh solid black;
+    bottom: -8vh;
+  }
+  #DealerStats {
+    height: 6vh;
+    border-left: 0.5vh solid black;
+    border-bottom: 0.5vh solid black;
+  }
+  #PlayerName {
+    bottom: 30vh;
+  }
+  #DealerName {
+    top: 10.5vh;
+  }
+  .colon {
+    font-size: 12px;
+  }
+  .name {
+    font-size: 14px;
+  }
+  .hpBar {
+    left: 9vw;
+    bottom: 2.85vh;
+  }
+  .pointTotals {
+    left: 9vw;
+    bottom: 2.5vh;
+  }
+  .handValue {
+    font-size: 8px;
   }
 }
