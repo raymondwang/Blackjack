@@ -3,7 +3,7 @@ $(document).ready(function() {
   function Player(name, nickname) {
     this.name = name; // might throw this up in an initial setup menu, along with deck amount and bankroll
     this.nickname = nickname;
-    this.hand = {cards: [], total: 0, aces: 0, stand: false};
+    this.hand = {cards: [], total: 0, aces: 0, stand: false, hole: ''};
     this.menu = $('#' + this.name + 'Stats');
     // this.bankroll = options.bankroll || dealing with money later;
   };
@@ -56,7 +56,7 @@ $(document).ready(function() {
       this.hand.aces++;
     }
     this.hand.cards.push(draw.name);
-    this.hand.total += draw.value; // evaluate A value
+    this.hand.total += draw.value;
     var image = 'images/' + draw.name + '.png';
     var card = $('<img>').attr('src', image).addClass('card ' + this.name + 'Cards');
     var cardName = $('<p>').addClass('cardName').html(draw.name.replace(/_/g, '&nbsp;'));
@@ -64,32 +64,18 @@ $(document).ready(function() {
     $('body').append(cardName, card, cardValue);
     var scope = this.name;
 
-    if ($(window).width() >= 1250) {
-      var cardWidth = '19vh';
-      var cardHeight = '29vh';
-    } else if (($(window).width() < 1250) && ($(window).width() >= 950)) {
-      var cardWidth = '17.5vh';
-      var cardHeight = '26vh';
-    } else if (($(window).width() < 950) && ($(window).width() >= 720)) {
-      var cardWidth = '14vh';
-      var cardHeight = '21vh';
-    } else if ($(window).width() < 720) {
-      var cardWidth = '11vh';
-      var cardHeight = '17vh';
-    }
-
     if (scope == 'Player') {
       var addMargin = (6.25 * this.hand.cards.length) + 'vh';
       var destinationX = '3%';
       var destinationY = '38%';
-      card.animate({width: cardWidth, height: cardHeight, left: destinationX, bottom: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
+      card.animate({width: '19vh', height: '29vh', left: destinationX, bottom: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
       cardName.css({bottom: '60.5%', left: destinationX, marginLeft: addMargin});
       cardValue.css({bottom: '33%', left: destinationX, marginLeft: addMargin});
     } else {
       var addMargin = (-6.25 * this.hand.cards.length) + 'vh';
       var destinationX = '85%';
       var destinationY = '13%';
-      card.animate({width: cardWidth, height: cardHeight, left: destinationX, top: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
+      card.animate({width: '19vh', height: '29vh', left: destinationX, top: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
       cardName.css({top: '10.5%', left: destinationX, marginLeft: addMargin});
       cardValue.css({top: '38%', left: destinationX, marginLeft: addMargin});
     }
@@ -115,6 +101,85 @@ $(document).ready(function() {
       checkWin();
     }
   };
+
+  Player.prototype.drawHole = function drawHole() {
+    this.hand.hole = deck.pop();
+    this.hand.cards.push(this.hand.hole.name);
+
+    var image = 'images/' + this.hand.hole.name + '.png';
+
+    // var flipContainer = $('<div>').addClass('flip-container card');
+    // var flipper = $('<div>').addClass('flipper');
+    // var front = $('<div>').addClass('front');
+    var card = $('<img>').attr('src', 'images/PokeballDeck.png').addClass('card ' + this.name + 'Cards hole');
+    $('body').append(card);
+    // var back = $('<div>').addClass('back');
+    // var cardBack = $('<img>').attr('src', image).addClass('card ' + this.name + 'Cards holeBack');
+    // front.append(card);
+    // back.append(cardBack);
+    // flipper.append(front, back);
+    // flipContainer.append(flipper);
+    // $('body').append(flipContainer);
+
+    var addMargin = (-6.25 * this.hand.cards.length) + 'vh';
+    var destinationX = '85%';
+    var destinationY = '13%';
+    card.animate({width: '19vh', height: '29vh', left: destinationX, top: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
+    // flipContainer.css({marginTop: '0'});
+    // flipContainer.animate({left: '71.5%', top: '-13.4%', marginLeft: addMargin}, 500);
+    // cardBack.css({width: '19vh', height: '29vh', left: '71.5%', top: '-13.4%', marginTop: '0', marginLeft: addMargin});
+    card.on({
+      'mouseover': function() {
+        $('.DealerCards').css({opacity: '0.25'});
+        card.css({zIndex: '2', opacity: '1'}).animate({marginTop: '-2.5vh'}, 50);
+      },
+      'mouseout': function() {
+        $('.DealerCards').css({opacity: '1'});
+        card.css({zIndex: '1'}).animate({marginTop: '0'}, 50);
+      }
+    });
+  }
+
+  Player.prototype.revealHole = function revealHole() {
+    card = this.hand.hole;
+    var image = 'images/' + card.name + '.png';
+
+    // document.querySelector(".flip-container").classList.toggle("flip");
+    // var card = $('.holeBack');
+    // card.css({top: '40%', left: '55%'});
+    this.hand.total += card.value;
+    this.blackjackMeter();
+    var addMargin = (-6.25 * this.hand.cards.length) + 'vh';
+    var destinationX = '85%';
+    var destinationY = '13%';
+
+    var cardName = $('<p>').addClass('cardName').html(card.name.replace(/_/g, '&nbsp;'));
+    var cardValue = $('<p>').addClass('cardValue ' + this.name +'Points').html('Points: ' + card.value);
+    $('body').append(cardName, cardValue);
+
+    $('.hole').attr('src', image);
+
+    // card.animate({width: '19vh', height: '29vh', left: destinationX, top: destinationY, marginTop: 0, marginLeft: addMargin}, 500);
+    cardName.css({top: '10.5%', left: destinationX, marginLeft: addMargin});
+    cardValue.css({top: '38%', left: destinationX, marginLeft: addMargin});
+
+    $('.hole').on({
+      'mouseover': function() {
+        $('.DealerCards').css({opacity: '0.25'});
+        $('.hole').css({zIndex: '2', opacity: '1'}).animate({marginTop: '-2.5vh'}, 50);
+        cardName.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '2.5vh', marginTop: '-2.5vh'}, 50);
+        cardValue.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '-2.5vh', marginTop: '2.5vh'}, 50);
+      },
+      'mouseout': function() {
+        $('.DealerCards').css({opacity: '1'});
+        $('.hole').css({zIndex: '1'}).animate({marginTop: '0'}, 50);
+        cardName.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0', marginTop: '0'}, 50);
+        cardValue.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0', marginTop: '0'}, 50);
+        }
+    });
+    this.hand.hole = 'revealed';
+    checkWin();
+  }
 
   function newGame() {
     $('#deal').on({
@@ -346,7 +411,7 @@ $(document).ready(function() {
     dealer.hand = {cards: [], total: 0, stand: false, aces: 0};
     player.drawCard();
     setTimeout(function() {
-      dealer.drawCard();
+      dealer.drawHole();
     }, 500); // HOLE CARD
     setTimeout(function() {
       player.drawCard();
@@ -419,11 +484,11 @@ $(document).ready(function() {
         if (player.hand.total < 21) {
           player.drawCard();
           clearInterval(actionCursor);
-          if (winner === null) {
-            if (dealer.hand.total < 17) {
-              dealer.drawCard();
-            }
-          }
+          // if (winner === null) {
+          //   if (dealer.hand.total < 17) {
+          //     dealer.drawCard();
+          //   }
+          // }
         }
         deactivateSurrender();
       },
@@ -449,11 +514,11 @@ $(document).ready(function() {
       {'click': function() {
       clearInterval(actionCursor);
       player.hand.stand = true;
-      if (dealer.hand.total >= 17) {
-        checkWin();
-      } else while (dealer.hand.total < 17) {
-          dealer.drawCard();
-        }
+      // if (dealer.hand.total >= 17) {
+      checkWin();
+      //} } else while (dealer.hand.total < 17) {
+      //     dealer.drawCard();
+      //   }
       },
       'mouseover': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
@@ -482,11 +547,11 @@ $(document).ready(function() {
           updateHeader();
           player.drawCard();
           player.hand.stand = true;
-          if (dealer.hand.total >= 17) {
+          // if (dealer.hand.total >= 17) {
             checkWin();
-          } else while (dealer.hand.total < 17) {
-              dealer.drawCard();
-          }
+          // } else while (dealer.hand.total < 17) {
+          //     dealer.drawCard();
+          // }
         } else {
           trainerBattle('Can\'t double down!');
         }
@@ -609,17 +674,34 @@ $(document).ready(function() {
         resultMessage = "Blackjack push!";
         winner = 'tie';
         bankroll += bet;
-      } else { // if (dealer.hand.total > 17) {
+      } else if (dealer.hand.hole != 'revealed') {
+        setTimeout(function() {
+          dealer.revealHole();
+        }, 500);
+        return;
+      } else if (dealer.hand.total < 17) {
+        setTimeout(function() {
+          dealer.drawCard();
+        }, 500);
+        return;
+      } else { // if dealer hand is greater than 17
         resultMessage = "Blackjack! You win!";
         winner = 'player';
         bankroll += (bet + (bet * 1.5));
       }
-      // still having trouble getting blackjack logic to work fluidly
-      // else {
-      //   dealer.drawCard();
-      // }
-    } else if (player.hand.stand && (dealer.hand.total > 16)) { // check if game is over
-        if (player.hand.total === dealer.hand.total) { //if tie
+    } else if (player.hand.stand) {
+      if (dealer.hand.hole != 'revealed') {
+        setTimeout(function() {
+          dealer.revealHole();
+        }, 500);
+        return;
+      } else if (dealer.hand.total < 17) {
+        setTimeout(function() {
+          dealer.drawCard();
+        }, 500);
+        return;
+      } else {
+        if (player.hand.total === dealer.hand.total) {
           resultMessage = "Push!";
           winner = 'tie';
           bankroll += bet;
@@ -631,6 +713,7 @@ $(document).ready(function() {
           resultMessage = "You lose!";
           winner = 'dealer';
         }
+      }
     } else { // game ongoing
       winner = null;
     }
@@ -708,7 +791,6 @@ $(document).ready(function() {
   double();
   // surrender() called in as necessary
 
-  // commented out for testing
-  // changeBackgroundColor();
-  // navBorderColor();
+  changeBackgroundColor();
+  navBorderColor();
 });

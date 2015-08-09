@@ -285,6 +285,11 @@ body {
   margin-top: -8.4vh;
 }
 
+.regCards {
+  max-width: 15%;
+  max-width: 29%;
+}
+
 .cardName {
   font-size: 1.25vw;
   text-align: center;
@@ -306,6 +311,73 @@ body {
   text-shadow: -1.25px 0 white, 0 1.25px white, 1.25px 0 white, 0 -1.25px white;
 }
 
+/* entire container, keeps perspective */
+.flip-container {
+	perspective: 1000;
+	/*transform-style: preserve-3d;*/
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 10vh;
+  height: 16.8vh;
+  margin-left: -5vh;
+  margin-top: -8.4vh;
+}
+	/*  UPDATED! flip the pane when hovered */
+	.flip-container.flip .back {
+		transform: rotateY(0deg);
+	}
+	.flip-container.flip .front {
+	    transform: rotateY(180deg);
+	}
+
+.flip-container, .front, .back {
+	width: 320px;
+	height: 480px;
+}
+
+/* flip speed goes here */
+.flipper {
+	transition: 0.6s;
+    /*transform: perspective(1000px);
+    -webkit-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;*/
+	transform-style: preserve-3d;
+
+	position: relative;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+	backface-visibility: hidden;
+	transition: 0.6s;
+	transform-style: preserve-3d;
+	position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/*  UPDATED! front pane, placed above back */
+.front {
+	z-index: 2;
+    -webkit-transform: rotateY(0deg);
+    -o-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+	transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.back {
+    -webkit-transform: rotateY(-180deg);
+    -o-transform: rotateY(-180deg);
+    -ms-transform: rotateY(-180deg);
+    -moz-transform: rotateY(-180deg);
+	transform: rotateY(-180deg);
+}
+
 /*Max width*/
 @media screen and (min-width: 1250px) {
   .cardName, .cardValue {
@@ -321,9 +393,9 @@ body {
 
 /*Smaller laptop screen*/
 @media screen and (max-width: 1250px) and (min-width: 992px) {
-  body {
+  /*body {
     background-color: purple;
-  }
+  }*/
   #bottom, #menu, #result {
     height: 19vh;
   }
@@ -380,7 +452,7 @@ body {
     top: -10px;
   }
   .cursor {
-    bottom: 15px;
+    bottom: 20px;
   }
   .spade {
     margin-left: 12px;
