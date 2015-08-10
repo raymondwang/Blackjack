@@ -1,11 +1,9 @@
 $(document).ready(function() {
 
-  function Player(name, nickname) {
+  function Player(name) {
     this.name = name; // might throw this up in an initial setup menu, along with deck amount and bankroll
-    this.nickname = nickname;
     this.hand = {cards: [], total: 0, aces: 0, stand: false, hole: ''};
     this.menu = $('#' + this.name + 'Stats');
-    // this.bankroll = options.bankroll || dealing with money later;
   };
 
   Player.prototype.makeTable = function makeTable() {
@@ -19,8 +17,6 @@ $(document).ready(function() {
     this.stats.append(this.spade, this.hpBar, this.handTotal);
     this.handTotal.append(this.handVal);
     $('body').append(this.stats);
-    var addName = ($('<p>').text(this.nickname.toUpperCase()).attr('id', this.name + 'Name').addClass('name'));
-    $('body').append(addName);
   }
 
   Player.prototype.blackjackMeter = function blackjackMeter() {
@@ -74,18 +70,17 @@ $(document).ready(function() {
     var playerNameBottom;
     var playerNameMargin;
     var playerValueMargin;
-    var dealerCardMargin;
     var dealerCardTop;
     var dealerCardLeft;
     var dealerNameTop;
     var dealerNameMargin;
-    var nameDisplay;
     var dealerValueMargin;
     var dealerValueTop;
-    var valueDisplay;
+    var displayInfo = true;
+    var playerCardMargin = (6.25 * this.hand.cards.length) + 'vh';
+    var dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
 
     if (window.matchMedia('(min-width: 1250px)').matches) {
-      playerCardMargin = (6.25 * this.hand.cards.length) + 'vh';
       playerCardLeft = '3%';
       playerCardBottom = '38%';
       cardWidth = '19vh';
@@ -95,17 +90,13 @@ $(document).ready(function() {
       playerValueBottom = '33%';
       playerNameMargin = (2.75 * this.hand.cards.length) + '%';
       playerValueMargin = (3 * this.hand.cards.length) + '%';
-      dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
       dealerCardLeft = '85%';
       dealerCardTop = '13%';
       dealerNameTop = '10.5%';
-      dealerNameMargin = (-6.25 * this.hand.cards.length) + 'vh';
+      dealerNameMargin = (-6.25 * dealer.hand.cards.length) + 'vh';
       dealerValueTop = '38%';
       dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      nameDisplay = 'block';
-      valueDisplay = 'block';
     } else if (window.matchMedia('(min-width: 992px)').matches) {
-      playerCardMargin = (6.25 * this.hand.cards.length) + 'vh';
       playerCardLeft = '3%';
       playerCardBottom = '38%';
       cardWidth = '18vh';
@@ -115,17 +106,13 @@ $(document).ready(function() {
       playerValueBottom = '35.5%';
       playerNameMargin = 1.5 + (3 * this.hand.cards.length) + '%';
       playerValueMargin = 3 + (4.5 * (this.hand.cards.length - 1)) + '%';
-      dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
       dealerCardLeft = '85%';
       dealerCardTop = '13%';
       dealerNameTop = '10.5%';
       dealerNameMargin = -4 + (3.5 * this.hand.cards.length) + '%';
       dealerValueTop = '36.5%';
       dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      nameDisplay = 'block';
-      valueDisplay = 'block';
     } else if (window.matchMedia('(min-width: 720px)').matches) {
-      playerCardMargin = (6.25 * this.hand.cards.length) + 'vh';
       playerCardLeft = '3%';
       playerCardBottom = '38%';
       cardWidth = '16vh';
@@ -135,65 +122,50 @@ $(document).ready(function() {
       playerValueBottom = '34%';
       playerNameMargin = -0.75 + (5.75 * this.hand.cards.length - 1) + '%';
       playerValueMargin = -1.5 + (6 * this.hand.cards.length - 1) + '%';
-      dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
       dealerCardLeft = '85%';
       dealerCardTop = '13%';
       dealerNameTop = '10.5%';
       dealerNameMargin = -4 + (3.5 * this.hand.cards.length) + '%';
       dealerValueTop = '33%';
       dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      nameDisplay = 'block';
-      valueDisplay = 'block';
     } else if (window.matchMedia('(min-width: 580px)').matches) {
-      playerCardMargin = (6.25 * this.hand.cards.length) + 'vh';
       playerCardLeft = '0';
       playerCardBottom = '38%';
       playerCardTop = '52%';
       cardWidth = '12vh';
       cardHeight = '18vh';
-      playerNameBottom = '52.5%';
-      playerValueBottom = '34%';
-      playerNameMargin = -3 + (6.25 * this.hand.cards.length) + '%';
-      playerValueMargin = -3 + (6.25 * this.hand.cards.length) + '%';
-      dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
       dealerCardLeft = '85%';
       dealerCardTop = '10%';
-      dealerNameTop = '10.5%';
-      dealerNameMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      dealerValueTop = '29.75%';
-      dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      nameDisplay = 'none';
-      valueDisplay = 'none';
+      displayInfo = false;
     } else {
-      playerCardMargin = (6.25 * this.hand.cards.length) + 'vh';
       playerCardLeft = '0';
       playerCardBottom = '38%';
       playerCardTop = '65%';
       cardWidth = '8vh';
       cardHeight = '12vh';
-      playerNameBottom = '41%';
-      playerNameMargin = -6 + (7.8 * this.hand.cards.length) + '%';
-      playerValueBottom = '26%';
-      playerValueMargin = -6 + (7.8 * this.hand.cards.length) + '%';
-      dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
       dealerCardLeft = '85%';
       dealerCardTop = '10%';
-      dealerNameTop = '11.75%';
-      dealerNameMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      dealerValueTop = '26.5%';
-      dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      nameDisplay = 'none';
-      valueDisplay = 'none';
+      displayInfo = false;
     }
 
     if (scope == 'Player') {
       card.animate({width: cardWidth, height: cardHeight, left: playerCardLeft, bottom: playerCardBottom, top: playerCardTop, marginTop: 0, marginLeft: playerCardMargin}, 500);
-      cardName.css({bottom: playerNameBottom, left: playerCardLeft, marginLeft: playerNameMargin, display: nameDisplay});
-      cardValue.css({bottom: playerValueBottom, left: playerCardLeft, marginLeft: playerValueMargin, display: valueDisplay});
-    } else {
+      if (displayInfo) {
+        cardName.css({bottom: playerNameBottom, left: playerCardLeft, marginLeft: playerNameMargin});
+        cardValue.css({bottom: playerValueBottom, left: playerCardLeft, marginLeft: playerValueMargin});
+      } else {
+        cardName.css({display: 'none'});
+        cardValue.css({display: 'none'});
+      }
+    } else { // if Dealer
       card.animate({width: cardWidth, height: cardHeight, left: dealerCardLeft, top: dealerCardTop, marginTop: 0, marginLeft: dealerCardMargin}, 500);
-      cardName.css({top: dealerNameTop, left: dealerCardLeft, marginLeft: dealerNameMargin, display: nameDisplay});
-      cardValue.css({top: dealerValueTop, left: dealerCardLeft, marginLeft: dealerValueMargin, display: valueDisplay});
+      if (displayInfo) {
+        cardName.css({top: dealerNameTop, left: dealerCardLeft, marginLeft: dealerNameMargin});
+        cardValue.css({top: dealerValueTop, left: dealerCardLeft, marginLeft: dealerValueMargin});
+      } else {
+        cardName.css({display: 'none'});
+        cardValue.css({display: 'none'});
+      }
     }
 
     card.on({
@@ -239,39 +211,26 @@ $(document).ready(function() {
 
     var cardWidth;
     var cardHeight;
-    var dealerCardMargin;
-    var dealerCardTop;
-    var dealerCardLeft;
+    var dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
+    var dealerCardTop = '13%';
+    var dealerCardLeft = '85%';
 
     if (window.matchMedia('(min-width: 1250px)').matches) {
       cardWidth = '19vh';
       cardHeight = '29vh';
-      dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      dealerCardLeft = '85%';
-      dealerCardTop = '13%';
     } else if (window.matchMedia('(min-width: 992px)').matches) {
       cardWidth = '18vh';
       cardHeight = '27vh';
-      dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      dealerCardLeft = '85%';
-      dealerCardTop = '13%';
     } else if (window.matchMedia('(min-width: 720px)').matches) {
       cardWidth = '16vh';
       cardHeight = '24vh';
-      dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      dealerCardLeft = '85%';
-      dealerCardTop = '13%';
     } else if (window.matchMedia('(min-width: 580px)').matches) {
       cardWidth = '12vh';
       cardHeight = '18vh';
-      dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      dealerCardLeft = '85%';
       dealerCardTop = '10%';
     } else {
       cardWidth = '8vh';
       cardHeight = '12vh';
-      dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      dealerCardLeft = '85%';
       dealerCardTop = '10%';
     }
 
@@ -303,55 +262,39 @@ $(document).ready(function() {
     var cardName = $('<p>').addClass('cardName DealerCardNames').html(card.name.replace(/_/g, '&nbsp;'));
     var cardValue = $('<p>').addClass('cardValue DealerPoints').html('Points: ' + card.value);
     $('body').append(cardName, cardValue);
-
     $('.hole').attr('src', image);
-
     var dealerNameTop;
     var dealerNameMargin;
-    var nameDisplay;
     var dealerValueMargin;
     var dealerValueTop;
-    var valueDisplay;
+    var displayInfo = true;
 
     if (window.matchMedia('(min-width: 1250px)').matches) {
       dealerNameTop = '10.5%';
       dealerNameMargin = (-6.25 * this.hand.cards.length) + 'vh';
       dealerValueTop = '38%';
       dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      nameDisplay = 'block';
-      valueDisplay = 'block';
     } else if (window.matchMedia('(min-width: 992px)').matches) {
       dealerNameTop = '10.5%';
       dealerNameMargin = -4 + (3.5 * this.hand.cards.length) + '%';
       dealerValueTop = '36.5%';
       dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      nameDisplay = 'block';
-      valueDisplay = 'block';
     } else if (window.matchMedia('(min-width: 720px)').matches) {
       dealerNameTop = '10.5%';
       dealerNameMargin = -4 + (3.5 * this.hand.cards.length) + '%';
       dealerValueTop = '33%';
       dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      nameDisplay = 'block';
-      valueDisplay = 'block';
-    } else if (window.matchMedia('(min-width: 580px)').matches) {
-      dealerNameTop = '10.5%';
-      dealerNameMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      dealerValueTop = '29.75%';
-      dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      nameDisplay = 'none';
-      valueDisplay = 'none';
     } else {
-      dealerNameTop = '0';
-      dealerNameMargin = '0';
-      dealerValueTop = '0';
-      dealerValueMargin = '0';
-      nameDisplay = 'none';
-      valueDisplay = 'none';
+      displayInfo = false;
     }
 
-    cardName.css({top: dealerNameTop, left: '85%', marginLeft: dealerNameMargin, display: nameDisplay});
-    cardValue.css({top: dealerValueTop, left: '85%', marginLeft: dealerNameMargin, display: valueDisplay});
+    if (displayInfo) {
+      cardName.css({top: dealerNameTop, left: '85%', marginLeft: dealerNameMargin});
+      cardValue.css({top: dealerValueTop, left: '85%', marginLeft: dealerNameMargin});
+    } else {
+      cardName.css({display: 'none'});
+      cardValue.css({display: 'none'});
+    }
 
     $('.hole').on({
       'mouseover': function() {
@@ -373,7 +316,6 @@ $(document).ready(function() {
 
   function resizeCards() {
     $(window).resize(function() {
-
       var cardWidth;
       var cardHeight;
       var playerCardTop;
@@ -389,6 +331,7 @@ $(document).ready(function() {
       var dealerNameMargin;
       var dealerValueMargin;
       var dealerValueTop;
+      var displayInfo = true;
 
       if (window.matchMedia('(min-width: 1250px)').matches) {
         playerCardLeft = '3%';
@@ -406,8 +349,6 @@ $(document).ready(function() {
         dealerNameMargin = (-6.25 * dealer.hand.cards.length) + 'vh';
         dealerValueTop = '38%';
         dealerValueMargin = (-6.25 * dealer.hand.cards.length) + 'vh';
-        nameDisplay = 'block';
-        valueDisplay = 'block';
       } else if (window.matchMedia('(min-width: 992px)').matches) {
         playerCardLeft = '3%';
         playerCardBottom = '38%';
@@ -424,8 +365,6 @@ $(document).ready(function() {
         dealerNameMargin = -4 + (3.5 * dealer.hand.cards.length) + '%';
         dealerValueTop = '36.5%';
         dealerValueMargin = (-6.25 * dealer.hand.cards.length) + 'vh';
-        nameDisplay = 'block';
-        valueDisplay = 'block';
       } else if (window.matchMedia('(min-width: 720px)').matches) {
         playerCardLeft = '3%';
         playerCardBottom = '38%';
@@ -442,58 +381,48 @@ $(document).ready(function() {
         dealerNameMargin = -4 + (3.5 * dealer.hand.cards.length) + '%';
         dealerValueTop = '33%';
         dealerValueMargin = (-6.25 * dealer.hand.cards.length) + 'vh';
-        nameDisplay = 'block';
-        valueDisplay = 'block';
       } else if (window.matchMedia('(min-width: 580px)').matches) {
         playerCardLeft = '0';
         playerCardBottom = '38%';
         playerCardTop = '52%';
         cardWidth = '12vh';
         cardHeight = '18vh';
-        playerNameBottom = '52.5%';
-        playerValueBottom = 0;
-        playerNameMargin = 0;
-        playerValueMargin = 0;
         dealerCardLeft = '85%';
         dealerCardTop = '10%';
-        dealerNameTop = 0;
-        dealerNameMargin = 0;
-        dealerValueTop = 0;
-        dealerValueMargin = 0;
-        nameDisplay = 'none';
-        valueDisplay = 'none';
+        displayInfo = false;
       } else {
         playerCardLeft = '0';
         playerCardBottom = '38%';
         playerCardTop = '65%';
         cardWidth = '8vh';
         cardHeight = '12vh';
-        playerNameBottom = 0;
-        playerNameMargin = 0;
-        playerValueBottom = 0;
-        playerValueMargin = 0;
         dealerCardLeft = '85%';
         dealerCardTop = '10%';
-        dealerNameTop = 0;
-        dealerNameMargin = 0;
-        nameDisplay = 'none';
-        dealerValueTop = 0;
-        dealerValueMargin = 0;
-        valueDisplay = 'none';
+        displayInfo = false;
       }
 
         $('.PlayerCards').css({width: cardWidth, height: cardHeight, left: playerCardLeft, bottom: playerCardBottom, top: playerCardTop});
-        $('.PlayerCardNames').css({bottom: playerNameBottom, left: playerCardLeft, marginLeft: playerNameMargin, display: nameDisplay});
-        $('.PlayerPoints').css({bottom: playerValueBottom, left: playerCardLeft, marginLeft: playerValueMargin, display: valueDisplay});
         $('.DealerCards').css({width: cardWidth, height: cardHeight, left: dealerCardLeft, top: dealerCardTop});
-        $('.DealerCardNames').css({top: dealerNameTop, left: dealerCardLeft, marginLeft: dealerNameMargin, display: nameDisplay});
-        $('.DealerPoints').css({top: dealerValueTop, left: dealerCardLeft, marginLeft: dealerValueMargin, display: valueDisplay});
+
+        if (displayInfo) {
+          $('.PlayerCardNames').css({bottom: playerNameBottom, left: playerCardLeft, marginLeft: playerNameMargin, display: 'block'});
+          $('.PlayerPoints').css({bottom: playerValueBottom, left: playerCardLeft, marginLeft: playerValueMargin, display: 'block'});
+          $('.DealerCardNames').css({top: dealerNameTop, left: dealerCardLeft, marginLeft: dealerNameMargin, display: 'block'});
+          $('.DealerPoints').css({top: dealerValueTop, left: dealerCardLeft, marginLeft: dealerValueMargin, display: 'block'});
+        } else {
+          $('.PlayerCardNames').css({display: 'none'});
+          $('.PlayerPoints').css({display: 'none'});
+          $('.DealerCardNames').css({display: 'none'});
+          $('.DealerPoints').css({display: 'none'});
+        }
     })
   };
 
   function newGame() {
     $('#deal').on({
       'click': function() {
+        $('#PlayerName').attr('readonly', true);
+        $('.bankrollInput').attr('readonly', true);
         if ((bet >= 5) && (bet <= 100) && (bankroll >= bet)) {
           gameRun = true;
           deal();
@@ -569,7 +498,13 @@ $(document).ready(function() {
   function makeHeader() {
     var navbar = $('#navbar');
     var title = $('<h1>').attr('id', 'title').addClass('nav').text('Blackjack!');
-    var displayBankroll = $('<h1>').attr('id', 'bankroll').addClass('nav').text('Bankroll: $' + bankroll);
+    var displayBankroll = $('<h1>').attr('id', 'bankroll').addClass('nav').html('Bankroll: $');
+    var bankrollForm = $('<form>').attr('id', 'bankrollForm').appendTo(displayBankroll);
+    var bankrollInput = $('<input>').attr({
+      class: 'bankrollInput',
+      name: 'bankroll',
+      value: '300'
+    }).appendTo(bankrollForm);
     var displayBet = $('<h1>').attr('id', 'bet').addClass('nav').text('Bet: $' + bet);
     var kda = $('<h1>').attr('id', 'kda').addClass('nav').text('W' + wins + ' L' + losses + ' T' + ties);
     navbar.append(title, displayBankroll, displayBet, kda);
@@ -584,7 +519,7 @@ $(document).ready(function() {
     chooseBet.append($('<li>').addClass('selectBet bet10').text('$10'));
     chooseBet.append($('<li>').addClass('betCursor').html('&spades;'));
     chooseBet.append($('<li>').addClass('selectBet bet25').text('$25'));
-    var prompt = $('<p>').attr('id', 'prompt').html('What will<br>' + player.nickname + ' do?');
+    var prompt = $('<p>').attr('id', 'prompt');
     $('#bottom').prepend(prompt);
     $('#bottom').prepend(chooseBet);
   }
@@ -601,7 +536,7 @@ $(document).ready(function() {
   function resetBet() {
     var betText = $('.betText');
     betText.css({cursor: 'pointer'}).on('click', function() {
-      bet = 0;
+      bet = 5;
       updateBetHeader();
       betText.css({cursor: 'auto'}).html('BET').off('click');
     });
@@ -764,7 +699,7 @@ $(document).ready(function() {
           var kda = $('#kda');
           updateScore();
           kda.text('W' + wins + ' L' + losses + ' T' + ties);
-          bet = 0;
+          bet = 5;
           updateBetHeader();
         }
         showDeal();
@@ -785,7 +720,7 @@ $(document).ready(function() {
   function hideDeal() {
     $('#deal').css({display: 'none'});
     $('#actions').css({display: 'block'});
-    $('#prompt').css({display: 'block'});
+    $('#prompt').css({display: 'block'}).html('What will<br>' + nickname + ' do?');
     $('#betList').css({display: 'none'});
     $('.disableOverlay').css({display: 'none'});
   }
@@ -1049,6 +984,10 @@ $(document).ready(function() {
   //   $('#cardHolder').append(cardsLeft, numberOfDecks);
   // }
 
+
+
+
+
   // got tired of staring at green so here's something fun
   function changeBackgroundColor() {
     var colors = ['#8bcd73', '#ffe69c', '#5a8362', '#e65a29', '#8bc5cd', '#a4624a', '#ff8bac', '#f6bd20', '#c57be6', '#b4b4b4'];
@@ -1080,13 +1019,25 @@ $(document).ready(function() {
 // INITIALIZATIONS
   var deckAmount = 3; // can I prompt for this?
   var deck = createDeck();
-  var player = new Player('Player', 'Player'); // nickname rewrite in form
-  var dealer = new Player('Dealer', 'Dealer');
+  var player = new Player('Player');
+  var dealer = new Player('Dealer');
+  var nickname = 'PLAYER';
+  console.log('Hint! You can change your name and bankroll only before you begin...');
+  $('#nameForm').submit(function() {
+    nickname = $('#PlayerName').val() || 'Player';
+    console.log('Name registered!');
+    return false;
+  })
   var wins = 0, losses = 0, ties = 0, winner = null;
-  var bankroll = prompt('Please insert a bankroll amount.');
-  var bet = 0;
+  var bet = 5;
   var runGame = true;
   makeHeader();
+  bankroll = 300;
+  $("#bankrollForm").submit(function() {
+    bankroll = $('.bankrollInput').val() || 300;
+    console.log('You have successfully dropped $' + bankroll + '. Good luck!');
+    return false;
+  });
   player.makeTable();
   dealer.makeTable();
   player.blackjackMeter();

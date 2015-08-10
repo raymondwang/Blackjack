@@ -47,6 +47,22 @@
   width: 33.75%;
 }
 
+#bankrollForm {
+  display: inline-block;
+}
+
+.bankrollInput {
+  background-color: rgba(0, 0, 0, 0);
+  font-family: 'pokemon';
+  color: white;
+  line-height: 2.25;
+  width: 6.25vw;
+  font-size: 1.5vw;
+  text-align: center;
+  border: 0;
+  position: relative;
+}
+
 #kda {
   border-right: none;
 }
@@ -81,13 +97,22 @@ body {
   height: 10vh;
 }
 
-#PlayerName { /* will prob move this all into js */
+#nameForm {
+  display: inline-block;
+}
+
+#PlayerName {
   position: absolute;
-  bottom: 37vh;
-  /*left: 62vw;*/
+  font-family: 'pokemon';
+  background-color: rgba(0, 0, 0, 0);
+  border: 0;
+  width: 30vw;
+  bottom: 42vh;
   right: 6.25vw;
   text-align: right;
-  }
+  line-height: 2;
+  cursor: text;
+}
 
 #DealerName {
   position: absolute;
