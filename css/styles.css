@@ -56,11 +56,18 @@
   font-family: 'pokemon';
   color: white;
   line-height: 2.25;
-  width: 6.25vw;
+  width: 8vw;
   font-size: 1.5vw;
   text-align: center;
   border: 0;
   position: relative;
+  cursor: pointer;
+}
+
+.bankrollInput::-webkit-outer-spin-button,
+.bankrollInput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 #kda {
@@ -111,7 +118,7 @@ body {
   right: 6.75vw;
   text-align: right;
   line-height: 2;
-  cursor: text;
+  cursor: pointer;
 }
 
 #DealerName {

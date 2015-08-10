@@ -22,10 +22,11 @@ $(document).ready(function() {
   Player.prototype.blackjackMeter = function blackjackMeter() {
       var color;
       var handPoints = this.handVal;
+      var currentPoints = $('#' + this.name + 'Value').text().split(' / ')[0];
+
       if (this.hand.total >= 0 && this.hand.total < 21) {
         value = ((0.88095238095) * this.hand.total) + 'vw';
         color = 'blue';
-        handPoints.text(this.hand.total + ' / 21');
         if (this.hand.total < 10) {
           this.spade.html('&diams;<span class="colon">:</span>').css({color: 'red'});
         } else {
@@ -34,17 +35,41 @@ $(document).ready(function() {
       } else if (this.hand.total === 21) {
         value = '18.5vw';
         color = 'yellow';
-        handPoints.text('BLACKJACK!')
         this.spade.html('&spades;<span class="colon">:</span>').css({color: 'black'});
       } else {
         value = '18.5vw';
         color = 'red';
-        handPoints.text('BUST!');
         this.spade.html('&hearts;<span class="colon">:</span>').css({color: 'red'});
       }
       this.meter.css({backgroundColor: color});
-      this.meter.animate({width: value}, 500);
+      var scope = this;
+
+      var difference = this.hand.total - currentPoints;
+      var speed = 500 / difference;
+
+      var incrementer = setInterval(function() {
+        if (currentPoints < scope.hand.total) {
+          currentPoints++;
+          if (currentPoints > 21) {
+            handPoints.text('BUST!');
+          } else {
+            handPoints.text(currentPoints + ' / 21');
+          }
+        } else {
+          clearInterval(incrementer);
+          if (currentPoints === 21) {
+           handPoints.text('BLACKJACK!');
+         }
+        }
+      }, speed);
+      this.meter.animate({width: value}, 500, 'linear');
     }
+
+  Player.prototype.makeMeter = function makeMeter() {
+    this.handVal.text('0 / 21');
+    this.meter.animate({width: '0'}, 250);
+    this.spade.css({color: 'black'});
+  }
 
   // Draws card
   Player.prototype.drawCard = function drawCard() {
@@ -139,17 +164,18 @@ $(document).ready(function() {
       'mouseover': function() {
         $('.' + scope + 'Cards').css({opacity: '0.25'});
         card.css({zIndex: '2', opacity: '1'}).animate({marginTop: '-2.5vh'}, 50);
+        cardImg.css({zIndex: '2', opacity: '1'});
         cardName.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '2.5vh', marginTop: '-2.5vh'}, 50);
         cardValue.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '-2.5vh', marginTop: '2.5vh'}, 50);
       },
       'mouseout': function() {
         $('.' + scope + 'Cards').css({opacity: '1'});
         card.css({zIndex: '1'}).animate({marginTop: '0'}, 50);
+        cardImg.css({zIndex: '2', opacity: '1'});
         cardName.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0', marginTop: '0'}, 50);
         cardValue.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0', marginTop: '0'}, 50);
       }
     });
-
     this.blackjackMeter();
 
     if (player.hand.cards.length >= 2 && dealer.hand.cards.length >= 2) {
@@ -222,6 +248,9 @@ $(document).ready(function() {
   Player.prototype.revealHole = function revealHole() {
     card = this.hand.hole;
     this.hand.total += card.value;
+    if (card.value == 11) {
+      this.aces++;
+    }
     this.blackjackMeter();
     var flipContainer = $(".flip-container");
     $('.DealerCards:not(:eq(0))').animate({opacity: '0.25'}, 500);
@@ -344,7 +373,7 @@ $(document).ready(function() {
           gameRun = true;
           player.meter.animate({'width': '0'}, 250);
           dealer.meter.animate({'width': '0'}, 250);
-          $('#PlayerName').attr('readonly', true);
+          $('#PlayerName').attr('readonly', true).css({cursor: 'text'});
           $('.bankrollInput').attr('readonly', true);
           $('#betList').css({display: 'none'});
           deal();
@@ -425,6 +454,9 @@ $(document).ready(function() {
     var bankrollInput = $('<input>').attr({
       class: 'bankrollInput',
       name: 'bankroll',
+      type: 'number',
+      min: '5',
+      max: '9999',
       value: '300',
       maxlength: '4'
     }).appendTo(bankrollForm);
@@ -459,7 +491,7 @@ $(document).ready(function() {
   function resetBet() {
     var betText = $('.betText');
     betText.css({cursor: 'pointer'}).on('click', function() {
-      bet = 5;
+      bet = 0;
       updateBetHeader();
       betText.css({cursor: 'auto'}).html('BET').off('click');
     });
@@ -578,16 +610,20 @@ $(document).ready(function() {
     $('.card, .cardName, .cardValue').remove();
     player.hand = {cards: [], total: 0, stand: false, aces: 0, hole: ''};
     dealer.hand = {cards: [], total: 0, stand: false, aces: 0, hole: ''};
-    player.drawCard();
-    setTimeout(function() {
-      dealer.drawHole();
-    }, 500); // HOLE CARD
+    player.makeMeter();
+    dealer.makeMeter();
     setTimeout(function() {
       player.drawCard();
-    }, 1000);
+    }, 250);
+    setTimeout(function() {
+      dealer.drawHole();
+    }, 750); // HOLE CARD
+    setTimeout(function() {
+      player.drawCard();
+    }, 1250);
     setTimeout(function() {
       dealer.drawCard();
-    }, 1500);
+    }, 1750);
     $('#deal').off('click');
     $('.betText').off('click');
     $('.selectBet').eq(0).off('click');
@@ -960,8 +996,8 @@ $(document).ready(function() {
   });
   player.makeTable();
   dealer.makeTable();
-  player.blackjackMeter();
-  dealer.blackjackMeter();
+  player.makeMeter();
+  dealer.makeMeter();
   newGame();
   // inspectDeck();
   changeBet();
