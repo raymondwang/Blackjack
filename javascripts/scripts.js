@@ -70,16 +70,8 @@ $(document).ready(function() {
     var playerCardTop;
     var playerCardLeft;
     var playerCardBottom;
-    var playerValueBottom;
-    var playerNameBottom;
-    var playerNameMargin;
-    var playerValueMargin;
     var dealerCardTop;
     var dealerCardLeft;
-    var dealerNameTop;
-    var dealerNameMargin;
-    var dealerValueMargin;
-    var dealerValueTop;
     var displayInfo = true;
     var playerCardMargin = (6.25 * this.hand.cards.length) + 'vh';
     var dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
@@ -90,48 +82,24 @@ $(document).ready(function() {
       cardWidth = '19vh';
       cardHeight = '29vh';
       playerCardTop = '40%';
-      // playerNameBottom = '60.5%';
-      // playerValueBottom = '33%';
-      // playerNameMargin = (2.75 * this.hand.cards.length) + '%';
-      // playerValueMargin = (3 * this.hand.cards.length) + '%';
       dealerCardLeft = '85%';
       dealerCardTop = '13%';
-      // dealerNameTop = '10.5%';
-      // dealerNameMargin = (-6.25 * dealer.hand.cards.length) + 'vh';
-      // dealerValueTop = '38%';
-      // dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
     } else if (window.matchMedia('(min-width: 992px)').matches) {
       playerCardLeft = '3%';
       playerCardBottom = '38%';
       cardWidth = '18vh';
       cardHeight = '27vh';
       playerCardTop = '40%';
-      // playerNameBottom = '60.5%';
-      // playerValueBottom = '35.5%';
-      // playerNameMargin = 1.5 + (3 * this.hand.cards.length) + '%';
-      // playerValueMargin = 3 + (4.5 * (this.hand.cards.length - 1)) + '%';
       dealerCardLeft = '85%';
       dealerCardTop = '13%';
-      // dealerNameTop = '10.5%';
-      // dealerNameMargin = -4 + (3.5 * this.hand.cards.length) + '%';
-      // dealerValueTop = '36.5%';
-      // dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
     } else if (window.matchMedia('(min-width: 720px)').matches) {
       playerCardLeft = '3%';
       playerCardBottom = '38%';
       cardWidth = '16vh';
       cardHeight = '24vh';
       playerCardTop = '45%';
-      // playerNameBottom = '56%';
-      // playerValueBottom = '34%';
-      // playerNameMargin = -0.75 + (5.75 * this.hand.cards.length - 1) + '%';
-      // playerValueMargin = -1.5 + (6 * this.hand.cards.length - 1) + '%';
       dealerCardLeft = '85%';
       dealerCardTop = '13%';
-      // dealerNameTop = '10.5%';
-      // dealerNameMargin = -4 + (3.5 * this.hand.cards.length) + '%';
-      // dealerValueTop = '33%';
-      // dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
     } else if (window.matchMedia('(min-width: 580px)').matches) {
       playerCardLeft = '0';
       playerCardBottom = '38%';
@@ -155,23 +123,16 @@ $(document).ready(function() {
     if (scope == 'Player') {
       card.animate({width: cardWidth, height: cardHeight, left: playerCardLeft, bottom: playerCardBottom, top: playerCardTop, marginBottom: 0, marginTop: 0, marginLeft: playerCardMargin}, 500);
       cardImg.animate({width: cardWidth, height: cardHeight});
-      if (displayInfo) {
-        // cardName.css({bottom: playerNameBottom, left: playerCardLeft, marginLeft: playerNameMargin});
-        // cardValue.css({bottom: playerValueBottom, left: playerCardLeft, marginLeft: playerValueMargin});
-      } else {
-        cardName.css({display: 'none'});
-        cardValue.css({display: 'none'});
-      }
     } else { // if Dealer
       card.animate({width: cardWidth, height: cardHeight, left: dealerCardLeft, top: dealerCardTop, marginTop: 0, marginBottom: 0, marginLeft: dealerCardMargin}, 500);
       cardImg.animate({width: cardWidth, height: cardHeight});
-      if (displayInfo) {
-        // cardName.css({top: dealerNameTop, left: dealerCardLeft, marginLeft: dealerNameMargin});
-        // cardValue.css({top: dealerValueTop, left: dealerCardLeft, marginLeft: dealerValueMargin});
-      } else {
-        cardName.css({display: 'none'});
-        cardValue.css({display: 'none'});
-      }
+    }
+    if (displayInfo) {
+      cardName.css({display: 'block'});
+      cardValue.css({display: 'block'});
+    } else {
+      cardName.css({display: 'none'});
+      cardValue.css({display: 'none'});
     }
 
     card.on({
@@ -276,43 +237,24 @@ $(document).ready(function() {
     var dealerNameMargin;
     var dealerValueMargin;
     var dealerValueTop;
-    var displayInfo = true;
 
-    // if (window.matchMedia('(min-width: 1250px)').matches) {
-    //   dealerNameTop = '10.5%';
-    //   dealerNameMargin = (-6.25 * this.hand.cards.length) + 'vh';
-    //   dealerValueTop = '38%';
-    //   dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
-    // } else if (window.matchMedia('(min-width: 992px)').matches) {
-    //   dealerNameTop = '10.5%';
-    //   dealerNameMargin = -4 + (3.5 * this.hand.cards.length) + '%';
-    //   dealerValueTop = '36.5%';
-    //   dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
-    // } else if (window.matchMedia('(min-width: 720px)').matches) {
-    //   dealerNameTop = '10.5%';
-    //   dealerNameMargin = -4 + (3.5 * this.hand.cards.length) + '%';
-    //   dealerValueTop = '33%';
-    //   dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
-    // } else {
-    //   displayInfo = false;
-    // }
-    //
-    // if (displayInfo) {
-    //   cardName.css({top: dealerNameTop, left: '85%', marginLeft: dealerNameMargin});
-    //   cardValue.css({top: dealerValueTop, left: '85%', marginLeft: dealerNameMargin});
-    // } else {
-    //   cardName.css({display: 'none'});
-    //   cardValue.css({display: 'none'});
-    // }
+    if (window.matchMedia('(max-width: 580px)').matches) {
+      displayInfo = false;
+      console.log('small');
+    } else {
+      displayInfo = true;
+    }
 
     $('.flip-container').off('mouseover', 'mouseout');
 
-    $('.flip-container').on({
+    $('.holeBack').on({
       'mouseover': function() {
         $('.DealerCards').css({opacity: '0.25'});
         $('.flip-container').css({zIndex: '2', opacity: '1'}).animate({marginTop: '-2.5vh'}, 50);
-        $('.holeName').css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '2.5vh', marginTop: '-2.5vh'}, 50);
-        $('.holePoints').css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '-2.5vh', marginTop: '2.5vh'}, 50);
+        if (displayInfo) {
+          $('.holeName').css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '2.5vh', marginTop: '-2.5vh'}, 50);
+          $('.holePoints').css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '-2.5vh', marginTop: '2.5vh'}, 50);
+        }
       },
       'mouseout': function() {
         $('.DealerCards').css({opacity: '1'});
@@ -332,16 +274,8 @@ $(document).ready(function() {
       var playerCardTop;
       var playerCardLeft;
       var playerCardBottom;
-      var playerValueBottom;
-      var playerNameBottom;
-      var playerNameMargin;
-      var playerValueMargin;
       var dealerCardTop;
       var dealerCardLeft;
-      var dealerNameTop;
-      var dealerNameMargin;
-      var dealerValueMargin;
-      var dealerValueTop;
       var displayInfo = true;
 
       if (window.matchMedia('(min-width: 1250px)').matches) {
@@ -350,48 +284,24 @@ $(document).ready(function() {
         cardWidth = '19vh';
         cardHeight = '29vh';
         playerCardTop = '40%';
-        playerNameBottom = '60.5%';
-        playerValueBottom = '33%';
-        playerNameMargin = (2.75 * player.hand.cards.length) + '%';
-        playerValueMargin = (3 * player.hand.cards.length) + '%';
         dealerCardLeft = '85%';
         dealerCardTop = '13%';
-        dealerNameTop = '10.5%';
-        dealerNameMargin = (-6.25 * dealer.hand.cards.length) + 'vh';
-        dealerValueTop = '38%';
-        dealerValueMargin = (-6.25 * dealer.hand.cards.length) + 'vh';
       } else if (window.matchMedia('(min-width: 992px)').matches) {
         playerCardLeft = '3%';
         playerCardBottom = '38%';
         cardWidth = '18vh';
         cardHeight = '27vh';
         playerCardTop = '40%';
-        playerNameBottom = '60.5%';
-        playerValueBottom = '35.5%';
-        playerNameMargin = 1.5 + (3 * player.hand.cards.length) + '%';
-        playerValueMargin = 3 + (4.5 * (player.hand.cards.length - 1)) + '%';
         dealerCardLeft = '85%';
         dealerCardTop = '13%';
-        dealerNameTop = '10.5%';
-        dealerNameMargin = -4 + (3.5 * dealer.hand.cards.length) + '%';
-        dealerValueTop = '36.5%';
-        dealerValueMargin = (-6.25 * dealer.hand.cards.length) + 'vh';
       } else if (window.matchMedia('(min-width: 720px)').matches) {
         playerCardLeft = '3%';
         playerCardBottom = '38%';
         cardWidth = '16vh';
         cardHeight = '24vh';
         playerCardTop = '45%';
-        playerNameBottom = '56%';
-        playerValueBottom = '34%';
-        playerNameMargin = -0.75 + (5.75 * player.hand.cards.length - 1) + '%';
-        playerValueMargin = -1.5 + (6 * player.hand.cards.length - 1) + '%';
         dealerCardLeft = '85%';
         dealerCardTop = '13%';
-        dealerNameTop = '10.5%';
-        dealerNameMargin = -4 + (3.5 * dealer.hand.cards.length) + '%';
-        dealerValueTop = '33%';
-        dealerValueMargin = (-6.25 * dealer.hand.cards.length) + 'vh';
       } else if (window.matchMedia('(min-width: 580px)').matches) {
         playerCardLeft = '0';
         playerCardBottom = '38%';
@@ -412,20 +322,18 @@ $(document).ready(function() {
         displayInfo = false;
       }
 
-        $('.PlayerCards').css({width: cardWidth, height: cardHeight, left: playerCardLeft, bottom: playerCardBottom, top: playerCardTop});
-        $('.DealerCards').css({width: cardWidth, height: cardHeight, left: dealerCardLeft, top: dealerCardTop});
-        $('.hole').css({width: cardWidth, height: cardHeight});
-        $('.holeBack').css({width: cardWidth, height: cardHeight});
-
-        if (displayInfo) {
-          $('.cardName').css({bottom: playerNameBottom, left: playerCardLeft, marginLeft: playerNameMargin, display: 'block'});
-          $('.PlayerPoints').css({bottom: playerValueBottom, left: playerCardLeft, marginLeft: playerValueMargin, display: 'block'});
-          $('.DealerPoints').css({top: dealerValueTop, left: dealerCardLeft, marginLeft: dealerValueMargin, display: 'block'});
-        } else {
-          $('.cardName').css({display: 'none'});
-          $('.PlayerPoints').css({display: 'none'});
-          $('.DealerPoints').css({display: 'none'});
-        }
+     $('.PlayerCards').css({width: cardWidth, height: cardHeight, left: playerCardLeft, bottom: playerCardBottom, top: playerCardTop, marginBottom: 0, marginTop: 0});
+     $('.DealerCards').css({width: cardWidth, height: cardHeight, left: dealerCardLeft, top: dealerCardTop, marginTop: 0, marginBottom: 0});
+     $('.hole').css({width: cardWidth, height: cardHeight});
+     $('.holeBack').css({width: cardWidth, height: cardHeight});
+    $('.cardImg').css({width: cardWidth, height: cardHeight});
+      if (displayInfo) {
+        $('.cardName').css({display: 'block'});
+        $('.cardValue').css({display: 'block'});
+      } else {
+        $('.cardName').css({display: 'none'});
+        $('.cardValue').css({display: 'none'});
+      }
     })
   };
 
