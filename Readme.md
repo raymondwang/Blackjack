@@ -7,6 +7,7 @@ A single-player Blackjack game, designed with nostalgia.
 ### Screenshots
 
 <img src="images/screenshot01.png" />
+<img src="images/screenshot02.png" />
 
 ---
 
@@ -14,11 +15,13 @@ A single-player Blackjack game, designed with nostalgia.
 
 - As a user, I would like financial freedom in terms of selecting my bankroll and placing and resetting my bets.
   - The top navigation bar is essential for identifying how much I have in my bankroll and the current bet at any given time.
+  - The bankroll can only be changed before the first hand is dealt!
 - As a user, I would like to draw cards and have autonomy over my actions afterwards.
 - As a user, clarity about my hand is extremely important.
   - The bar under my name should display the point value of my hand, and be understood instantly. It should be prefaced by a Diamond if my hand is under 10 points, a Club if my hand is between 10 and 20 points, a Heart if I bust, and a Spade if I land a Blackjack, with accompanying colors as well.
   - Mousing over each card should display its name and point value for me to manually consider the information laid on the table.
 - As a user, I would like to know my win/loss record at a glance to the top right.
+- As a user, I would like to be able to form a personal relationship with each game by specifying my name (hint: this can only be done before the first turn).
 
 ---
 ### Test Statements

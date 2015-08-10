@@ -1029,8 +1029,7 @@ $(document).ready(function() {
     return false;
   })
   var wins = 0, losses = 0, ties = 0, winner = null;
-  var bet = 5;
-  var runGame = true;
+  var bet = 0;
   makeHeader();
   bankroll = 300;
   $("#bankrollForm").submit(function() {
