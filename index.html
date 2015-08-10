@@ -13,9 +13,10 @@
     <div class="disableOverlay"></div>
     <p id="DealerName" class="name">DEALER</p>
     <form id="nameForm">
-      <input id="PlayerName" class="name" name="nickname" value="PLAYER"></input>
+      <input id="PlayerName" class="name" name="nickname" value="PLAYER" maxlength="8"></input>
     </form>
-    <div id="cardHolder"><img id="deck" src="images/PokeballDeck.png"></div> <!-- alt could be  number of cards/decks -->
+    <div id="cardHolder"><img id="deck" src="images/PokeballDeck.png"></div>
+    <div class="flip-container DealerCards"  ontouchstart="this.classList.toggle('hover');"></div><!-- alt could be  number of cards/decks -->
     <div id="bottom">
       <ul id="betList">
       </ul>

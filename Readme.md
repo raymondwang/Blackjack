@@ -41,7 +41,8 @@ A single-player Blackjack game, designed with nostalgia.
 - Maybe a tutorial to show that name and bankroll can be set
 - Fix hover card name and value positions!
 - Could add some responsiveness for screen height
-- Make Blackjack bars fill up in intervals
-- Flip hole card animation
+- ~~Make Blackjack bars fill up in intervals~~
+  - Did this, but need to update point values to do this also--setInterval probably
+- Hole card animation still has kinks
 - Decide on a decent mouseover animation for Deal button that isn't tacky
 - Insurance ?

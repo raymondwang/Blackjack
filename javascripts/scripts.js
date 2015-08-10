@@ -10,7 +10,7 @@ $(document).ready(function() {
     this.stats = $('<div>').attr('id', this.name + 'Stats');
     this.spade = $('<li>').addClass("spade").html('&spades;<span class="colon">:</span>');
     this.hpBar = $('<div>').attr('id', this.name + 'HP').addClass('hpBar');
-    this.meter = $('<div>').attr('id', this.name + 'Meter');
+    this.meter = $('<div>').attr('id', this.name + 'Meter').css({height: '0.5vh', position: 'absolute'});
     this.hpBar.append(this.meter);
     this.handVal = $('<li>').attr('id', this.name + 'Value').addClass('handValue');
     this.handTotal = $('<div>').attr('id', this.name + 'Total').addClass('pointTotals');
@@ -20,30 +20,31 @@ $(document).ready(function() {
   }
 
   Player.prototype.blackjackMeter = function blackjackMeter() {
-    var color;
-    var handPoints = this.handVal;
-    if (this.hand.total >= 0 && this.hand.total < 21) {
-      value = ((0.88095238095) * this.hand.total) + 'vw';
-      color = 'blue';
-      handPoints.text(this.hand.total + ' / 21');
-      if (this.hand.total < 10) {
-        this.spade.html('&diams;<span class="colon">:</span>').css({color: 'red'});
+      var color;
+      var handPoints = this.handVal;
+      if (this.hand.total >= 0 && this.hand.total < 21) {
+        value = ((0.88095238095) * this.hand.total) + 'vw';
+        color = 'blue';
+        handPoints.text(this.hand.total + ' / 21');
+        if (this.hand.total < 10) {
+          this.spade.html('&diams;<span class="colon">:</span>').css({color: 'red'});
+        } else {
+          this.spade.html('&clubs;<span class="colon">:</span>').css({color: 'black'});
+        }
+      } else if (this.hand.total === 21) {
+        value = '18.5vw';
+        color = 'yellow';
+        handPoints.text('BLACKJACK!')
+        this.spade.html('&spades;<span class="colon">:</span>').css({color: 'black'});
       } else {
-        this.spade.html('&clubs;<span class="colon">:</span>').css({color: 'black'});
+        value = '18.5vw';
+        color = 'red';
+        handPoints.text('BUST!');
+        this.spade.html('&hearts;<span class="colon">:</span>').css({color: 'red'});
       }
-    } else if (this.hand.total === 21) {
-      value = '18.5vw';
-      color = 'yellow';
-      handPoints.text('BLACKJACK!')
-      this.spade.html('&spades;<span class="colon">:</span>').css({color: 'black'});
-    } else {
-      value = '18.5vw';
-      color = 'red';
-      handPoints.text('BUST!');
-      this.spade.html('&hearts;<span class="colon">:</span>').css({color: 'red'});
+      this.meter.css({backgroundColor: color});
+      this.meter.animate({width: value}, 500);
     }
-    this.meter.css({backgroundColor: color, height: '0.5vh', 'width': value});
-  }
 
   // Draws card
   Player.prototype.drawCard = function drawCard() {
@@ -193,21 +194,18 @@ $(document).ready(function() {
   Player.prototype.drawHole = function drawHole() {
     this.hand.hole = deck.pop();
     this.hand.cards.push(this.hand.hole.name);
-
     var image = 'images/' + this.hand.hole.name.toLowerCase() + '.png';
-
-    // var flipContainer = $('<div>').addClass('flip-container card');
-    // var flipper = $('<div>').addClass('flipper');
-    // var front = $('<div>').addClass('front');
-    var card = $('<img>').attr('src', 'images/PokeballDeck.png').addClass('card ' + this.name + 'Cards hole');
-    $('body').append(card);
-    // var back = $('<div>').addClass('back');
-    // var cardBack = $('<img>').attr('src', image).addClass('card ' + this.name + 'Cards holeBack');
-    // front.append(card);
-    // back.append(cardBack);
-    // flipper.append(front, back);
-    // flipContainer.append(flipper);
-    // $('body').append(flipContainer);
+    var flipContainer = $('.flip-container');
+    var flipper = $('<div>').addClass('flipper');
+    var front = $('<div>').addClass('front');
+    var card = $('<img>').attr('src', 'images/PokeballDeck.png').addClass('card hole');
+    var back = $('<div>').addClass('back');
+    var cardBack = $('<img>').attr('src', image).addClass('card holeBack');
+    front.append(card);
+    back.append(cardBack);
+    flipper.append(front, back);
+    flipContainer.append(flipper);
+    $('body').append(flipContainer);
 
     var cardWidth;
     var cardHeight;
@@ -234,82 +232,90 @@ $(document).ready(function() {
       dealerCardTop = '10%';
     }
 
-    card.animate({width: cardWidth, height: cardHeight, left: dealerCardLeft, top: dealerCardTop, marginTop: 0, marginLeft: dealerCardMargin}, 500);
-    // flipContainer.css({marginTop: '0'});
-    // flipContainer.animate({left: '71.5%', top: '-13.4%', marginLeft: addMargin}, 500);
-    // cardBack.css({width: '19vh', height: '29vh', left: '71.5%', top: '-13.4%', marginTop: '0', marginLeft: addMargin});
-    card.on({
+    flipContainer.animate({width: cardWidth, height: cardHeight, left: dealerCardLeft, top: dealerCardTop, marginTop: 0, marginLeft: dealerCardMargin}, 500);
+    card.animate({width: cardWidth, height: cardHeight}, 500);
+    cardBack.css({width: cardWidth, height: cardHeight});
+
+    flipContainer.on({
       'mouseover': function() {
         $('.DealerCards').css({opacity: '0.25'});
-        card.css({zIndex: '2', opacity: '1'}).animate({marginTop: '-2.5vh'}, 50);
+        flipContainer.css({zIndex: '2', opacity: '1'}).animate({marginTop: '-2.5vh'}, 50);
       },
       'mouseout': function() {
         $('.DealerCards').css({opacity: '1'});
-        card.css({zIndex: '1'}).animate({marginTop: '0'}, 50);
+        flipContainer.css({zIndex: '1'}).animate({marginTop: '0'}, 50);
       }
     });
   }
 
   Player.prototype.revealHole = function revealHole() {
     card = this.hand.hole;
-    var image = 'images/' + card.name.toLowerCase() + '.png';
+    // var image = 'images/' + card.name.toLowerCase() + '.png';
 
-    // document.querySelector(".flip-container").classList.toggle("flip");
-    // card.css({top: '40%', left: '55%'});
     this.hand.total += card.value;
     this.blackjackMeter();
+    $('.DealerCards:not(:eq(0))').animate({opacity: '0.05'}, 250);
 
-    var cardName = $('<p>').addClass('cardName DealerCardNames').html(card.name.replace(/_/g, '&nbsp;'));
-    var cardValue = $('<p>').addClass('cardValue DealerPoints').html('Points: ' + card.value);
-    $('body').append(cardName, cardValue);
-    $('.hole').attr('src', image);
+    document.querySelector(".flip-container").classList.toggle("flip");
+    setTimeout(function() {
+      $('.DealerCards').css({opacity: '1'});
+    }, 1000);
+
+    // var cardName = $('<p>').addClass('cardName DealerCardNames').html(card.name.replace(/_/g, '&nbsp;'));
+    // var cardValue = $('<p>').addClass('cardValue DealerPoints').html('Points: ' + card.value);
+    // $('body').append(cardName, cardValue);
+    // $('.hole').attr('src', image);
+
+
     var dealerNameTop;
     var dealerNameMargin;
     var dealerValueMargin;
     var dealerValueTop;
     var displayInfo = true;
 
-    if (window.matchMedia('(min-width: 1250px)').matches) {
-      dealerNameTop = '10.5%';
-      dealerNameMargin = (-6.25 * this.hand.cards.length) + 'vh';
-      dealerValueTop = '38%';
-      dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
-    } else if (window.matchMedia('(min-width: 992px)').matches) {
-      dealerNameTop = '10.5%';
-      dealerNameMargin = -4 + (3.5 * this.hand.cards.length) + '%';
-      dealerValueTop = '36.5%';
-      dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
-    } else if (window.matchMedia('(min-width: 720px)').matches) {
-      dealerNameTop = '10.5%';
-      dealerNameMargin = -4 + (3.5 * this.hand.cards.length) + '%';
-      dealerValueTop = '33%';
-      dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
-    } else {
-      displayInfo = false;
-    }
+    // if (window.matchMedia('(min-width: 1250px)').matches) {
+    //   dealerNameTop = '10.5%';
+    //   dealerNameMargin = (-6.25 * this.hand.cards.length) + 'vh';
+    //   dealerValueTop = '38%';
+    //   dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
+    // } else if (window.matchMedia('(min-width: 992px)').matches) {
+    //   dealerNameTop = '10.5%';
+    //   dealerNameMargin = -4 + (3.5 * this.hand.cards.length) + '%';
+    //   dealerValueTop = '36.5%';
+    //   dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
+    // } else if (window.matchMedia('(min-width: 720px)').matches) {
+    //   dealerNameTop = '10.5%';
+    //   dealerNameMargin = -4 + (3.5 * this.hand.cards.length) + '%';
+    //   dealerValueTop = '33%';
+    //   dealerValueMargin = (-6.25 * this.hand.cards.length) + 'vh';
+    // } else {
+    //   displayInfo = false;
+    // }
+    //
+    // if (displayInfo) {
+    //   cardName.css({top: dealerNameTop, left: '85%', marginLeft: dealerNameMargin});
+    //   cardValue.css({top: dealerValueTop, left: '85%', marginLeft: dealerNameMargin});
+    // } else {
+    //   cardName.css({display: 'none'});
+    //   cardValue.css({display: 'none'});
+    // }
 
-    if (displayInfo) {
-      cardName.css({top: dealerNameTop, left: '85%', marginLeft: dealerNameMargin});
-      cardValue.css({top: dealerValueTop, left: '85%', marginLeft: dealerNameMargin});
-    } else {
-      cardName.css({display: 'none'});
-      cardValue.css({display: 'none'});
-    }
+    $('.flip-container').off('mouseover', 'mouseout');
 
-    $('.hole').on({
-      'mouseover': function() {
-        $('.DealerCards').css({opacity: '0.25'});
-        $('.hole').css({zIndex: '2', opacity: '1'}).animate({marginTop: '-2.5vh'}, 50);
-        cardName.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '2.5vh', marginTop: '-2.5vh'}, 50);
-        cardValue.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '-2.5vh', marginTop: '2.5vh'}, 50);
-      },
-      'mouseout': function() {
-        $('.DealerCards').css({opacity: '1'});
-        $('.hole').css({zIndex: '1'}).animate({marginTop: '0'}, 50);
-        cardName.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0', marginTop: '0'}, 50);
-        cardValue.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0', marginTop: '0'}, 50);
-        }
-    });
+    // $('.holeBack').on({
+    //   'mouseover': function() {
+    //     $('.DealerCards').css({opacity: '0.25'});
+    //     $('.holeBack').css({zIndex: '2', opacity: '1'}).animate({marginTop: '-2.5vh'}, 50);
+    //     // cardName.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '2.5vh', marginTop: '-2.5vh'}, 50);
+    //     // cardValue.css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '-2.5vh', marginTop: '2.5vh'}, 50);
+    //   },
+    //   'mouseout': function() {
+    //     $('.DealerCards').css({opacity: '1'});
+    //     $('.holeBack').css({zIndex: '1'}).animate({marginTop: '0'}, 50);
+    //     // cardName.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0', marginTop: '0'}, 50);
+    //     // cardValue.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0', marginTop: '0'}, 50);
+    //     }
+    // });
     this.hand.hole = 'revealed';
     checkWin();
   }
@@ -403,6 +409,8 @@ $(document).ready(function() {
 
         $('.PlayerCards').css({width: cardWidth, height: cardHeight, left: playerCardLeft, bottom: playerCardBottom, top: playerCardTop});
         $('.DealerCards').css({width: cardWidth, height: cardHeight, left: dealerCardLeft, top: dealerCardTop});
+        $('.hole').css({width: cardWidth, height: cardHeight});
+        $('.holeBack').css({width: cardWidth, height: cardHeight});
 
         if (displayInfo) {
           $('.PlayerCardNames').css({bottom: playerNameBottom, left: playerCardLeft, marginLeft: playerNameMargin, display: 'block'});
@@ -421,10 +429,14 @@ $(document).ready(function() {
   function newGame() {
     $('#deal').on({
       'click': function() {
-        $('#PlayerName').attr('readonly', true);
-        $('.bankrollInput').attr('readonly', true);
         if ((bet >= 5) && (bet <= 100) && (bankroll >= bet)) {
+          document.querySelector(".flip-container").classList.toggle("flip");
           gameRun = true;
+          player.meter.animate({'width': '0'}, 250);
+          dealer.meter.animate({'width': '0'}, 250);
+          $('#PlayerName').attr('readonly', true);
+          $('.bankrollInput').attr('readonly', true);
+          $('#betList').css({display: 'none'});
           deal();
         } else if (bankroll < bet) {
           gameRun = false;
@@ -503,7 +515,8 @@ $(document).ready(function() {
     var bankrollInput = $('<input>').attr({
       class: 'bankrollInput',
       name: 'bankroll',
-      value: '300'
+      value: '300',
+      maxlength: '4'
     }).appendTo(bankrollForm);
     var displayBet = $('<h1>').attr('id', 'bet').addClass('nav').text('Bet: $' + bet);
     var kda = $('<h1>').attr('id', 'kda').addClass('nav').text('W' + wins + ' L' + losses + ' T' + ties);
@@ -649,6 +662,8 @@ $(document).ready(function() {
   }
 
   function deal() {
+    $('.front').empty();
+    $('.back').empty();
     placeBet();
     updateHeader();
     $('.card, .cardName, .cardValue').remove();
@@ -762,11 +777,7 @@ $(document).ready(function() {
       {'click': function() {
       clearInterval(actionCursor);
       player.hand.stand = true;
-      // if (dealer.hand.total >= 17) {
       checkWin();
-      //} } else while (dealer.hand.total < 17) {
-      //     dealer.drawCard();
-      //   }
       },
       'mouseover': function() {
         buttonCursor.css({color: 'rgba(0, 0, 0, 1)'});
@@ -1017,19 +1028,20 @@ $(document).ready(function() {
   };
 
 // INITIALIZATIONS
-  var deckAmount = 3; // can I prompt for this?
+  var deckAmount = 3; // should I prompt for this?
   var deck = createDeck();
   var player = new Player('Player');
   var dealer = new Player('Dealer');
   var nickname = 'PLAYER';
   console.log('Hint! You can change your name and bankroll only before you begin...');
   $('#nameForm').submit(function() {
-    nickname = $('#PlayerName').val() || 'Player';
+    nickname = $('#PlayerName').val() || 'PLAYER';
     console.log('Name registered!');
     return false;
   })
   var wins = 0, losses = 0, ties = 0, winner = null;
   var bet = 0;
+  var runGame = true;
   makeHeader();
   bankroll = 300;
   $("#bankrollForm").submit(function() {
@@ -1042,6 +1054,7 @@ $(document).ready(function() {
   player.blackjackMeter();
   dealer.blackjackMeter();
   newGame();
+  document.querySelector(".flip-container").classList.toggle("flip");
   // inspectDeck();
   changeBet();
   var cursor;
@@ -1051,7 +1064,6 @@ $(document).ready(function() {
   double();
   resizeCards();
   // surrender() called in as necessary
-
   changeBackgroundColor();
   navBorderColor();
 });
