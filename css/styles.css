@@ -337,8 +337,13 @@ body {
   top: 0;
   margin: 0;
   position: static;
-  display: block;
+  /*display: block;*/
 }
+
+.flip-container .holePoints {
+  bottom: -102%;
+}
+
 /*
 .front, .back {
   position: absolute;
@@ -401,7 +406,11 @@ body {
 .cardName {
   font-size: 1.25vw;
   text-align: center;
-  position: absolute;
+  margin-bottom: 0;
+  margin-top: 0;
+  position: relative;
+  left: -3.75%;
+  top: 7.5%;
   width: 22vh;
   z-index: 1;
   visibility: hidden;
@@ -411,8 +420,9 @@ body {
 .cardValue {
   font-size: 1.25vw;
   text-align: center;
-  position: absolute;
-  margin-top: 0;
+  position: relative;
+  left: -7.5%;
+  bottom: 7.5%;
   width: 22vh;
   z-index: 1;
   visibility: hidden;
