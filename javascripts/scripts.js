@@ -195,7 +195,7 @@ $(document).ready(function() {
     this.hand.hole = deck.pop();
     this.hand.cards.push(this.hand.hole.name);
     var image = 'images/' + this.hand.hole.name.toLowerCase() + '.png';
-    var flipContainer = $('.flip-container');
+    var flipContainer = $('<div>').addClass('flip-container DealerCards');
     var flipper = $('<div>').addClass('flipper');
     var front = $('<div>').addClass('front');
     var card = $('<img>').attr('src', 'images/PokeballDeck.png').addClass('card hole');
@@ -251,14 +251,16 @@ $(document).ready(function() {
   Player.prototype.revealHole = function revealHole() {
     card = this.hand.hole;
     // var image = 'images/' + card.name.toLowerCase() + '.png';
-
     this.hand.total += card.value;
     this.blackjackMeter();
-    $('.DealerCards:not(:eq(0))').animate({opacity: '0.05'}, 250);
-
+    var flipContainer = $(".flip-container");
+    $('.DealerCards:not(:eq(0))').animate({opacity: '0.25'}, 500);
+    flipContainer.animate({marginTop: '-5vh', zIndex: '2'}, 500);
     document.querySelector(".flip-container").classList.toggle("flip");
+    flipContainer.animate({zIndex: '1'}, 750);
     setTimeout(function() {
-      $('.DealerCards').css({opacity: '1'});
+      $('.DealerCards').animate({opacity: '1'}, 500);
+      flipContainer.animate({marginTop: '0', zIndex: '1'}, 500);
     }, 1000);
 
     // var cardName = $('<p>').addClass('cardName DealerCardNames').html(card.name.replace(/_/g, '&nbsp;'));
@@ -430,7 +432,6 @@ $(document).ready(function() {
     $('#deal').on({
       'click': function() {
         if ((bet >= 5) && (bet <= 100) && (bankroll >= bet)) {
-          document.querySelector(".flip-container").classList.toggle("flip");
           gameRun = true;
           player.meter.animate({'width': '0'}, 250);
           dealer.meter.animate({'width': '0'}, 250);
@@ -662,8 +663,7 @@ $(document).ready(function() {
   }
 
   function deal() {
-    $('.front').empty();
-    $('.back').empty();
+    $('.flip-container').remove();
     placeBet();
     updateHeader();
     $('.card, .cardName, .cardValue').remove();
@@ -1054,7 +1054,6 @@ $(document).ready(function() {
   player.blackjackMeter();
   dealer.blackjackMeter();
   newGame();
-  document.querySelector(".flip-container").classList.toggle("flip");
   // inspectDeck();
   changeBet();
   var cursor;
