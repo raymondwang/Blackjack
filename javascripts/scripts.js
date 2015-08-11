@@ -95,8 +95,8 @@ $(document).ready(function() {
     var playerCardTop;
     var playerCardLeft;
     var playerCardBottom;
-    var dealerCardTop;
-    var dealerCardLeft;
+    var dealerCardTop = '13%';
+    var dealerCardLeft = '85%';
     var displayInfo = true;
     var playerCardMargin = (6.25 * this.hand.cards.length) + 'vh';
     var dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
@@ -107,32 +107,24 @@ $(document).ready(function() {
       cardWidth = '19vh';
       cardHeight = '29vh';
       playerCardTop = '40%';
-      dealerCardLeft = '85%';
-      dealerCardTop = '13%';
     } else if (window.matchMedia('(min-width: 992px)').matches) {
       playerCardLeft = '3%';
       playerCardBottom = '38%';
       cardWidth = '18vh';
       cardHeight = '27vh';
       playerCardTop = '40%';
-      dealerCardLeft = '85%';
-      dealerCardTop = '13%';
     } else if (window.matchMedia('(min-width: 720px)').matches) {
       playerCardLeft = '3%';
       playerCardBottom = '38%';
       cardWidth = '16vh';
       cardHeight = '24vh';
       playerCardTop = '45%';
-      dealerCardLeft = '85%';
-      dealerCardTop = '13%';
     } else if (window.matchMedia('(min-width: 580px)').matches) {
       playerCardLeft = '0';
       playerCardBottom = '38%';
       playerCardTop = '52%';
       cardWidth = '12vh';
       cardHeight = '18vh';
-      dealerCardLeft = '85%';
-      dealerCardTop = '10%';
       displayInfo = false;
     } else {
       playerCardLeft = '0';
@@ -140,8 +132,7 @@ $(document).ready(function() {
       playerCardTop = '65%';
       cardWidth = '8vh';
       cardHeight = '12vh';
-      dealerCardLeft = '85%';
-      dealerCardTop = '10%';
+      dealerCardLeft = '90%';
       displayInfo = false;
     }
 
@@ -176,11 +167,12 @@ $(document).ready(function() {
         cardValue.css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0', marginTop: '0'}, 50);
       }
     });
+
     this.blackjackMeter();
 
-    if (player.hand.cards.length >= 2 && dealer.hand.cards.length >= 2) {
-      checkWin();
-    }
+    // if (player.hand.cards.length >= 2 && dealer.hand.cards.length >= 2) {
+    //   checkWin();
+    // }
   };
 
   Player.prototype.drawHole = function drawHole() {
@@ -209,6 +201,7 @@ $(document).ready(function() {
     var dealerCardMargin = (-6.25 * this.hand.cards.length) + 'vh';
     var dealerCardTop = '13%';
     var dealerCardLeft = '85%';
+    var displayInfo = true;
 
     if (window.matchMedia('(min-width: 1250px)').matches) {
       cardWidth = '19vh';
@@ -222,16 +215,25 @@ $(document).ready(function() {
     } else if (window.matchMedia('(min-width: 580px)').matches) {
       cardWidth = '12vh';
       cardHeight = '18vh';
-      dealerCardTop = '10%';
+      displayInfo = false;
     } else {
       cardWidth = '8vh';
       cardHeight = '12vh';
-      dealerCardTop = '10%';
+      dealerCardLeft = '90%';
+      displayInfo = false;
     }
 
     flipContainer.animate({width: cardWidth, height: cardHeight, left: dealerCardLeft, top: dealerCardTop, marginTop: 0, marginLeft: dealerCardMargin}, 500);
     card.animate({width: cardWidth, height: cardHeight}, 500);
     cardBack.css({width: cardWidth, height: cardHeight});
+
+    if (displayInfo) {
+      cardName.css({display: 'block'});
+      cardValue.css({display: 'block'});
+    } else {
+      cardName.css({display: 'none'});
+      cardValue.css({display: 'none'});
+    }
 
     flipContainer.on({
       'mouseover': function() {
@@ -303,66 +305,65 @@ $(document).ready(function() {
       var playerCardTop;
       var playerCardLeft;
       var playerCardBottom;
-      var dealerCardTop;
-      var dealerCardLeft;
+      var dealerCardTop = '13%';
+      var dealerCardLeft = '85%';
       var displayInfo = true;
+      var bet1 = "$1";
+      var bet10 = "$10";
 
-      if (window.matchMedia('(min-width: 1250px)').matches) {
-        playerCardLeft = '3%';
+      if (window.matchMedia('(max-width: 580px)').matches) {
+        playerCardLeft = '0';
         playerCardBottom = '38%';
-        cardWidth = '19vh';
-        cardHeight = '29vh';
-        playerCardTop = '40%';
-        dealerCardLeft = '85%';
+        playerCardTop = '65%';
+        cardWidth = '8vh';
+        cardHeight = '12vh';
         dealerCardTop = '13%';
-      } else if (window.matchMedia('(min-width: 992px)').matches) {
-        playerCardLeft = '3%';
-        playerCardBottom = '38%';
-        cardWidth = '18vh';
-        cardHeight = '27vh';
-        playerCardTop = '40%';
-        dealerCardLeft = '85%';
-        dealerCardTop = '13%';
-      } else if (window.matchMedia('(min-width: 720px)').matches) {
-        playerCardLeft = '3%';
-        playerCardBottom = '38%';
-        cardWidth = '16vh';
-        cardHeight = '24vh';
-        playerCardTop = '45%';
-        dealerCardLeft = '85%';
-        dealerCardTop = '13%';
+        displayInfo = false;
+        bet1 = "-";
+        bet10 = "+";
       } else if (window.matchMedia('(min-width: 580px)').matches) {
         playerCardLeft = '0';
         playerCardBottom = '38%';
         playerCardTop = '52%';
         cardWidth = '12vh';
         cardHeight = '18vh';
-        dealerCardLeft = '85%';
-        dealerCardTop = '10%';
         displayInfo = false;
-      } else {
-        playerCardLeft = '0';
+      } else if (window.matchMedia('(min-width: 720px)').matches) {
+        playerCardLeft = '3%';
         playerCardBottom = '38%';
-        playerCardTop = '65%';
-        cardWidth = '8vh';
-        cardHeight = '12vh';
-        dealerCardLeft = '85%';
-        dealerCardTop = '10%';
-        displayInfo = false;
+        cardWidth = '16vh';
+        cardHeight = '24vh';
+        playerCardTop = '45%';
+      } else if (window.matchMedia('(min-width: 992px)').matches) {
+        playerCardLeft = '3%';
+        playerCardBottom = '38%';
+        cardWidth = '18vh';
+        cardHeight = '27vh';
+        playerCardTop = '40%';
+      } else if (window.matchMedia('(min-width: 1250px)').matches) {
+        playerCardLeft = '3%';
+        playerCardBottom = '38%';
+        cardWidth = '19vh';
+        cardHeight = '29vh';
+        playerCardTop = '40%';
       }
 
      $('.PlayerCards').css({width: cardWidth, height: cardHeight, left: playerCardLeft, bottom: playerCardBottom, top: playerCardTop, marginBottom: 0, marginTop: 0});
      $('.DealerCards').css({width: cardWidth, height: cardHeight, left: dealerCardLeft, top: dealerCardTop, marginTop: 0, marginBottom: 0});
      $('.hole').css({width: cardWidth, height: cardHeight});
      $('.holeBack').css({width: cardWidth, height: cardHeight});
-    $('.cardImg').css({width: cardWidth, height: cardHeight});
-      if (displayInfo) {
-        $('.cardName').css({display: 'block'});
-        $('.cardValue').css({display: 'block'});
-      } else {
-        $('.cardName').css({display: 'none'});
-        $('.cardValue').css({display: 'none'});
-      }
+     $('.cardImg').css({width: cardWidth, height: cardHeight});
+    if (displayInfo) {
+      $('.cardName').css({display: 'block'});
+      $('.cardValue').css({display: 'block'});
+    } else {
+      $('.cardName').css({display: 'none'});
+      $('.cardValue').css({display: 'none'});
+    }
+    $('.bet1').text(bet1);
+    $('.bet10').text(bet10);
+    changeBet();
+    updateBankrollHeader();
     })
   };
 
@@ -450,6 +451,9 @@ $(document).ready(function() {
     var navbar = $('#navbar');
     var title = $('<h1>').attr('id', 'title').addClass('nav').text('Blackjack!');
     var displayBankroll = $('<h1>').attr('id', 'bankroll').addClass('nav').html('Bankroll: $');
+    if (window.matchMedia('(max-width: 580px)').matches) {
+      displayBankroll.html('$');
+    }
     var bankrollForm = $('<form>').attr('id', 'bankrollForm').appendTo(displayBankroll);
     var bankrollInput = $('<input>').attr({
       class: 'bankrollInput',
@@ -469,11 +473,15 @@ $(document).ready(function() {
     chooseBet.append($('<li>').addClass('betCursor').html('&spades;'));
     chooseBet.append($('<li>').addClass('selectBet bet1').text('$1'));
     chooseBet.append($('<li>').addClass('betCursor').html('&spades;'));
-    chooseBet.append($('<li>').addClass('selectBet bet5').text('$5'));
+    chooseBet.append($('<li>').addClass('selectBet bet5').html('$5'));
     chooseBet.append($('<li>').addClass('betCursor').html('&spades;'));
     chooseBet.append($('<li>').addClass('selectBet bet10').text('$10'));
     chooseBet.append($('<li>').addClass('betCursor').html('&spades;'));
     chooseBet.append($('<li>').addClass('selectBet bet25').text('$25'));
+    if (window.matchMedia('(max-width: 580px)').matches) {
+      $('.bet1').text('-');
+      $('.bet10').text('+');
+    }
     var prompt = $('<p>').attr('id', 'prompt');
     $('#bottom').prepend(prompt);
     $('#bottom').prepend(chooseBet);
@@ -510,93 +518,122 @@ $(document).ready(function() {
     var bet25Cursor = $('.betCursor').eq(3);
     var betCursor;
 
-    bet1.on({
-      'click': function() {
-        bet += 1;
-        updateBetHeader();
-        clearInterval(betCursor);
-        betText.html('RESET');
-        resetBet();
-      },
-      'mouseover': function() {
-        bet1Cursor.css({color: 'rgba(0, 0, 0, 1)'});
-        blink(bet1Cursor);
-        betCursor = setInterval(function() {
-          blink(bet1Cursor);
-        }, 1000);
-      },
-      'mouseout': function() {
-        bet1Cursor.css({color: 'rgba(0, 0, 0, 0)'});
-        clearInterval(betCursor);
-      }
-    });
+    bet1.off('click');
+    bet5.off('click', 'mouseover', 'mouseout');
+    bet10.off('click');
+    bet25.off('click');
 
-    bet5.on({
-      'click': function() {
+    if (window.matchMedia('(min-width: 580px)').matches) {
+      console.log('big enough');
+      bet1.on({
+        'click': function() {
+          bet += 1;
+          updateBetHeader();
+          clearInterval(betCursor);
+          betText.html('RESET');
+          resetBet();
+        },
+        'mouseover': function() {
+          bet1Cursor.css({color: 'rgba(0, 0, 0, 1)'});
+          blink(bet1Cursor);
+          betCursor = setInterval(function() {
+            blink(bet1Cursor);
+          }, 1000);
+        },
+        'mouseout': function() {
+          bet1Cursor.css({color: 'rgba(0, 0, 0, 0)'});
+          clearInterval(betCursor);
+        }
+      });
+
+      bet5.on({
+        'click': function() {
+          bet += 5;
+          updateBetHeader();
+          clearInterval(betCursor);
+          betText.html('RESET');
+          resetBet();
+        },
+        'mouseover': function() {
+          bet5Cursor.css({color: 'rgba(0, 0, 0, 1)'});
+          blink(bet5Cursor);
+          betCursor = setInterval(function() {
+            blink(bet5Cursor);
+          }, 1000);
+        },
+        'mouseout': function() {
+          bet5Cursor.css({color: 'rgba(0, 0, 0, 0)'});
+          clearInterval(betCursor);
+        }
+      });
+
+      bet10.on({
+        'click': function() {
+          bet += 10;
+          updateBetHeader();
+          clearInterval(betCursor);
+          betText.html('RESET');
+          resetBet();
+        },
+        'mouseover': function() {
+          bet10Cursor.css({color: 'rgba(0, 0, 0, 1)'});
+          blink(bet10Cursor);
+          betCursor = setInterval(function() {
+            blink(bet10Cursor);
+          }, 1000);
+        },
+        'mouseout': function() {
+          bet10Cursor.css({color: 'rgba(0, 0, 0, 0)'});
+          clearInterval(betCursor);
+        }
+      });
+
+      bet25.on({
+        'click': function() {
+          bet += 25;
+          updateBetHeader();
+          clearInterval(betCursor);
+          betText.html('RESET');
+          resetBet();
+        },
+        'mouseover': function() {
+          bet25Cursor.css({color: 'rgba(0, 0, 0, 1)'});
+          blink(bet25Cursor);
+          betCursor = setInterval(function() {
+            blink(bet25Cursor);
+          }, 1000);
+        },
+        'mouseout': function() {
+          bet25Cursor.css({color: 'rgba(0, 0, 0, 0)'});
+          clearInterval(betCursor);
+        }
+      });
+    } else {
+      bet1.on('click', function() {
+        bet -= 5;
+        updateBetHeader();
+      });
+      bet5.on({
+        'mouseover': function() {
+          bet5.text('BET');
+        },
+        'mouseout': function() {
+          bet5.text('$5');
+        }
+      })
+      bet10.on('click', function() {
         bet += 5;
         updateBetHeader();
-        clearInterval(betCursor);
-        betText.html('RESET');
-        resetBet();
-      },
-      'mouseover': function() {
-        bet5Cursor.css({color: 'rgba(0, 0, 0, 1)'});
-        blink(bet5Cursor);
-        betCursor = setInterval(function() {
-          blink(bet5Cursor);
-        }, 1000);
-      },
-      'mouseout': function() {
-        bet5Cursor.css({color: 'rgba(0, 0, 0, 0)'});
-        clearInterval(betCursor);
-      }
-    });
-
-    bet10.on({
-      'click': function() {
-        bet += 10;
-        updateBetHeader();
-        clearInterval(betCursor);
-        betText.html('RESET');
-        resetBet();
-      },
-      'mouseover': function() {
-        bet10Cursor.css({color: 'rgba(0, 0, 0, 1)'});
-        blink(bet10Cursor);
-        betCursor = setInterval(function() {
-          blink(bet10Cursor);
-        }, 1000);
-      },
-      'mouseout': function() {
-        bet10Cursor.css({color: 'rgba(0, 0, 0, 0)'});
-        clearInterval(betCursor);
-      }
-    });
-
-    bet25.on({
-      'click': function() {
-        bet += 25;
-        updateBetHeader();
-        clearInterval(betCursor);
-        betText.html('RESET');
-        resetBet();
-      },
-      'mouseover': function() {
-        bet25Cursor.css({color: 'rgba(0, 0, 0, 1)'});
-        blink(bet25Cursor);
-        betCursor = setInterval(function() {
-          blink(bet25Cursor);
-        }, 1000);
-      },
-      'mouseout': function() {
-        bet25Cursor.css({color: 'rgba(0, 0, 0, 0)'});
-        clearInterval(betCursor);
-      }
-    });
+      });
+    }
   }
 
   function updateBankrollHeader() {
-    $('#bankroll').text('Bankroll: $' + bankroll);
+    if (window.matchMedia('(min-width: 580px)').matches) {
+      $('#bankroll').text('Bankroll: $' + bankroll);
+    } else {
+      $('#bankroll').text('$' + bankroll);
+    }
   }
 
   function updateBetHeader() {
@@ -623,6 +660,7 @@ $(document).ready(function() {
     }, 1250);
     setTimeout(function() {
       dealer.drawCard();
+      checkWin();
     }, 1750);
     $('#deal').off('click');
     $('.betText').off('click');
@@ -642,30 +680,28 @@ $(document).ready(function() {
   }
 
   function showResult(str) {
-    setTimeout(function() {
-      $('#deal').css({display: 'none'});
-      $('#actions').css({display: 'none'});
-      $('#prompt').css({display: 'none'});
-      var result = $('#result');
-      result.html(str).css({display: 'block'});
-      $('#nextCursor').css({display: 'block'});
-      blink($('#nextCursor'));
-      cursor = setInterval(function() {
-        blink($('#nextCursor'))
-      }, 1000);
-      $('.disableOverlay').css({display: 'none'});
-      result.off('click').on('click', function() {
-        if (gameRun) { // check to see if deal actually ran
-          var kda = $('#kda');
-          updateScore();
-          kda.text('W' + wins + ' L' + losses + ' T' + ties);
-          bet = 5;
-          updateBetHeader();
-        }
-        showDeal();
-      });
-    }, 500);
-  }
+    $('#deal').css({display: 'none'});
+    $('#actions').css({display: 'none'});
+    $('#prompt').css({display: 'none'});
+    var result = $('#result');
+    result.html(str).css({display: 'block'});
+    $('#nextCursor').css({display: 'block'});
+    blink($('#nextCursor'));
+    cursor = setInterval(function() {
+      blink($('#nextCursor'))
+    }, 1000);
+    $('.disableOverlay').css({display: 'none'});
+    result.off('click').on('click', function() {
+      if (gameRun) { // check to see if deal actually ran
+        var kda = $('#kda');
+        updateScore();
+        kda.text('W' + wins + ' L' + losses + ' T' + ties);
+        bet = 5;
+        updateBetHeader();
+      }
+      showDeal();
+    });
+  };
 
   function showDeal() {
     updateBankrollHeader();
@@ -692,12 +728,8 @@ $(document).ready(function() {
     button.on({
       'click': function() {
         player.drawCard();
+        checkWin();
         clearInterval(actionCursor);
-        // if (winner === null) {
-        //   if (dealer.hand.total < 17) {
-        //     dealer.drawCard();
-        //   }
-        // }
         deactivateSurrender();
       },
       'mouseover': function() {
@@ -750,12 +782,9 @@ $(document).ready(function() {
           bet *= 2;
           updateHeader();
           player.drawCard();
-          player.hand.stand = true;
-          // if (dealer.hand.total >= 17) {
           checkWin();
-          // } else while (dealer.hand.total < 17) {
-          //     dealer.drawCard();
-          // }
+          player.hand.stand = true;
+          checkWin();
         } else {
           trainerBattle('Can\'t double down!');
         }
@@ -856,7 +885,9 @@ $(document).ready(function() {
     if (player.hand.total > 21) { // if player busts
       if (!aceLogic(player)) { // bust if player had no aces
         winner = 'dealer';
-        showResult('Bust! You lose!');
+        setTimeout(function() {
+          showResult('Bust! You lose!');
+        }, 500);
         return;
       }
     }
@@ -864,7 +895,9 @@ $(document).ready(function() {
       if (!aceLogic(dealer)) { // bust if dealer had no aces
         winner = 'player';
         bankroll += (bet + (bet * 1.5));
-        showResult('Dealer bust! You win!');
+        setTimeout(function() {
+          showResult('Dealer bust! You win!');
+        }, 500);
         return;
       }
     }
@@ -881,7 +914,14 @@ $(document).ready(function() {
         return;
       } else if (dealer.hand.total < 17) {
         setTimeout(function() {
-          dealer.drawCard();
+          var drawToEnd = setInterval(function() {
+            if (dealer.hand.total < 17) {
+              dealer.drawCard();
+            } else {
+              checkWin();
+              clearInterval(drawToEnd);
+            }
+          }, 500);
         }, 500);
         return;
       } else { // if dealer hand is greater than 17
@@ -897,7 +937,14 @@ $(document).ready(function() {
         return;
       } else if (dealer.hand.total < 17) {
         setTimeout(function() {
-          dealer.drawCard();
+          var drawToEnd = setInterval(function() {
+            if (dealer.hand.total < 17) {
+              dealer.drawCard();
+            } else {
+              checkWin();
+              clearInterval(drawToEnd);
+            }
+          }, 500);
         }, 500);
         return;
       } else {
@@ -919,7 +966,9 @@ $(document).ready(function() {
       $('.disableOverlay').css({display: 'none'});
     }
     if (winner != null) {
-      showResult(resultMessage);
+      setTimeout(function() {
+        showResult(resultMessage)
+      }, 500);
     }
   };
 
