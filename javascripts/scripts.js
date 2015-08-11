@@ -271,7 +271,6 @@ $(document).ready(function() {
 
     if (window.matchMedia('(max-width: 580px)').matches) {
       displayInfo = false;
-      console.log('small');
     } else {
       displayInfo = true;
     }
@@ -363,7 +362,6 @@ $(document).ready(function() {
     $('.bet1').text(bet1);
     $('.bet10').text(bet10);
     changeBet();
-    updateBankrollHeader();
     })
   };
 
@@ -374,7 +372,6 @@ $(document).ready(function() {
           gameRun = true;
           player.meter.animate({'width': '0'}, 250);
           dealer.meter.animate({'width': '0'}, 250);
-          $('#PlayerName').attr('readonly', true).css({cursor: 'text'});
           $('.bankrollInput').attr('readonly', true);
           $('#betList').css({display: 'none'});
           deal();
@@ -451,18 +448,15 @@ $(document).ready(function() {
     var navbar = $('#navbar');
     var title = $('<h1>').attr('id', 'title').addClass('nav').text('Blackjack!');
     var displayBankroll = $('<h1>').attr('id', 'bankroll').addClass('nav').html('Bankroll: $');
-    if (window.matchMedia('(max-width: 580px)').matches) {
-      displayBankroll.html('$');
-    }
     var bankrollForm = $('<form>').attr('id', 'bankrollForm').appendTo(displayBankroll);
     var bankrollInput = $('<input>').attr({
       class: 'bankrollInput',
       name: 'bankroll',
       type: 'number',
       min: '5',
-      max: '9999',
+      max: '999',
       value: '300',
-      maxlength: '4'
+      maxlength: '3'
     }).appendTo(bankrollForm);
     var displayBet = $('<h1>').attr('id', 'bet').addClass('nav').text('Bet: $' + bet);
     var kda = $('<h1>').attr('id', 'kda').addClass('nav').text('W' + wins + ' L' + losses + ' T' + ties);
@@ -524,7 +518,6 @@ $(document).ready(function() {
     bet25.off('click');
 
     if (window.matchMedia('(min-width: 580px)').matches) {
-      console.log('big enough');
       bet1.on({
         'click': function() {
           bet += 1;
@@ -629,11 +622,7 @@ $(document).ready(function() {
   }
 
   function updateBankrollHeader() {
-    if (window.matchMedia('(min-width: 580px)').matches) {
-      $('#bankroll').text('Bankroll: $' + bankroll);
-    } else {
-      $('#bankroll').text('$' + bankroll);
-    }
+    $('#bankroll').text('Bankroll: $' + bankroll);
   }
 
   function updateBetHeader() {
@@ -696,7 +685,7 @@ $(document).ready(function() {
         var kda = $('#kda');
         updateScore();
         kda.text('W' + wins + ' L' + losses + ' T' + ties);
-        bet = 5;
+        bet = 0;
         updateBetHeader();
       }
       showDeal();
@@ -716,7 +705,7 @@ $(document).ready(function() {
   function hideDeal() {
     $('#deal').css({display: 'none'});
     $('#actions').css({display: 'block'});
-    $('#prompt').css({display: 'block'}).html('What will<br>' + nickname + ' do?');
+    $('#prompt').css({display: 'block'}).html('What will<br>' + $('#PlayerName').val() + ' do?');
     $('#betList').css({display: 'none'});
     $('.disableOverlay').css({display: 'none'});
   }
@@ -1027,7 +1016,7 @@ $(document).ready(function() {
   var player = new Player('Player');
   var dealer = new Player('Dealer');
   var nickname = 'PLAYER';
-  console.log('Hint! You can change your name and bankroll only before you begin...');
+  console.log('You can only input a bankroll amount before you begin.');
   $('#nameForm').submit(function() {
     nickname = $('#PlayerName').val() || 'PLAYER';
     console.log('Name registered!');
@@ -1048,7 +1037,6 @@ $(document).ready(function() {
   player.makeMeter();
   dealer.makeMeter();
   newGame();
-  // inspectDeck();
   changeBet();
   var cursor;
   var actionCursor;
