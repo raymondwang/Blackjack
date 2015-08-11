@@ -176,7 +176,7 @@ body {
   left: 10px;
   right: 10px;
   bottom: 6px;
-  border: 10px solid black;
+  border: 1vw solid black;
   background-color: rgba(255, 255, 255, 0.4);
 }
 
@@ -224,7 +224,7 @@ body {
   float: right;
   width: 50%;
   height: 21vh;
-  border-left: 10px solid black;
+  border-left: 1vw solid black;
 }
 
 #result {
@@ -666,7 +666,7 @@ body {
   }
   #prompt {
     font-size: 12px;
-    left: 5px;
+    left: 5%;
   }
   #deal {
     font-size: 24px;

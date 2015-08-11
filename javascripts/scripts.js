@@ -47,7 +47,7 @@ $(document).ready(function() {
       var difference = this.hand.total - currentPoints;
       var speed = 500 / difference;
 
-      var incrementer = setInterval(function() {
+      this.incrementer = setInterval(function() {
         if (currentPoints < scope.hand.total) {
           currentPoints++;
           if (currentPoints > 21) {
@@ -56,7 +56,7 @@ $(document).ready(function() {
             handPoints.text(currentPoints + ' / 21');
           }
         } else {
-          clearInterval(incrementer);
+          clearInterval(this.incrementer);
           if (currentPoints === 21) {
            handPoints.text('BLACKJACK!');
          }
@@ -126,8 +126,8 @@ $(document).ready(function() {
       cardWidth = '12vh';
       cardHeight = '18vh';
       displayInfo = false;
-    } else {
-      playerCardLeft = '0';
+    } else if (window.matchMedia('(max-width: 580px)').matches || isiPhone()){
+      playerCardLeft = '-5.5%';
       playerCardBottom = '38%';
       playerCardTop = '65%';
       cardWidth = '8vh';
@@ -169,10 +169,6 @@ $(document).ready(function() {
     });
 
     this.blackjackMeter();
-
-    // if (player.hand.cards.length >= 2 && dealer.hand.cards.length >= 2) {
-    //   checkWin();
-    // }
   };
 
   Player.prototype.drawHole = function drawHole() {
@@ -212,7 +208,7 @@ $(document).ready(function() {
     } else if (window.matchMedia('(min-width: 720px)').matches) {
       cardWidth = '16vh';
       cardHeight = '24vh';
-    } else if (window.matchMedia('(min-width: 580px)').matches) {
+    } else if (window.matchMedia('(min-width: 580px)' || isiPhone()).matches) {
       cardWidth = '12vh';
       cardHeight = '18vh';
       displayInfo = false;
@@ -269,7 +265,7 @@ $(document).ready(function() {
     var dealerValueMargin;
     var dealerValueTop;
 
-    if (window.matchMedia('(max-width: 580px)').matches) {
+    if (window.matchMedia('(max-width: 580px)').matches || isiPhone()) {
       displayInfo = false;
     } else {
       displayInfo = true;
@@ -297,6 +293,13 @@ $(document).ready(function() {
     checkWin();
   }
 
+  function isiPhone(){
+    return (
+        (navigator.platform.indexOf("iPhone") != -1) ||
+        (navigator.platform.indexOf("iPod") != -1)
+    );
+  }
+
   function resizeCards() {
     $(window).resize(function() {
       var cardWidth;
@@ -310,8 +313,8 @@ $(document).ready(function() {
       var bet1 = "$1";
       var bet10 = "$10";
 
-      if (window.matchMedia('(max-width: 580px)').matches) {
-        playerCardLeft = '0';
+      if (window.matchMedia('(max-width: 580px)').matches || isiPhone()) {
+        playerCardLeft = '-5.5%';
         playerCardBottom = '38%';
         playerCardTop = '65%';
         cardWidth = '8vh';
@@ -517,7 +520,7 @@ $(document).ready(function() {
     bet10.off('click');
     bet25.off('click');
 
-    if (window.matchMedia('(min-width: 580px)').matches) {
+    if (window.matchMedia('(min-width: 580px)').matches || isiPhone()) {
       bet1.on({
         'click': function() {
           bet += 1;
