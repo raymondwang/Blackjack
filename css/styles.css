@@ -771,9 +771,9 @@ body {
       top: 16vh;
     }
     .spade {
-      margin-top: 0;
+      margin-top: 2%;
       font-size: 45px;
-      margin-bottom: 0;
+      margin-bottom: 11.5%;
       margin-left: 10px;
     }
     .colon {
@@ -819,5 +819,11 @@ body {
     #result {
       font-size: 38px;
       top: 65px;
+    }
+    .hpBar {
+      bottom: 90px;
+    }
+    .pointTotals {
+      bottom: 85px;
     }
   }
