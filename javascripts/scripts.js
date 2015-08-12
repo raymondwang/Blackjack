@@ -8,7 +8,7 @@ $(document).ready(function() {
         return navigator.userAgent.match(/BlackBerry/i);
     },
     iOS: function() {
-        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        return navigator.userAgent.match(/iPhone|iPod/i);
     },
     Opera: function() {
         return navigator.userAgent.match(/Opera Mini/i);
@@ -154,6 +154,7 @@ $(document).ready(function() {
       playerCardTop = '65%';
       cardWidth = '8vh';
       cardHeight = '12vh';
+      dealerCardTop = '17%';
       dealerCardLeft = '94%';
       displayInfo = false;
     } else if (window.matchMedia('(min-width: 580px)').matches && window.matchMedia('(max-width: 720px)').matches) {
@@ -249,6 +250,7 @@ $(document).ready(function() {
     if (window.matchMedia('(max-width: 580px)').matches || isMobile.any()){
       cardWidth = '8vh';
       cardHeight = '12vh';
+      dealerCardTop = '17%';
       dealerCardLeft = '94%';
       displayInfo = false;
     } else if (window.matchMedia('(min-width: 580px)').matches && window.matchMedia('(max-width: 720px)').matches) {
@@ -359,7 +361,7 @@ $(document).ready(function() {
         playerCardTop = '65%';
         cardWidth = '8vh';
         cardHeight = '12vh';
-        dealerCardTop = '13%';
+        dealerCardTop = '17%';
         dealerCardLeft = '94%';
         displayInfo = false;
         bet1 = "-";

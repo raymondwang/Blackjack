@@ -768,12 +768,12 @@ body {
       height: 6%;
       border-left: 8px solid black;
       border-bottom: 8px solid black;
+      top: 16vh;
     }
-
     .spade {
       margin-top: 2%;
       font-size: 45px;
-      margin-bottom: 11.5%;
+      margin-bottom: 16%;
       margin-left: 10px;
     }
     .colon {
@@ -787,7 +787,7 @@ body {
     }
     #DealerName {
       left: 8vw;
-      top: 11.5vh;
+      top: 14vh;
     }
     #PlayerName {
       right: 8vw;
