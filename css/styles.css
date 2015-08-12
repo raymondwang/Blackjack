@@ -79,6 +79,7 @@ body {
   padding: 0;
   background-color: #8bcd73;
   font-family: 'pokemon';
+  overflow: hidden;
 }
 
 #PlayerStats {
@@ -327,43 +328,16 @@ body {
   margin-top: -8.4vh;
 }
 
-/*.flipper {
-  z-index: 1;
-  cursor: zoom-in;
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  width: 10vh;
-  height: 16.8vh;
-  margin-left: -5vh;
-  margin-top: -8.4vh;
-}
-*/
 .hole, .holeBack {
   top: 0;
   margin: 0;
   position: static;
-  /*display: block;*/
 }
 
 .flip-container .holePoints {
   bottom: -102%;
 }
 
-/*
-.front, .back {
-  position: absolute;
-}
-
-.front {
-  z-index: 2;
-}
-
-.back {
-  z-index: 1;
-}*/
-
-/* entire container, keeps perspective */
 .flip-container {
 	perspective: 1000;
   position: absolute;
@@ -380,7 +354,6 @@ body {
 	transform: rotateY(180deg);
 }
 
-/* flip speed goes here */
 .flipper {
 	transition: 1s;
 	transform-style: preserve-3d;
@@ -388,23 +361,17 @@ body {
 	position: relative;
 }
 
-/* hide back of pane during swap */
 .front, .back {
 	backface-visibility: hidden;
 
 	position: absolute;
-	/*top: 0;
-	left: 0;*/
 }
 
-/* front pane, placed above back */
 .front {
 	z-index: 2;
-	/* for firefox 31 */
 	transform: rotateY(0deg);
 }
 
-/* back, initially hidden pane */
 .back {
 	transform: rotateY(180deg);
 }
@@ -435,7 +402,6 @@ body {
   text-shadow: -1.25px 0 white, 0 1.25px white, 1.25px 0 white, 0 -1.25px white;
 }
 
-/*Max width*/
 @media screen and (min-width: 1250px) {
   .cardName, .cardValue {
     font-size: 1vw;
@@ -451,12 +417,7 @@ body {
   }
 }
 
-/*Smaller laptop screen*/
 @media screen and (max-width: 1250px) and (min-width: 992px) {
-  /*body {
-    background-color: purple;
-  }*/
-
   #bottom, #menu, #result {
     height: 19vh;
   }
@@ -549,7 +510,7 @@ body {
     line-height: 120px;
   }
   #result {
-    font-size: 20px;
+    font-size: 18px;
   }
   #betList {
     left: -25px;
@@ -588,7 +549,7 @@ body {
     width: 40vw;
   }
   #DealerName {
-    top: 9vh;
+    top: 7vh;
   }
   .name {
     font-size: 20px;
@@ -782,3 +743,81 @@ body {
     top: 1.2vh;
   }
 }
+
+@media only screen
+  and (max-device-width: 736px)
+  and (-webkit-min-device-pixel-ratio: 3)
+  and (orientation: portrait), (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+    body {
+      overflow: hidden;
+    }
+    .bet25, .betText {
+      display: none;
+    }
+    .bet1, .bet5, .bet10 {
+      font-size: 60px;
+      margin-top: 120px;
+    }
+    #PlayerStats {
+      height: 6%;
+      border-right: 8px solid black;
+      border-bottom: 8px solid black;
+    }
+    #DealerStats {
+      height: 6%;
+      border-left: 8px solid black;
+      border-bottom: 8px solid black;
+    }
+
+    .spade {
+      margin-top: 2%;
+      font-size: 45px;
+      margin-bottom: 11.5%;
+      margin-left: 10px;
+    }
+    .colon {
+      font-size: 24px;
+    }
+    .name {
+      font-size: 30px;
+    }
+    .handValue {
+      font-size: 22px;
+    }
+    #DealerName {
+      left: 8vw;
+      top: 11.5vh;
+    }
+    #PlayerName {
+      right: 8vw;
+      bottom: 36vh;
+    }
+    #deal {
+      font-size: 60px;
+      margin-top: 100px;
+      left: 51.5%;
+    }
+    #PlayerTotal {
+      padding-top: 1%;
+    }
+    .nav, .bankrollInput, #bankroll {
+      font-size: 1.25vh;
+      width: 100%;
+      display: block;
+      text-align: right;
+      margin-left: auto;
+    }
+    #prompt {
+      font-size: 40px;
+      top: 90px;
+    }
+    .action {
+      font-size: 36px;
+      height: 120px;
+    }
+    #result {
+      font-size: 38px;
+      top: 65px;
+    }
+  }
