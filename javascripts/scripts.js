@@ -21,6 +21,8 @@ $(document).ready(function() {
     }
   };
 
+  $('body').append('isMobile ' + isMobile.any());
+
   function Player(name) {
     this.name = name; // might throw this up in an initial setup menu, along with deck amount and bankroll
     this.hand = {cards: [], total: 0, aces: 0, stand: false, hole: ''};
