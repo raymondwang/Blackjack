@@ -299,15 +299,51 @@ $(document).ready(function() {
       this.aces++;
     }
     this.blackjackMeter();
-    var flipContainer = $(".flip-container");
-    $('.DealerCards:not(:eq(0))').animate({opacity: '0.25'}, 500);
-    flipContainer.animate({marginTop: '-5vh', zIndex: '2'}, 500);
-    document.querySelector(".flip-container").classList.toggle("flip");
-    flipContainer.animate({zIndex: '1'}, 750);
-    setTimeout(function() {
-      $('.DealerCards').animate({opacity: '1'}, 500);
-      flipContainer.animate({marginTop: '0', zIndex: '1'}, 500);
-    }, 1000);
+    $('.flip-container').off('mouseover', 'mouseout');
+
+    if (isMobile.any()) {
+      $('.hole').animate({width: '0'}, 500);
+      $('body').append($('.holeBack'));
+      $('.holeBack').css({width: '0', display: 'inline-block', left: '94%', top: '17%', marginLeft: '-6.25vh', position: 'absolute', zIndex: '0'});
+      $('.holeBack').animate({width: '8vh'}, 500);
+      $('.holeBack').on({
+        'mouseover': function() {
+          $('.DealerCards').css({opacity: '0.25'});
+          $('.holeBack').css({zIndex: '2', opacity: '1'}).animate({marginTop: '-2.5vh'}, 50);
+        },
+        'mouseout': function() {
+          $('.DealerCards').css({opacity: '1'});
+          $('.holeBack').css({zIndex: '0'}).animate({marginTop: '0'}, 50);
+        }
+      });
+    } else {
+      var flipContainer = $(".flip-container");
+      $('.DealerCards:not(:eq(0))').animate({opacity: '0.25'}, 500);
+      flipContainer.animate({marginTop: '-5vh', zIndex: '2'}, 500);
+      document.querySelector(".flip-container").classList.toggle("flip");
+      flipContainer.animate({zIndex: '1'}, 750);
+      setTimeout(function() {
+        $('.DealerCards').animate({opacity: '1'}, 500);
+        flipContainer.animate({marginTop: '0', zIndex: '1'}, 500);
+      }, 1000);
+      $('.holeBack').on({
+        'mouseover': function() {
+          $('.DealerCards').css({opacity: '0.25'});
+          $('.flip-container').css({zIndex: '2', opacity: '1'}).animate({marginTop: '-2.5vh'}, 50);
+          if (displayInfo) {
+            $('.holeName').css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '2.5vh', marginTop: '-2.5vh'}, 50);
+            $('.holePoints').css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '-2.5vh', marginTop: '2.5vh'}, 50);
+          }
+        },
+        'mouseout': function() {
+          $('.DealerCards').css({opacity: '1'});
+          $('.holeBack').css({zIndex: '1'}).animate({marginTop: '0'}, 50);
+          $('.holeName').css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0', marginTop: '0'}, 50);
+          $('.holePoints').css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0', marginTop: '0'}, 50);
+          }
+      });
+    }
+
 
     var dealerNameTop;
     var dealerNameMargin;
@@ -320,24 +356,7 @@ $(document).ready(function() {
       displayInfo = true;
     }
 
-    $('.flip-container').off('mouseover', 'mouseout');
 
-    $('.holeBack').on({
-      'mouseover': function() {
-        $('.DealerCards').css({opacity: '0.25'});
-        $('.flip-container').css({zIndex: '2', opacity: '1'}).animate({marginTop: '-2.5vh'}, 50);
-        if (displayInfo) {
-          $('.holeName').css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '2.5vh', marginTop: '-2.5vh'}, 50);
-          $('.holePoints').css({zIndex: '2', visibility: 'visible'}).animate({marginBottom: '-2.5vh', marginTop: '2.5vh'}, 50);
-        }
-      },
-      'mouseout': function() {
-        $('.DealerCards').css({opacity: '1'});
-        $('.holeBack').css({zIndex: '1'}).animate({marginTop: '0'}, 50);
-        $('.holeName').css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0', marginTop: '0'}, 50);
-        $('.holePoints').css({zIndex: '1', visibility: 'hidden'}).animate({marginBottom: '0', marginTop: '0'}, 50);
-        }
-    });
     this.hand.hole = 'revealed';
     checkWin();
   }
