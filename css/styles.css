@@ -771,9 +771,9 @@ body {
       top: 16vh;
     }
     .spade {
-      margin-top: 2%;
+      margin-top: 0;
       font-size: 45px;
-      margin-bottom: 6%;
+      margin-bottom: 0;
       margin-left: 10px;
     }
     .colon {
