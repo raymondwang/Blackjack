@@ -705,6 +705,9 @@ $(document).ready(function() {
   }
 
   function deal() {
+    if (deck.length < 52) {
+      deck = createDeck();
+    }
     $('.flip-container').remove();
     placeBet();
     updateHeader();
