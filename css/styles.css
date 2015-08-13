@@ -291,6 +291,7 @@ body {
   width: 40px;
   left: 12px;
   transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
   text-align: right;
   color: rgba(0, 0, 0, 0);
   border: 1px dashed rgba(0, 0, 0, 0); /*this fixes an issue with truncation in double down, but i don't know why*/
