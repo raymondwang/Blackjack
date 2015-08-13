@@ -827,13 +827,13 @@ body {
     .hpBar {
       width: 21vw;
       left: 10vw;
-      position: absolute;
-      bottom: 4.85vh;
+      margin-bottom: 10px;
     }
     .handValue {
       font-size: 9px;
       width: 21vw;
       left: 10vw;
+      margin-bottom: 10px;
     }
     #deck, .card, .flip-container{
       width: 5vh;
