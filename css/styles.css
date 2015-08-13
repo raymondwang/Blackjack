@@ -827,6 +827,8 @@ body {
     .hpBar {
       width: 21vw;
       left: 10vw;
+      position: absolute;
+      bottom: 4.85vh;
     }
     .handValue {
       font-size: 9px;
@@ -841,6 +843,7 @@ body {
     }
     #deck {
       transform: rotate(90deg);
+      -webkit-transform: rotate(90deg);
     }
     #bottom {
       bottom: 19px;
