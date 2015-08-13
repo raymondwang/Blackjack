@@ -776,6 +776,8 @@ body {
       font-size: 24px;
       margin-bottom: -3px;
       margin-left: 7px;
+      position: relative;
+      bottom: 15px;
     }
     .colon {
       font-size: 12px;
@@ -808,6 +810,9 @@ body {
       display: block;
       text-align: right;
       margin-left: auto;
+    }
+    .bankrollInput {
+      padding: 0;
     }
     #prompt {
       font-size: 14px;
