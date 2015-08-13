@@ -502,7 +502,7 @@ $(document).ready(function() {
         }
       }
     }
-    return shuffle(deck); // shuffles deck before returning
+    return shuffle(deck);
   };
 
   // shuffle function

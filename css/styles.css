@@ -294,7 +294,7 @@ body {
   -webkit-transform: rotate(90deg);
   text-align: right;
   color: rgba(0, 0, 0, 0);
-  border: 1px dashed rgba(0, 0, 0, 0); /*this fixes an issue with truncation in double down, but i don't know why*/
+  border: 1px dashed rgba(0, 0, 0, 0);
 }
 .col2 {
   left: -12px;
@@ -853,6 +853,9 @@ body {
       height: 8vh;
       margin-left: 16px;
       margin-top: 71px;
+    }
+    .flip-container {
+      z-index: 0;
     }
     #deck {
       transform: rotate(90deg);
