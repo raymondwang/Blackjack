@@ -75,7 +75,6 @@ $(document).ready(function() {
       }
       this.meter.css({backgroundColor: color});
       var difference = points - currentPoints;
-      var speed = 500 / difference;
       var scope = this;
 
       if (points < currentPoints) {
@@ -994,9 +993,15 @@ $(document).ready(function() {
         }, 500);
         return;
       } else { // if dealer hand is greater than 17
-        resultMessage = "Blackjack! You win!";
         winner = 'player';
-        bankroll += (bet + (bet * 1.5));
+        if (player.hand.cards.length === 2) {
+          resultMessage = "Natural 21! You win 3/2!";
+          bankroll += (bet + (bet * 1.5));
+        } else {
+          resultMessage = "Blackjack! You win!";
+          bankroll += (bet * 2);
+        }
+
       }
     } else if (player.hand.stand) {
       if (dealer.hand.hole != 'revealed') {
