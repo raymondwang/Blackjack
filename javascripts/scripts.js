@@ -964,7 +964,7 @@ $(document).ready(function() {
     if (dealer.hand.total > 21) { // if dealer busts
       // if (!aceLogic(dealer)) {
         winner = 'player';
-        bankroll += (bet + (bet * 1.5));
+        bankroll += (bet * 2);
         setTimeout(function() {
           showResult('Dealer bust! You win!');
         }, 500);
@@ -1024,7 +1024,7 @@ $(document).ready(function() {
         } else if (player.hand.total > dealer.hand.total) {
           resultMessage = "You win!";
           winner = 'player';
-          bankroll += (bet + (bet * 1.5));
+          bankroll += (bet * 2);
         } else if (player.hand.total < dealer.hand.total) {
           resultMessage = "You lose!";
           winner = 'dealer';
