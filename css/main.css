@@ -1,0 +1,291 @@
+@font-face {
+  font-family: 'Pokemon';
+  src: url("../fonts/PokemonGB.ttf"); }
+@font-face {
+  font-family: 'Logo';
+  src: url("../fonts/PokemonLogo.ttf"); }
+.u-caps {
+  text-transform: uppercase; }
+
+html, body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #6B8E23;
+  font-family: 'Pokemon'; }
+
+.nav {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  color: white; }
+
+.nav-item {
+  flex: 1 1 auto;
+  border-right: 2px solid #6B8E23;
+  background-color: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  font-size: 18px;
+  line-height: 50px; }
+  .nav-item:last-of-type {
+    border-right: none; }
+
+.nav-logo {
+  margin: 0;
+  color: #FFD700;
+  font-family: 'Logo';
+  font-size: 20px;
+  letter-spacing: 2px;
+  text-shadow: -2px 0 #191970, 0 2px #191970, 3px 0 #191970, 0 -2px #191970;
+  text-decoration: none;
+  cursor: pointer; }
+
+.nav-form {
+  display: inline; }
+
+.nav-input {
+  margin-left: -20px;
+  padding: 4px 0 2px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  width: 54px;
+  background-color: transparent;
+  color: white;
+  font-family: 'Pokemon';
+  font-size: 18px; }
+  .nav-input.ng-invalid {
+    border: 1px solid white; }
+  .nav-input::-webkit-outer-spin-button, .nav-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none; }
+
+.nav-bankroll {
+  margin-left: -20px; }
+
+.deck {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -96.5px;
+  margin-left: -39.5px;
+  width: 79px;
+  height: 123px; }
+
+.hand {
+  position: absolute;
+  display: flex;
+  min-width: 118px;
+  height: 180px; }
+  .hand.hand--dealer {
+    top: 100px;
+    right: 80px;
+    flex-direction: row-reverse; }
+  .hand.hand--player {
+    bottom: 180px;
+    left: 80px; }
+
+.card {
+  position: relative;
+  width: 118px;
+  height: 180px;
+  perspective: 500px; }
+  .card.card--dealer {
+    margin-left: -59px; }
+  .card.card--player {
+    margin-right: -59px; }
+  .card.ng-enter {
+    width: 79px;
+    height: 123px; }
+  .card.ng-enter.ng-enter-active {
+    width: 118px;
+    height: 180px; }
+
+.card-front, .card-back {
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  transform-style: preserve-3d;
+  backface-visibility: hidden; }
+
+.card-front {
+  z-index: 900;
+  transform: rotate3d(0, 0, 0, 0deg); }
+
+.card-back {
+  z-index: 800;
+  transform: rotate3d(0, 1, 0, -180deg); }
+
+.flipped .card-front {
+  z-index: 900;
+  transform: rotate3d(0, 1, 0, 180deg);
+  transition: 0.5s ease all; }
+.flipped .card-back {
+  z-index: 1000;
+  transform: rotate3d(0, 0, 0, 0deg);
+  transition: 0.5s ease all; }
+
+.card {
+  cursor: zoom-in; }
+  .card:hover {
+    margin-top: -15px;
+    z-index: 100;
+    transition: 0.6s ease all; }
+  .card::before, .card::after {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    text-shadow: 1px 1px 1px white;
+    white-space: nowrap;
+    transition: 0.2s ease all; }
+  .card::before {
+    content: attr(data-card-name);
+    top: -20px; }
+  .card::after {
+    content: attr(data-card-points);
+    bottom: -20px; }
+  .card:not(.card--hole):hover::before, .card:not(.card--hole):hover::after {
+    opacity: 1; }
+  .card.flipped:hover::before, .card.flipped:hover::after {
+    opacity: 1; }
+
+.stats {
+  position: absolute; }
+  .stats.stats--dealer {
+    top: 80px;
+    left: 60px; }
+  .stats.stats--player {
+    bottom: 180px;
+    right: 60px; }
+
+.stats-name {
+  margin: 5px 0;
+  width: 360px;
+  font-size: 30px;
+  letter-spacing: 5px; }
+  .stats-name.stats-nameInput {
+    margin: 0;
+    border: 0;
+    background-color: transparent;
+    color: black;
+    text-align: right;
+    line-height: 40px;
+    font-family: 'Pokemon';
+    cursor: text; }
+
+.stats-box {
+  position: relative;
+  border-bottom: 8px solid black;
+  width: 360px;
+  height: 90px; }
+  .stats-box.stats-box--dealer {
+    border-left: 8px solid black; }
+  .stats-box.stats-box--player {
+    border-right: 8px solid black; }
+
+.stats-points {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  transform: translate(-50%, -50%); }
+
+.stats-pointsIcon {
+  font-size: 32px;
+  vertical-align: middle; }
+
+.stats-pointsIconColon {
+  margin: 0 -10px;
+  font-size: 18px; }
+
+.stats-pointsContainer {
+  display: inline-block;
+  border: 5px solid black;
+  width: 240px;
+  height: 15px;
+  box-sizing: border-box; }
+
+.stats-pointsMeter {
+  height: 100%; }
+
+.stats-pointsInfo {
+  margin: 0;
+  text-align: center;
+  font-size: 18px; }
+
+.actionBar {
+  display: flex;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  left: 10px;
+  height: 130px; }
+
+.actionBar-left, .actionBar-right {
+  position: relative;
+  flex: 1 1 auto;
+  justify-content: space-between;
+  border: 10px solid black;
+  padding: 10px 20px;
+  width: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  font-size: 32px; }
+
+.actionBar-left {
+  border-right: none; }
+  .actionBar-left .actionBar-prompt {
+    line-height: 50px; }
+  .actionBar-left .actionBar-betContainer {
+    text-align: center;
+    font-size: 30px; }
+    .actionBar-left .actionBar-betContainer .actionBar-betHeader {
+      margin: 10px auto;
+      font-size: 30px; }
+    .actionBar-left .actionBar-betContainer .actionBar-betList {
+      display: flex;
+      font-size: 30px; }
+      .actionBar-left .actionBar-betContainer .actionBar-betList span {
+        justify-content: space-between; }
+    .actionBar-left .actionBar-betContainer .actionBar-betPreset {
+      flex: 1 1 auto;
+      cursor: pointer; }
+
+.actionBar-right .actionBar-deal, .actionBar-right .actionBar-message {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  cursor: pointer; }
+.actionBar-right .actionBar-deal {
+  text-align: center;
+  font-size: 45px;
+  line-height: calc(130px - 10px); }
+.actionBar-right .actionBar-message {
+  padding: 15px;
+  font-size: 29px; }
+.actionBar-right .actionBar-actions {
+  width: 100%;
+  height: 100%;
+  line-height: 45px; }
+  .actionBar-right .actionBar-actions .actionBar-actionRow {
+    height: 50%; }
+    .actionBar-right .actionBar-actions .actionBar-actionRow .actionBar-action {
+      cursor: pointer; }
+
+.cursor {
+  opacity: 0;
+  font-size: 40px;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  transform: rotate(90deg);
+  transform-origin: 20% 30%; }
+  .cursor.cursor--bet {
+    font-size: 30px;
+    transform-origin: 120% 70%; }
+  .cursor.cursor--active {
+    opacity: 1; }
+
+/*# sourceMappingURL=main.css.map */

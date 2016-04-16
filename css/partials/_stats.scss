@@ -1,0 +1,86 @@
+$statsBox-width: 360px;
+$statsBox-height: 90px;
+$statsBox-border: 8px solid black;
+
+.stats {
+  position: absolute;
+
+  &.stats--dealer {
+    top: 80px;
+    left: 60px;
+  }
+
+  &.stats--player {
+    bottom: 180px;
+    right: 60px;
+  }
+}
+
+.stats-name {
+  margin: 5px 0;
+  width: $statsBox-width;
+  font-size: 30px;
+  letter-spacing: 5px;
+
+  &.stats-nameInput {
+    margin: 0;
+    border: 0;
+    background-color: $color-transparent;
+    color: black;
+    text-align: right;
+    line-height: 40px;
+    font-family: 'Pokemon';
+    cursor: text;
+  }
+}
+
+.stats-box {
+  position: relative;
+  border-bottom: $statsBox-border;
+  width: $statsBox-width;
+  height: $statsBox-height;
+
+  &.stats-box--dealer {
+    border-left: $statsBox-border;
+  }
+
+  &.stats-box--player {
+    border-right: $statsBox-border;
+  }
+}
+
+.stats-points {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: $statsBox-width - 40px;
+  transform: translate(-50%, -50%);
+}
+
+.stats-pointsIcon {
+  font-size: 32px;
+  vertical-align: middle;
+}
+
+.stats-pointsIconColon {
+  margin: 0 -10px;
+  font-size: 18px;
+}
+
+.stats-pointsContainer {
+  display: inline-block;
+  border: 5px solid black;
+  width: 240px;
+  height: 15px;
+  box-sizing: border-box;
+}
+
+.stats-pointsMeter {
+  height: 100%;
+}
+
+.stats-pointsInfo {
+  margin: 0;
+  text-align: center;
+  font-size: 18px;
+}

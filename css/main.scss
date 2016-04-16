@@ -1,0 +1,34 @@
+@font-face {
+  font-family: 'Pokemon';
+  src: url('../fonts/PokemonGB.ttf');
+}
+
+@font-face {
+  font-family: 'Logo';
+  src: url('../fonts/PokemonLogo.ttf');
+}
+
+// Variables
+$color-blue: #191970;
+$color-green: #6B8E23;
+$color-yellow: #FFD700;
+$color-transparent: rgba(0, 0, 0, 0);
+
+// Utilities
+.u-caps {
+  text-transform: uppercase;
+}
+
+html, body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: $color-green;
+  font-family: 'Pokemon';
+}
+
+@import 'partials/nav',
+        'partials/cards',
+        'partials/stats',
+        'partials/actions';

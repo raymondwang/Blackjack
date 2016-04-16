@@ -1,18 +1,13 @@
 ## Blackjack
 
-A single-player Blackjack game, designed with nostalgia.
+A single-player Blackjack game, designed with nostalgia (and AngularJS).
 
 ---
 
 ### Screenshots
 
-<img src="images/screenshot01.png" />
-<img src="images/Blackjack.gif" />
-<img src="images/screenshot_mobile.png" />
+<img src="images/Screenshot.png">
 
 ---
 ### TO DO:
-- Maybe a tutorial to show that name and bankroll can be set
-- Decide on a decent mouseover animation for Deal button that isn't tacky
-- Events when bankroll < 0 || > 999 (maybe)
-- Animations for card leaving table?
+- Tests

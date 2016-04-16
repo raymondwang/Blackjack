@@ -2,45 +2,180 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="css/styles.css">
-    <script type="text/javascript" src="javascripts/jquery.js"></script>
-    <script type="text/javascript" src="javascripts/scripts.js"></script>
-    <link rel="icon" type="image/png" href="images/favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="images/favicon-16x16.png" sizes="16x16" />
     <title>Blackjack</title>
+    <link rel="stylesheet" href="css/main.css">
+
+    <script src="vendor/angular.min.js"></script>
+    <script src="vendor/angular-animate.min.js"></script>
+    <script src="vendor/velocity.min.js"></script>
+
+    <script src="js/angularModule.js"></script>
+
+    <script src="js/services/actionService.js"></script>
+    <script src="js/services/deckService.js"></script>
+    <script src="js/services/gameModel.js"></script>
+    <script src="js/services/playerFactory.js"></script>
+
+    <script src="js/directives/cardDirective.js"></script>
+    <script src="js/directives/cursorDirective.js"></script>
+    <script src="js/directives/pointsMeterDirective.js"></script>
+
+    <script src="js/controllers/GameController.js"></script>
   </head>
-  <header id="navbar">
-  </header>
-  <body>
-    <div class="disableOverlay"></div>
-    <p id="DealerName" class="name">DEALER</p>
-    <form id="nameForm">
-      <input id="PlayerName" class="name" name="nickname" value="PLAYER" maxlength="8"></input>
-    </form>
-    <div id="cardHolder"><img id="deck" src="images/PokeballDeck.png"></div>
-    <!-- alt could be  number of cards/decks -->
-    <div id="bottom">
-      <ul id="betList">
-      </ul>
-      <div id="menu">
-        <p id="result"></p><span id="nextCursor">&spades;</span>
-        <div id="deal">Deal</div>
-        <table id="actions">
-          <tr>
+  <body ng-controller="GameController as game">
+    <nav class="nav">
+      <div class="nav-item">
+        <a class="nav-logo"
+            href="https://github.com/raymondwang/Blackjack" target="_blank">
+          Blackjack!
+        </a>
+      </div>
+      <div class="nav-item">
+        <span>Bankroll: $</span>
+        <span class="nav-bankroll"
+            ng-if="game.isGameStarted">{{ game.bankroll }}</span>
+        <form class="nav-form">
+          <input class="nav-input" ng-model="game.bankroll"
+              type="number" min="5" max="999" maxlength="3"
+              ng-if="!game.isGameStarted" required>
+        </form>
+      </div>
+      <div class="nav-item">
+        <span>Bet: $</span>
+        <form class="nav-form">
+          <input class="nav-input" ng-model="game.betAmount"
+              type="number" min="5" max="100" maxlength="3"
+              ng-disabled="game.isGameOngoing" required>
+        </form>
+      </div>
+      <div class="nav-item">
+        <span>
+          W{{ game.score.wins }}
+          L{{ game.score.losses }}
+          T{{ game.score.ties }}
+        </span>
+      </div>
+    </nav>
+
+    <img class="deck" src="images/Card Back.png">
+
+    <section class="stats stats--dealer">
+      <h1 class="stats-name u-caps">{{ game.dealer.name }}</h1>
+      <div class="stats-box stats-box--dealer">
+        <div class="stats-points">
+          <span class="stats-pointsIcon">&spades;</span>
+          <span class="stats-pointsIconColon">:</span>
+          <div class="stats-pointsContainer">
+            <points-meter points="game.dealer.points"></points-meter>
+          </div>
+          <p class="stats-pointsInfo">
+            {{ game.dealer.displayPoints }} / 21
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats stats--player">
+      <form>
+        <input class="stats-nameInput stats-name u-caps"
+            ng-model="game.player.name" type="text" maxlength="10"
+            ng-disabled="game.isGameOngoing" required>
+      </form>
+      <div class="stats-box stats-box--player">
+        <div class="stats-points">
+          <span class="stats-pointsIcon">&spades;</span>
+          <span class="stats-pointsIconColon">:</span>
+          <div class="stats-pointsContainer">
+            <points-meter points="game.player.points"></points-meter>
+          </div>
+          <p class="stats-pointsInfo">
+            {{ game.player.displayPoints }} / 21
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="hand hand--dealer">
+      <div class="card card--dealer" ng-class="::{ 'card--hole' : card.isHole }"
+          card ng-repeat="card in game.dealer.hand"
+          data-card-name="{{ card.name }}"
+          data-card-points="Points: {{ card.value }}">
+        <img class="card-front"
+            ng-src="images/{{ ::card.isHole ? 'Card Back' : card.name }}.png">
+        <img class="card-back" ng-if="::card.isHole"
+            ng-src="images/{{ card.name }}.png">
+      </div>
+    </div>
+
+    <div class="hand hand--player">
+      <div class="card card--player" card
+          ng-repeat="card in game.player.hand"
+          data-card-name="{{ card.name }}"
+          data-card-points="Points: {{ card.value }}">
+        <img class="card-front" ng-src="images/{{ card.name }}.png">
+      </div>
+    </div>
+
+    <div class="actionBar">
+      <div class="actionBar-left">
+        <div class="actionBar-prompt" ng-if="game.isGameOngoing">
+          What will
+          <span class="u-caps">{{ game.player.name }}</span> do?
+        </div>
+        <div class="actionBar-betContainer"
+            ng-if="!game.isGameOngoing && !game.isDealing &&
+                !game.displayMessage">
+          <p class="actionBar-betHeader u-caps">Bet</p>
+          <div class="actionBar-betList">
+            <span class="cursor cursor--bet"
+                ng-repeat-start="betPreset in game.betPresets">
+              &spades;
+            </span>
+            <span class="actionBar-betPreset" ng-repeat-end
+                cursor ng-click="game.changeBet(betPreset)">
+              ${{ betPreset }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="actionBar-right">
+        <div class="actionBar-deal u-caps"
+            ng-if="!game.isGameOngoing && !game.isDealing &&
+                !game.displayMessage"
+            ng-click="game.deal()">Deal</div>
+        <div class="actionBar-message" ng-if="game.displayMessage"
+            ng-click="game.hideMessage()">
+          {{ game.displayMessage }}
+        </div>
+        <table class="actionBar-actions"
+            ng-if="game.isGameOngoing && !game.displayMessage">
+          <tr class="actionBar-actionRow">
             <td class="cursor">&spades;</td>
-            <td id="hit" class="action">Hit</td>
-            <td class="cursor col2">&spades;</td>
-            <td id="stand" class="action">Stand</td>
+            <td class="actionBar-action u-caps"
+                cursor ng-click="game.hit()">
+              Hit
+            </td>
+            <td class="cursor">&spades;</td>
+            <td class="actionBar-action u-caps"
+                cursor ng-click="game.stand()">
+              Stand
+            </td>
           </tr>
-          <tr>
+          <tr class="actionBar-actionRow">
             <td class="cursor">&spades;</td>
-            <td id="double" class="action">Down</td>
-            <td class="cursor col2">&spades;</td>
-            <td id="surrender" class="action">Fold</td>
+            <td class="actionBar-action u-caps"
+                cursor ng-click="game.down()">
+              Down
+            </td>
+            <td class="cursor">&spades;</td>
+            <td class="actionBar-action u-caps"
+                cursor ng-click="game.fold()">
+              Fold
+            </td>
           </tr>
         </table>
       </div>
     </div>
   </body>
+  <script src="js/angularBootstrap.js"></script>
 </html>
